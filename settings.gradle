@@ -1,0 +1,7 @@
+rootProject.name = 'RevUP'
+include 'RevUp-api'
+include 'RevUp-common'
+include 'RevUp-domain'
+include 'RevUp-infra'
+include 'RevUp-security'
+

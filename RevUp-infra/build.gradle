@@ -1,0 +1,10 @@
+bootJar {
+    enabled = false
+}
+dependencies {
+    implementation project(':RevUp-common')
+}
+
+test {
+    useJUnitPlatform()
+}
