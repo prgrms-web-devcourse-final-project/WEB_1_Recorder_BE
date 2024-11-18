@@ -1,6 +1,7 @@
 package com.revup.question.entity;
 
 import com.revup.common.BaseTimeEntity;
+import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,4 +17,8 @@ public class QuestionImage extends BaseTimeEntity {
     private Long id;
 
     private String filePath;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
 }

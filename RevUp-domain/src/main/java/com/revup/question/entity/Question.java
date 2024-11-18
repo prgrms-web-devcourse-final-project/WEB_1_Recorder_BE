@@ -2,6 +2,7 @@ package com.revup.question.entity;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,5 +32,10 @@ public class Question extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAnonymous;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id")
+    private User user;
+
 
 }

@@ -2,6 +2,8 @@ package com.revup.notification.entity;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.question.entity.Question;
+import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,4 +27,8 @@ public class Notification extends BaseTimeEntity {
     private String title;
 
     private String resource;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_id")
+    private User user;
 }

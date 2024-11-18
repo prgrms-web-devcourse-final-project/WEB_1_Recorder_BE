@@ -2,6 +2,7 @@ package com.revup.question.entity;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,6 +32,14 @@ public class Answer extends BaseTimeEntity {
     private int goodCount;
 
     private int badCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     @Builder
     private Answer(

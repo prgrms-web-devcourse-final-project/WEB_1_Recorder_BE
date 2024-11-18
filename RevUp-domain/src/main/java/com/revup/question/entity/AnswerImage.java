@@ -16,4 +16,8 @@ public class AnswerImage extends BaseTimeEntity {
     private Long id;
 
     private String filePath;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
 }
