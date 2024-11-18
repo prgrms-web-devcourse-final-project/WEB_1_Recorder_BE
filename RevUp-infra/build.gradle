@@ -3,6 +3,8 @@ bootJar {
 }
 dependencies {
     implementation project(':RevUp-common')
+    implementation project(':RevUp-domain')
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 test {
