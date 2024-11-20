@@ -2,5 +2,9 @@ package com.revup.common;
 
 public enum BooleanStatus {
     TRUE,
-    FALSE
+    FALSE;
+
+    public static BooleanStatus from(boolean value){
+        return value ? TRUE : FALSE;
+    }
 }
