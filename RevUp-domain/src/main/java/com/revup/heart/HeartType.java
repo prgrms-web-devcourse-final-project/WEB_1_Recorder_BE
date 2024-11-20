@@ -1,4 +1,4 @@
-package com.revup.question.entity;
+package com.revup.heart;
 
 public enum HeartType {
     GOOD,BAD

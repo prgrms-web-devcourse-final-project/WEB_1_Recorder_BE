@@ -1,4 +1,4 @@
-package com.revup.question.entity;
+package com.revup.answer;
 
 public enum AdoptedReview {
     EASY,USEFUL,HELPFUL

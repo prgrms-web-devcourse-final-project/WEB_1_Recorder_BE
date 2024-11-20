@@ -1,26 +1,23 @@
-package com.revup.question.entity;
+package com.revup.image.entity;
 
 import com.revup.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Table(name = "category")
+@Table(name = "temp_image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category extends BaseTimeEntity {
+@Getter
+public class TempImage extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30)
-    private String name;
+    private String imageUrl;
 
-    @Builder
-    private Category(String name) {
-        this.name = name;
+    private TempImage(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

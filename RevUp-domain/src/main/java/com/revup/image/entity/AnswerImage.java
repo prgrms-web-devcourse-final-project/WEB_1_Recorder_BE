@@ -1,5 +1,6 @@
-package com.revup.question.entity;
+package com.revup.image.entity;
 
+import com.revup.answer.Answer;
 import com.revup.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

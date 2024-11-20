@@ -6,6 +6,7 @@ import com.revup.question.entity.QuestionType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.user.entity.QUser.user;
@@ -17,7 +18,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
     @Override
     public List<Question> findQuestionList(Long page, Long size, QuestionType type) {
         return queryFactory.select(question)
-                .join(question.user, user).fetchJoin()
+                .leftJoin(question.user, user).fetchJoin()
                 .where(question.type.eq(type))
                 .orderBy(question.createdAt.desc())
                 .offset(page * size)

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "question_category")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionCategory extends BaseTimeEntity {
+public class QuestionTag extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,11 +22,11 @@ public class QuestionCategory extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Tag tag;
 
     @Builder
-    private QuestionCategory(Question question, Category category) {
+    private QuestionTag(Question question, Tag tag) {
         this.question = question;
-        this.category = category;
+        this.tag = tag;
     }
 }

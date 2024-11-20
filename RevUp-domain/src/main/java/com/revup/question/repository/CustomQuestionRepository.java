@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CustomQuestionRepository {
     List<Question> findQuestionList(Long page, Long size, QuestionType type);
+
 }
