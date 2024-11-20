@@ -1,7 +1,9 @@
 package com.revup.question.service;
 
+import com.revup.question.dto.QuestionBriefResponse;
 import com.revup.question.dto.QuestionCreateInfo;
 import com.revup.question.dto.QuestionIdResponse;
+import com.revup.question.dto.QuestionPageInfo;
 import com.revup.question.entity.Category;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCategory;
@@ -13,6 +15,8 @@ import com.revup.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -60,4 +64,11 @@ public class QuestionService {
 
     }
 
+
+    public List<QuestionBriefResponse> getQuestionList(QuestionPageInfo info) {
+        List<Question> questions = questionRepository.findQuestionList(info.page(), info.size(),info.type());
+        return questions.stream()
+                .map(QuestionBriefResponse::of)
+                .toList();
+    }
 }

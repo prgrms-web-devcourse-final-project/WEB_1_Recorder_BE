@@ -1,19 +1,16 @@
 package com.revup.question.controller;
 
 import com.revup.global.dto.ApiResponse;
-import com.revup.question.dto.QuestionCreateInfo;
-import com.revup.question.dto.QuestionCreateRequest;
-import com.revup.question.dto.QuestionIdResponse;
+import com.revup.question.dto.*;
 import com.revup.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static com.revup.global.dto.ApiResponse.*;
+import java.util.List;
+
+import static com.revup.global.dto.ApiResponse.success;
 
 @RestController
 @RequestMapping("/api/v1/question")
@@ -22,7 +19,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@RequestBody QuestionCreateRequest request){
+    public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@RequestBody QuestionCreateRequest request) {
         QuestionIdResponse questionIdResponse = questionService.create(QuestionCreateInfo.of(
                 request.title(),
                 request.content(),
@@ -35,4 +32,15 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(success(questionIdResponse));
 
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getQuestionList(@ModelAttribute QuestionPageRequest request) {
+        List<QuestionBriefResponse> responseList = questionService.getQuestionList(QuestionPageInfo.of(
+                request.type(),
+                request.page(),
+                request.size()
+        ));
+        return ResponseEntity.ok().body(success(responseList));
+    }
+
 }

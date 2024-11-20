@@ -29,7 +29,7 @@ public class Question extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private int readCount;
+    private Long readCount;
 
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAnonymous;
@@ -50,7 +50,7 @@ public class Question extends BaseTimeEntity {
         this.type = type;
         this.state = state;
         this.content = content;
-        this.readCount = 0;
+        this.readCount = 0L;
         this.isAnonymous = isAnonymous;
         this.user = user;
     }
