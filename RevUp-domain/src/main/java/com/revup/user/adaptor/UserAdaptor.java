@@ -16,7 +16,7 @@ public class UserAdaptor {
     private final UserRepository userRepository;
 
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, List.of(userId.toString())));
+        return userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, userId));
     }
 
 }
