@@ -6,6 +6,7 @@ import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionTag;
 import com.revup.question.repository.QuestionRepository;
 import com.revup.question.repository.QuestionTagRepository;
+import com.revup.question.repository.TagRepository;
 import com.revup.tag.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,22 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionTagRepository questionTagRepository;
     private final QuestionImageRepository questionImageRepository;
+    private final TagRepository tagRepository;
 
     @Transactional
-    public Long createQuestion(Question question, List<Tag> tags, List<QuestionImage> images) {
+    public Long createQuestion(Question question, List<String> tagNames, List<QuestionImage> images) {
 
         questionRepository.save(question);
 
-        for (Tag tag: tags) {
+        for (String name : tagNames) {
+            Tag tag = tagRepository.findByName(name)
+                    .orElseGet(() -> {
+                        Tag newTag = Tag.builder()
+                                .name(name)
+                                .build();
+                        return tagRepository.save(newTag);
+                    });
+
             QuestionTag questionTag = QuestionTag
                     .builder()
                     .question(question)

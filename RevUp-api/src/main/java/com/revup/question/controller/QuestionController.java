@@ -1,7 +1,7 @@
 package com.revup.question.controller;
 
 import com.revup.global.dto.ApiResponse;
-import com.revup.question.command.QuestionCommand;
+import com.revup.question.usecase.CreateQuestionUseCase;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +18,12 @@ import static com.revup.global.dto.ApiResponse.success;
 @RequestMapping("/api/v1/question")
 @RequiredArgsConstructor
 public class QuestionController {
-    private final QuestionCommand questionCommand;
+    private final CreateQuestionUseCase createQuestionUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@RequestBody QuestionCreateRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(success(questionCommand.create(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(success(createQuestionUseCase.create(request)));
 
     }
 

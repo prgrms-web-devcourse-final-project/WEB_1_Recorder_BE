@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public class TagMapper {
-    public List<String> toString(List<TagRequest> tags) {
+    public List<String> toNameList(List<TagRequest> tags) {
         return tags.stream()
                 .map(TagRequest::name)
                 .toList();
