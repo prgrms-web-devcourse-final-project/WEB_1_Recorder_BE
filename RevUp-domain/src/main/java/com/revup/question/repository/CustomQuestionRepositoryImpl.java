@@ -6,7 +6,6 @@ import com.revup.question.entity.QuestionType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.user.entity.QUser.user;

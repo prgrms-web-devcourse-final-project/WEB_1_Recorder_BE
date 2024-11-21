@@ -1,4 +1,4 @@
-package com.revup.question.entity;
+package com.revup.tag.entity;
 
 import com.revup.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "category")
+@Table(name = "tag")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag extends BaseTimeEntity {
     @Id

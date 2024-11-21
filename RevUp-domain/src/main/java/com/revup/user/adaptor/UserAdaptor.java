@@ -1,0 +1,19 @@
+package com.revup.user.adaptor;
+
+import com.revup.user.entity.User;
+import com.revup.user.exception.UserIdNotFoundException;
+import com.revup.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class UserAdaptor {
+    private final UserRepository userRepository;
+
+    public User findById(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotFoundException(userId));
+    }
+
+}

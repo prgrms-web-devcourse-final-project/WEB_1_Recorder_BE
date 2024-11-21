@@ -1,4 +1,4 @@
-package com.revup.s3.dto;
+package com.revup.image.dto.response;
 
 public record ImageUrlResponse(
         String imageUrl

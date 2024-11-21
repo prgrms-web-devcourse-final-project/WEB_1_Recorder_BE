@@ -1,6 +1,6 @@
 package com.revup.question.repository;
 
-import com.revup.question.entity.Tag;
+import com.revup.tag.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,6 +1,7 @@
 package com.revup.question.entity;
 
 import com.revup.common.BaseTimeEntity;
+import com.revup.tag.entity.Tag;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "question_category")
+@Table(name = "question_tag")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionTag extends BaseTimeEntity {
     @Id
@@ -21,7 +22,7 @@ public class QuestionTag extends BaseTimeEntity {
     private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     @Builder

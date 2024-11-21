@@ -1,4 +1,4 @@
-package com.revup.question.dto;
+package com.revup.question.dto.response;
 
 import com.revup.question.entity.Question;
 

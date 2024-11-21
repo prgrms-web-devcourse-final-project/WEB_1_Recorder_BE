@@ -1,4 +1,4 @@
-package com.revup.question.dto;
+package com.revup.question.dto.request;
 
 public record QuestionPageRequest(
         String type,
