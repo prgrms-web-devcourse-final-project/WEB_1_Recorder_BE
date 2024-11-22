@@ -1,9 +1,17 @@
 spring:
   config:
+    import: common-variable.yaml
     activate:
       on-profile: local
+
+github-pages:
+  url: ${github-pages.url}
 ---
 spring:
   config:
+    import: common-variable.yaml
     activate:
       on-profile: dev
+
+github-pages:
+  url: ${github-pages.url}

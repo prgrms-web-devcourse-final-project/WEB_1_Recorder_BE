@@ -1,15 +1,18 @@
 package com.revup.user.entity;
 
 import com.revup.common.BaseTimeEntity;
+import com.revup.user.dto.UserDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Getter
-@Table(name = "users")
+@Getter @ToString
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"socialId", "loginType"})
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
     @Id
@@ -54,4 +57,15 @@ public class User extends BaseTimeEntity {
         this.introduction = introduction;
     }
 
+    public static User from(UserDto userDto) {
+        return User.builder()
+                .nickname(userDto.nickname())
+                .profileImage(userDto.profileImage())
+                .loginType(userDto.loginType())
+                .socialEmail(userDto.socialEmail())
+                .socialId(userDto.socialId())
+                .businessEmail(userDto.businessEmail())
+                .introduction(userDto.introduction())
+                .build();
+    }
 }

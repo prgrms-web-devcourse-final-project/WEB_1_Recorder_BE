@@ -10,7 +10,13 @@ dependencies {
     implementation project(':RevUp-domain')
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.530'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+//    //open feign
+//    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.3'
+//    implementation 'org.springframework.cloud:spring-cloud-commons:4.1.4'
+
     api 'org.redisson:redisson:3.39.0'
+
 }
 
 test {
