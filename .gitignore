@@ -4,7 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-RevUp-infra/src/main/resources/application-infra.yml
 
 
 ### STS ###
@@ -41,3 +40,4 @@ out/
 /RevUp-security/src/main/resources/security-variable.yaml
 /RevUp-common/src/main/resources/common-variable.yaml
 /RevUp-domain/src/main/resources/domain-variable.yaml
+/RevUp-infra/src/main/resources/infra-variable.yaml
