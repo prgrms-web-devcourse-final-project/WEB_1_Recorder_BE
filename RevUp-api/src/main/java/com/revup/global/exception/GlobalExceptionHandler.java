@@ -2,6 +2,7 @@ package com.revup.global.exception;
 
 import com.revup.error.AppException;
 import com.revup.global.dto.ApiResponse;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,7 +29,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleAppException(AppException e) {
         return buildErrorResponse(
                 e.getErrorCode().getHttpStatus(),
-                e.getErrorCode().getMessageTemplate());
+                e.getMessage()
+        );
     }
 
     /**
@@ -38,9 +40,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(
             final MethodArgumentNotValidException e
     ) {
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("잘못된 요청입니다.");
+
         return buildErrorResponse(
                 HttpStatus.BAD_REQUEST,
-                e.getMessage());
+                errorMessage);
     }
 
     private ResponseEntity<ApiResponse<Void>> buildErrorResponse(HttpStatus status, String message) {

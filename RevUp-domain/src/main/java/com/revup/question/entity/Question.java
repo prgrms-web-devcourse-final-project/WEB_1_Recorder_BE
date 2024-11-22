@@ -5,8 +5,12 @@ import com.revup.common.BooleanStatus;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,7 +32,7 @@ public class Question extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private int readCount;
+    private Long readCount;
 
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAnonymous;
@@ -37,5 +41,28 @@ public class Question extends BaseTimeEntity {
     @JoinColumn(name = "writer_id")
     private User user;
 
+    @OneToMany(mappedBy = "question")
+    private List<QuestionTag> questionTags = new ArrayList<>();
+
+    @Builder
+    private Question(
+            String title,
+            QuestionType type,
+            QuestionState state,
+            String content,
+            BooleanStatus isAnonymous,
+            User user) {
+        this.title = title;
+        this.type = type;
+        this.state = state;
+        this.content = content;
+        this.readCount = 0L;
+        this.isAnonymous = isAnonymous;
+        this.user = user;
+    }
+
+    public void addQuestionTag(QuestionTag questionTag){
+        this.questionTags.add(questionTag);
+    }
 
 }

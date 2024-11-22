@@ -4,6 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+RevUp-infra/src/main/resources/application-infra.yml
+
 
 ### STS ###
 .apt_generated
@@ -35,7 +37,6 @@ out/
 
 ### VS Code ###
 .vscode/
-
 
 /RevUp-security/src/main/resources/security-variable.yaml
 /RevUp-common/src/main/resources/common-variable.yaml
