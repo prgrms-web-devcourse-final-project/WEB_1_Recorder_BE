@@ -1,5 +1,6 @@
 package com.revup.question.dto.response;
 
+import com.revup.common.BooleanStatus;
 import com.revup.question.entity.Question;
 import com.revup.tag.dto.response.TagNameResponse;
 
@@ -13,10 +14,10 @@ public record QuestionBriefResponse(
         Long readCount,
         List<TagNameResponse> tags
 ) {
-    public static QuestionBriefResponse of(Question question){
+    public static QuestionBriefResponse of(Question question) {
         return new QuestionBriefResponse(
                 question.getId(),
-                question.getUser().getNickname(),
+                question.getIsAnonymous().equals(BooleanStatus.FALSE) ? question.getUser().getNickname() : "익명",
                 question.getTitle(),
                 question.getCreatedAt().toString(),
                 question.getReadCount(),
