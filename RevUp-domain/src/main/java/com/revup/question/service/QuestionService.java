@@ -4,6 +4,7 @@ import com.revup.image.entity.QuestionImage;
 import com.revup.image.repository.QuestionImageRepository;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionTag;
+import com.revup.question.entity.QuestionType;
 import com.revup.question.repository.QuestionRepository;
 import com.revup.question.repository.QuestionTagRepository;
 import com.revup.question.repository.TagRepository;
@@ -51,12 +52,11 @@ public class QuestionService {
 
     }
 
+    public List<Question> getQuestionsByPage(QuestionType type, long offset, int size) {
+        return questionRepository.findQuestionsByType(type, offset, size);
+    }
 
-//    public List<QuestionBriefResponse> getQuestionList(QuestionPageInfo info) {
-//        List<Question> questions = questionRepository.findQuestionList(info.page(), info.size(), info.type());
-//        return questions.stream()
-//                .map(QuestionBriefResponse::of)
-//                .toList();
-//    }
-
+    public long getTotalQuestionCount(QuestionType type) {
+        return questionRepository.countQuestionsByType(type);
+    }
 }

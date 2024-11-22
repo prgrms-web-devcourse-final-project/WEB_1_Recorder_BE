@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CreateQuestionUseCase {
+public class QuestionCommand {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
     private final TagMapper tagMapper;

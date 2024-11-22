@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "question")
@@ -38,6 +41,9 @@ public class Question extends BaseTimeEntity {
     @JoinColumn(name = "writer_id")
     private User user;
 
+    @OneToMany(mappedBy = "question")
+    private List<QuestionTag> questionTags = new ArrayList<>();
+
     @Builder
     private Question(
             String title,
@@ -53,6 +59,10 @@ public class Question extends BaseTimeEntity {
         this.readCount = 0L;
         this.isAnonymous = isAnonymous;
         this.user = user;
+    }
+
+    public void addQuestionTag(QuestionTag questionTag){
+        this.questionTags.add(questionTag);
     }
 
 }

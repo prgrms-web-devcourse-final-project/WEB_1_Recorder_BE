@@ -29,5 +29,6 @@ public class QuestionTag extends BaseTimeEntity {
     private QuestionTag(Question question, Tag tag) {
         this.question = question;
         this.tag = tag;
+        question.addQuestionTag(this);
     }
 }
