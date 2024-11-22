@@ -1,11 +1,9 @@
 package com.revup.jwt.filter;
 
 import com.revup.auth.dto.token.AccessToken;
-import com.revup.auth.dto.token.RefreshToken;
 import com.revup.auth.service.TokenValidator;
 import com.revup.constants.SecurityConstants;
 import com.revup.error.AppException;
-import com.revup.error.SecurityException;
 import com.revup.exception.UnsupportedTokenException;
 import com.revup.jwt.RevUpJwtProvider;
 import com.revup.auth.dto.token.TokenInfo;
@@ -15,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.revup.error.ErrorCode.REQUEST_INVALID;
 import static com.revup.error.ErrorCode.TOKEN_NOT_EXIST;
 
 @Slf4j
@@ -35,7 +35,8 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     private final RevUpJwtProvider jwtProvider;
     private final TokenValidator jwtValidator;
 
-    private final String REFRESH_URL = "/api/v1/auth/refresh";
+    private final static String REFRESH_URL = "/api/v1/auth/refresh";
+    private final static String LOGOUT_URL = "/api/v1/auth/logout";
 
     @Override
     protected void doFilterInternal(
@@ -46,15 +47,17 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
             log.info("requestUrl = {}", requestUrl);
             if("/favicon.ico".equals(requestUrl)) return;
 
-
+            HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
             String tokenValue = extractToken(request);
             String tokenType = jwtProvider.getTokenType(tokenValue);
+
             switch (requestUrl) {
-                case REFRESH_URL -> handleRefreshUrl(new RefreshToken(tokenValue), tokenType);
+                case REFRESH_URL -> handleRefreshUrl(tokenValue, requestMethod);
+                case LOGOUT_URL -> handleLogoutUrl(tokenValue, requestMethod);
                 default -> handleOthersUrl(new AccessToken(tokenValue), tokenType);
             }
 
-        } catch (SecurityException e) {
+        } catch (AppException e) {
             log.error("Application Exception: {}", e.getErrorCode(), e);
             setErrorResponse(
                     response,
@@ -76,8 +79,20 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void handleRefreshUrl(RefreshToken token, String tokenType) {
-        TokenInfo tokenInfo = extractTokenInfo(token.value());
+    private void handleLogoutUrl(String tokenValue, HttpMethod requestMethod) {
+        if(!requestMethod.equals(HttpMethod.GET)) {
+            throw new AppException(REQUEST_INVALID);
+        }
+
+
+    }
+
+    private void handleRefreshUrl(String tokenValue, HttpMethod requestMethod) {
+        if(!requestMethod.equals(HttpMethod.POST)) {
+            throw new AppException(REQUEST_INVALID);
+        }
+
+        TokenInfo tokenInfo = extractTokenInfo(tokenValue);
         setSecurityContextHolder(tokenInfo);
     }
 
@@ -98,11 +113,13 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     // 헤더에서 토큰 추출
     private String extractToken(HttpServletRequest httpServletRequest) {
         String bearerToken = httpServletRequest.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(SecurityConstants.BEARER)) {
-            if (bearerToken.length() > SecurityConstants.BEARER.length()) {
+
+        if (StringUtils.hasText(bearerToken) &&
+                bearerToken.startsWith(SecurityConstants.BEARER) &&
+                bearerToken.length() > SecurityConstants.BEARER.length()
+        ) {
                 return bearerToken.substring(SecurityConstants.BEARER.length());
             }
-        }
 
         // 토큰 정보 칸이 비어있으면 없는 토큰으로 간주하고 오류 발생
         throw new AppException(TOKEN_NOT_EXIST);

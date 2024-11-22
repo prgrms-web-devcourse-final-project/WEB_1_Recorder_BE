@@ -40,13 +40,14 @@ public class RevUpJwtGenerator implements TokenGenerator {
     }
 
     // Jwt 생성
-    public Tokens generate(TokenInfo principal) {
+    public Tokens generate(TokenInfo principal, Long userId) {
         AccessToken accessToken = new AccessToken(
                 generatorAccessToken(principal)
         );
 
         RefreshToken refreshToken = new RefreshToken(
-                generatorRefreshToken(principal)
+                generatorRefreshToken(principal),
+                userId
         );
 
         return Tokens.builder()

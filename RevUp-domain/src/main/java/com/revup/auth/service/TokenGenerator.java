@@ -5,5 +5,5 @@ import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
 
 public interface TokenGenerator {
-    Tokens generate(TokenInfo userPrincipal);
+    Tokens generate(TokenInfo userPrincipal, Long userId);
 }
