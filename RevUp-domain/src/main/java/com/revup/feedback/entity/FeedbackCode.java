@@ -35,4 +35,8 @@ public class FeedbackCode extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
 }

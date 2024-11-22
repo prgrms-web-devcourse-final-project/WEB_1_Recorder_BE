@@ -1,6 +1,7 @@
 package com.revup.feedback.controller;
 
 import com.revup.feedback.FeedbackWebSocketHandler;
+import com.revup.feedback.controller.request.FeedbackCodeUpdateRequest;
 import com.revup.feedback.service.FeedbackCodeService;
 import com.revup.feedback.service.response.FeedbackCodeResponse;
 import com.revup.global.dto.ApiResponse;
@@ -37,6 +38,19 @@ public class FeedbackCodeController {
     public ResponseEntity<ApiResponse<FeedbackCodeResponse>> getFeedbackCode(@PathVariable Long feedbackCodeId) {
         return ResponseEntity.ok(
                 ApiResponse.success(feedbackCodeService.getFeedbackCode(feedbackCodeId))
+        );
+    }
+
+    /**
+     * 피드백코드 자동저장 요청
+     * @param feedbackCodeId
+     * @param feedbackCodeUpdateRequest
+     * @return
+     */
+    @PatchMapping("/auto/{feedbackCodeId}")
+    public ResponseEntity<?> autoUpdateFeedbackCode(@PathVariable Long feedbackCodeId, @RequestBody FeedbackCodeUpdateRequest feedbackCodeUpdateRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.success(feedbackCodeService.feedbackCodeUpdate(feedbackCodeId, feedbackCodeUpdateRequest.getContent()))
         );
     }
 

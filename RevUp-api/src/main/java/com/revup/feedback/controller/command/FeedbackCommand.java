@@ -29,7 +29,7 @@ public class FeedbackCommand {
         );
 
         for (FeedbackCodeCreateRequest dto : feedbackCreateRequest.getFeedbackCodes()) {
-            feedbackCodeService.feedbackCodecreate(
+            feedbackCodeService.feedbackCodeCreate(
                     feedbackMapper.toEntity(feedback, dto)
             );
         }

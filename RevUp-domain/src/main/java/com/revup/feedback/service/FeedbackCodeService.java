@@ -1,5 +1,7 @@
 package com.revup.feedback.service;
 
+import com.revup.error.AppException;
+import com.revup.error.ErrorCode;
 import com.revup.feedback.entity.FeedbackCode;
 import com.revup.feedback.repository.FeedbackCodeRepository;
 import com.revup.feedback.service.response.FeedbackCodeResponse;
@@ -22,8 +24,15 @@ public class FeedbackCodeService {
         );
     }
 
-    public Long feedbackCodecreate(FeedbackCode feedbackCode) {
+    public Long feedbackCodeCreate(FeedbackCode feedbackCode) {
         return feedbackCodeRepository.save(feedbackCode).getId();
+    }
+
+    public Long feedbackCodeUpdate(Long feedbackCodeId, String content) {
+        FeedbackCode feedbackCode = feedbackCodeRepository.findById(feedbackCodeId).orElseThrow(() -> new AppException(ErrorCode.FEEDBACK_CODE_NOT_FOUND, feedbackCodeId));
+        feedbackCode.updateContent(content);
+        System.out.println("피드백코드 최신화");
+        return feedbackCode.getId();
     }
 
 }
