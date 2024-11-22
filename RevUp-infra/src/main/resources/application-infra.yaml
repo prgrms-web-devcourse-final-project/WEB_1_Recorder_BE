@@ -1,0 +1,33 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: infra-variable.yaml
+
+  data:
+    redis:
+      host: ${redis.host}
+      port: ${redis.port}
+      password: ${redis.password}
+aws:
+  s3:
+    bucket: ${aws.s3.bucket}
+  credentials:
+    access-key: ${aws.credentials.access-key}
+    secret-key: ${aws.credentials.secret-key}
+  region:
+    static: ${aws.region}
+    auto : ${aws.region.auto}
+    stack:
+      auto:${aws.region.stack.auto}
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  data:
+    redis:
+      host:
+      password:
+      port:
