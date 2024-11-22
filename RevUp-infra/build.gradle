@@ -8,6 +8,7 @@ bootJar {
 dependencies {
     implementation project(':RevUp-common')
     implementation project(':RevUp-domain')
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.530'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     api 'org.redisson:redisson:3.39.0'
 }

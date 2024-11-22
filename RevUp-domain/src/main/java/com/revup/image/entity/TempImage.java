@@ -1,4 +1,4 @@
-package com.revup.question.entity;
+package com.revup.image.entity;
 
 import com.revup.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -7,17 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Table(name = "answer_image")
+@Table(name = "temp_image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AnswerImage extends BaseTimeEntity {
+@Getter
+public class TempImage extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String filePath;
+    private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answer_id")
-    private Answer answer;
+    private TempImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

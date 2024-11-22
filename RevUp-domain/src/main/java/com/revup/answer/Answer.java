@@ -1,7 +1,8 @@
-package com.revup.question.entity;
+package com.revup.answer;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.question.entity.Question;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
