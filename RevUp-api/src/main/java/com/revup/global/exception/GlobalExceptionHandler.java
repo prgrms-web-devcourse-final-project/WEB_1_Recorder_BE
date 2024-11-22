@@ -29,7 +29,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleAppException(AppException e) {
         return buildErrorResponse(
                 e.getErrorCode().getHttpStatus(),
-                e.getMessage());
+                e.getMessage()
+        );
     }
 
     /**
