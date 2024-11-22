@@ -26,13 +26,13 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(success(createQuestionUseCase.create(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(success(createQuestionUseCase.execute(request)));
 
     }
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<Page<QuestionBriefResponse>>> getQuestionList(@Valid QuestionPageRequest request) {
-        return ResponseEntity.ok().body(success(getQuestionListUseCase.getQuestionList(request)));
+        return ResponseEntity.ok().body(success(getQuestionListUseCase.execute(request)));
     }
 
 

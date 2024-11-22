@@ -24,7 +24,7 @@ public class CreateQuestionUseCase {
     private final UserAdaptor userAdaptor;
 
 
-    public QuestionIdResponse create(QuestionCreateRequest request) {
+    public QuestionIdResponse execute(QuestionCreateRequest request) {
 //        User user = userAdaptor.getCurrentUser();
         User user = null;
 

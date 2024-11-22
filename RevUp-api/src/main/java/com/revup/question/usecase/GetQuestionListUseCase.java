@@ -20,7 +20,7 @@ import static com.revup.question.constatnt.PageConstant.SIZE;
 public class GetQuestionListUseCase {
     private final QuestionService questionService;
 
-    public Page<QuestionBriefResponse> getQuestionList(QuestionPageRequest request) {
+    public Page<QuestionBriefResponse> execute(QuestionPageRequest request) {
         long totalQuestions = questionService.getTotalQuestionCount(QuestionType.of(request.type()));
 
         PageInfo pageInfo = calculatePaginationInfo(request.page(), totalQuestions);
