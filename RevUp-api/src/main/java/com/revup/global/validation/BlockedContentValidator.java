@@ -15,9 +15,6 @@ public class BlockedContentValidator implements ConstraintValidator<BlockedConte
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value.isBlank()) {
-            return true;
-        }
         return BLOCKED_WORDS.stream().noneMatch(value::contains);
     }
 }
