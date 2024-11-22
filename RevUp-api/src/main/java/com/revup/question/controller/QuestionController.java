@@ -8,6 +8,7 @@ import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.usecase.CreateQuestionUseCase;
 import com.revup.question.usecase.GetQuestionListUseCase;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +24,14 @@ public class QuestionController {
     private final GetQuestionListUseCase getQuestionListUseCase;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@RequestBody QuestionCreateRequest request) {
+    public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(success(createQuestionUseCase.create(request)));
 
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Page<QuestionBriefResponse>>> getQuestionList(QuestionPageRequest request) {
+    public ResponseEntity<ApiResponse<Page<QuestionBriefResponse>>> getQuestionList(@Valid QuestionPageRequest request) {
         return ResponseEntity.ok().body(success(getQuestionListUseCase.getQuestionList(request)));
     }
 
