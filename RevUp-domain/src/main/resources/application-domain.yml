@@ -2,10 +2,11 @@ spring:
   config:
     activate:
       on-profile: local
+    import: domain-variable.yaml
   datasource:
-    url: jdbc:mysql://localhost:3306/rev-up?createDatabaseIfNotExist=true
-    username: root
-    password: 1234
+    url: ${database.url}
+    username: ${database.username}
+    password: ${database.password}
   jpa:
     hibernate:
       ddl-auto: create
