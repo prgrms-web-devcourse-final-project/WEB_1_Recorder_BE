@@ -2,8 +2,20 @@ spring:
   config:
     activate:
       on-profile: local
+
+  data:
+    redis:
+      host: localhost
+      password: 1234
+      port: 6379
 ---
 spring:
   config:
     activate:
       on-profile: dev
+
+  data:
+    redis:
+      host:
+      password:
+      port:
