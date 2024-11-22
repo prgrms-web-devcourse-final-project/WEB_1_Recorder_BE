@@ -5,6 +5,9 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.revup.s3.exception.S3ClientException;
+import com.revup.s3.exception.S3ServiceException;
+import com.revup.s3.validation.FileValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class S3Service {
     private String bucket;
 
     public String uploadFileToS3(MultipartFile file) throws IOException {
+
+        FileValidator.validateFile(file);
+
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
@@ -31,11 +37,9 @@ public class S3Service {
             amazonS3.putObject(putObjectRequest);
 
         } catch (AmazonServiceException e) {
-            // Amazon S3 서비스 측에서 발생한 오류 처리
-            throw new IOException("Amazon S3 서비스 오류: " + e.getMessage(), e);
+            throw new S3ServiceException(e.getMessage());
         } catch (AmazonClientException e) {
-            // 클라이언트 측 오류 처리 (네트워크 문제 등)
-            throw new IOException("클라이언트 오류: " + e.getMessage(), e);
+            throw new S3ClientException(e.getMessage());
         }
 
         return amazonS3.getUrl(bucket, fileName).toString(); // S3에서 접근 가능한 URL 반환
