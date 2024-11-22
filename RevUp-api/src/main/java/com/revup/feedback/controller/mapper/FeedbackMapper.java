@@ -1,10 +1,8 @@
 package com.revup.feedback.controller.mapper;
 
 import com.revup.common.BooleanStatus;
-import com.revup.feedback.controller.request.FeedbackCodeCreateRequest;
 import com.revup.feedback.controller.request.FeedbackCreateRequest;
 import com.revup.feedback.entity.Feedback;
-import com.revup.feedback.entity.FeedbackCode;
 import com.revup.feedback.entity.enums.FeedbackType;
 import com.revup.user.entity.User;
 import org.springframework.stereotype.Component;
@@ -24,14 +22,6 @@ public class FeedbackMapper {
                 .githubLink(feedbackCreateRequest.getGithubLink())
                 .githubLinkReveal(booleanStatus)
                 .description(feedbackCreateRequest.getDescription())
-                .build();
-    }
-
-    public FeedbackCode toEntity(Feedback feedback, FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
-        return FeedbackCode.builder()
-                .feedback(feedback)
-                .name(feedbackCodeCreateRequest.getName())
-                .content(feedbackCodeCreateRequest.getContent())
                 .build();
     }
 

@@ -1,6 +1,8 @@
 package com.revup.feedback.controller;
 
 import com.revup.feedback.FeedbackWebSocketHandler;
+import com.revup.feedback.controller.command.FeedbackCodeCommand;
+import com.revup.feedback.controller.request.FeedbackCodeCreateRequest;
 import com.revup.feedback.controller.request.FeedbackCodeUpdateRequest;
 import com.revup.feedback.service.FeedbackCodeService;
 import com.revup.feedback.service.response.FeedbackCodeResponse;
@@ -16,6 +18,7 @@ public class FeedbackCodeController {
 
     private final FeedbackWebSocketHandler feedbackWebSocketHandler;
     private final FeedbackCodeService feedbackCodeService;
+    private final FeedbackCodeCommand feedbackCodeCommand;
 
     /**
      * 특정 피드백코드의 라이브 세션에 연결된 사람 수 반환
@@ -37,20 +40,36 @@ public class FeedbackCodeController {
     @GetMapping("/{feedbackCodeId}")
     public ResponseEntity<ApiResponse<FeedbackCodeResponse>> getFeedbackCode(@PathVariable Long feedbackCodeId) {
         return ResponseEntity.ok(
-                ApiResponse.success(feedbackCodeService.getFeedbackCode(feedbackCodeId))
+                ApiResponse.success(feedbackCodeService.feedbackCodeGet(feedbackCodeId))
         );
     }
 
     /**
      * 피드백코드 자동저장 요청
-     * @param feedbackCodeId
-     * @param feedbackCodeUpdateRequest
-     * @return
+     * @param feedbackCodeId 자동저장할 피드백코드의 id
+     * @param feedbackCodeUpdateRequest 최신화되는 코드 내용을 담은 dto
+     * @return 최신화된 피드백코드 id
      */
     @PatchMapping("/auto/{feedbackCodeId}")
-    public ResponseEntity<?> autoUpdateFeedbackCode(@PathVariable Long feedbackCodeId, @RequestBody FeedbackCodeUpdateRequest feedbackCodeUpdateRequest) {
+    public ResponseEntity<ApiResponse<Long>> autoUpdateFeedbackCode(@PathVariable Long feedbackCodeId, @RequestBody FeedbackCodeUpdateRequest feedbackCodeUpdateRequest) {
         return ResponseEntity.ok(
-                ApiResponse.success(feedbackCodeService.feedbackCodeUpdate(feedbackCodeId, feedbackCodeUpdateRequest.getContent()))
+                ApiResponse.success(
+                        feedbackCodeCommand.feedbackCodeUpdateCommand(feedbackCodeId, feedbackCodeUpdateRequest)
+                )
+        );
+    }
+
+    /**
+     * 특정 피드백에 피드백코드 추가
+     * @param feedbackCodeCreateRequest (피드백 id, 추가할 코드 파일명, 추가할 코드 내용)
+     * @return 추가된 피드백코드 id
+     */
+    @PostMapping
+    public ResponseEntity<?> createFeedbackCode(@RequestBody FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        feedbackCodeCommand.feedbackCodeCreateCommand(feedbackCodeCreateRequest)
+                )
         );
     }
 

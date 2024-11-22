@@ -1,5 +1,6 @@
 package com.revup.feedback.controller.command;
 
+import com.revup.feedback.controller.mapper.FeedbackCodeMapper;
 import com.revup.feedback.controller.request.FeedbackCodeCreateRequest;
 import com.revup.feedback.controller.request.FeedbackCreateRequest;
 import com.revup.feedback.controller.mapper.FeedbackMapper;
@@ -18,6 +19,7 @@ public class FeedbackCommand {
     private final FeedbackService feedbackService;
     private final FeedbackCodeService feedbackCodeService;
     private final FeedbackMapper feedbackMapper;
+    private final FeedbackCodeMapper feedbackCodeMapper;
     private final UserAdaptor userAdaptor;
 
     public Long feedbackCreateCommand(FeedbackCreateRequest feedbackCreateRequest) {
@@ -30,7 +32,7 @@ public class FeedbackCommand {
 
         for (FeedbackCodeCreateRequest dto : feedbackCreateRequest.getFeedbackCodes()) {
             feedbackCodeService.feedbackCodeCreate(
-                    feedbackMapper.toEntity(feedback, dto)
+                    feedbackCodeMapper.toEntity(feedback, dto)
             );
         }
 

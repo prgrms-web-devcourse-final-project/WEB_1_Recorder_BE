@@ -17,7 +17,7 @@ public class FeedbackCodeService {
     private final FeedbackCodeRepository feedbackCodeRepository;
 
     @Transactional(readOnly = true)
-    public FeedbackCodeResponse getFeedbackCode(Long feedbackCodeId) {
+    public FeedbackCodeResponse feedbackCodeGet(Long feedbackCodeId) {
         return FeedbackCodeResponse.from(
                 feedbackCodeRepository.findById(feedbackCodeId)
                         .orElseThrow(() -> new RuntimeException("코드 못찾음"))
