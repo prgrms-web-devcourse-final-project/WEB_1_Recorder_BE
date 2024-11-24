@@ -19,22 +19,34 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
 
     @Override
     public List<Question> findQuestionsByType(QuestionType type, long offset, int size) {
-        return queryFactory.selectFrom(question)
-                .join(question.user, user).fetchJoin()
-                .leftJoin(question.questionTags, questionTag).fetchJoin()
-                .leftJoin(questionTag.tag, tag).fetchJoin()
-                .where(type == null ? null : question.type.eq(type)) // type이 null이면 전체 조회
-                .orderBy(question.createdAt.desc())
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .where(
+                        question.type.eq(type)
+                )
+                .orderBy(question.id.desc())
                 .offset(offset)
                 .limit(size)
+                .fetch();
+
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .leftJoin(question.questionTags, questionTag).fetchJoin()
+                .leftJoin(questionTag.tag, tag).fetchJoin()
+                .where(
+                        question.id.in(questionIds) // 페이징된 ID에 대해서만 조인
+                )
+                .orderBy(question.id.desc())
                 .fetch();
     }
 
     @Override
     public long countQuestionsByType(QuestionType type) {
-        return queryFactory.selectFrom(question)
+        Long count = queryFactory.select(question.count())
+                .from(question)
                 .where(type == null ? null : question.type.eq(type))
-                .fetch().size();
+                .fetchOne();
+        return count != null ? count : 0;
     }
 
 
