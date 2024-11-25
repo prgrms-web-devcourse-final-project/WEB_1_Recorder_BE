@@ -1,7 +1,7 @@
 package com.revup.question.mapper;
 
 import com.revup.common.BooleanStatus;
-import com.revup.image.dto.request.QuestionImageRequest;
+import com.revup.image.dto.request.ImageRequest;
 import com.revup.image.entity.QuestionImage;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.entity.Question;
@@ -26,7 +26,7 @@ public class QuestionMapper {
                 .build();
     }
 
-    public List<QuestionImage> toQuestionImages(List<QuestionImageRequest> images, Question question) {
+    public List<QuestionImage> toQuestionImages(List<ImageRequest> images, Question question) {
         if (images == null || images.isEmpty()) {
             return Collections.emptyList();
         }

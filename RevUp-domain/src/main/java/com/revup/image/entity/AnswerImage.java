@@ -1,9 +1,10 @@
 package com.revup.image.entity;
 
-import com.revup.answer.Answer;
+import com.revup.answer.entity.Answer;
 import com.revup.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,9 +17,18 @@ public class AnswerImage extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String filePath;
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     private Answer answer;
+
+    @Builder
+    private AnswerImage(
+            String imageUrl,
+            Answer answer) {
+
+        this.imageUrl = imageUrl;
+        this.answer = answer;
+    }
 }

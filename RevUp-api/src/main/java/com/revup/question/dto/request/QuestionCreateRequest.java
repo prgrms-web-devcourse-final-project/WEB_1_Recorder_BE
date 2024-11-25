@@ -1,6 +1,7 @@
 package com.revup.question.dto.request;
+
 import com.revup.global.validation.BlockedContent;
-import com.revup.image.dto.request.QuestionImageRequest;
+import com.revup.image.dto.request.ImageRequest;
 import com.revup.tag.dto.request.TagRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,6 +25,6 @@ public record QuestionCreateRequest(
 
         List<TagRequest> tags,
 
-        List<QuestionImageRequest> images
+        List<ImageRequest> images
 ) {
 }

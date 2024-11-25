@@ -1,4 +1,4 @@
-package com.revup.answer;
+package com.revup.answer.entity;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
@@ -44,12 +44,16 @@ public class Answer extends BaseTimeEntity {
 
     @Builder
     private Answer(
+            User user,
+            Question question,
             String title,
             String content,
             BooleanStatus isAccept,
             AdoptedReview review,
             int goodCount,
             int badCount) {
+        this.user = user;
+        this.question = question;
         this.title = title;
         this.content = content;
         this.isAccept = isAccept;

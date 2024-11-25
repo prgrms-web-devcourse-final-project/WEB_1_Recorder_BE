@@ -1,6 +1,6 @@
 package com.revup.heart;
 
-import com.revup.answer.Answer;
+import com.revup.answer.entity.Answer;
 import com.revup.common.BaseTimeEntity;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;

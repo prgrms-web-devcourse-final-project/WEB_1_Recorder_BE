@@ -1,6 +1,6 @@
 package com.revup.image.dto.request;
 
-public record QuestionImageRequest(
+public record ImageRequest(
         String imageUrl
 ) {
 }

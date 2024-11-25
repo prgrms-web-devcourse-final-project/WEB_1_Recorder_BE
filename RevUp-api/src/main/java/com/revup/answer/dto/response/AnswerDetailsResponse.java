@@ -1,6 +1,6 @@
 package com.revup.answer.dto.response;
 
-import com.revup.answer.Answer;
+import com.revup.answer.entity.Answer;
 
 public record AnswerDetailsResponse(
         Long id,
