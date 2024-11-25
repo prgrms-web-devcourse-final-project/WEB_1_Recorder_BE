@@ -19,7 +19,8 @@ public enum ErrorCode {
     TOKEN_INVALID(FORBIDDEN, "유효하지 않은 토큰입니다"),
     REQUEST_INVALID(BAD_REQUEST, "잘못된 요청방식입니다."),
     TOKEN_BAD_SIGNATURE(FORBIDDEN, "서명 불일치"),
-    ACCESS_TOKEN_NOT_FOUNT(NOT_FOUND, "ACCESS TOKEN이 없음"),
+    ACCESS_TOKEN_NOT_FOUND(NOT_FOUND, "accessToken이 없음"),
+    REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "refreshToken이 없음"),
     UNKNOWN_EXCEPTION(INTERNAL_SERVER_ERROR, "알 수 없는 오류 발생"),
 
     //user

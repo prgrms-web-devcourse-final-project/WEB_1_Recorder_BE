@@ -20,6 +20,10 @@ aws:
     auto : ${aws.region.auto}
     stack:
       auto:${aws.region.stack.auto}
+
+refresh:
+  expiration_time: ${refresh.expiration_time}
+  key: ${refresh.key}
 ---
 spring:
   config:

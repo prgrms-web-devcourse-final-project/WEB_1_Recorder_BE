@@ -4,9 +4,12 @@ import com.revup.auth.dto.token.RefreshToken;
 import com.revup.auth.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -14,29 +17,32 @@ import org.springframework.stereotype.Component;
 public class RedisRefreshTokenRepository implements RefreshTokenRepository {
 
     private final RedisTemplate<String, RefreshToken> redisTemplate;
-    private static final String REFRESH_TOKEN_KEY = "refresh-tokens"; // Redis의 Hash key 이름
+
+    @Value("${refresh.key}")
+    private String refreshTokenKey;
 
     @Override
     public void save(RefreshToken token, Long id) {
         HashOperations<String, Long, RefreshToken> hashOps = getTokenHashOps();
-        hashOps.put(REFRESH_TOKEN_KEY, id, token); // userId를 Field로 저장
-        log.info("refreshTokens = {}", hashOps.values(REFRESH_TOKEN_KEY));
+        hashOps.put(refreshTokenKey, id, token); // userId를 Field로 저장
+        log.info("refreshTokens = {}", hashOps.values(refreshTokenKey));
     }
 
     @Override
     public void remove(Long userId) {
         HashOperations<String, Long, RefreshToken> hashOps = getTokenHashOps();
-        hashOps.delete(REFRESH_TOKEN_KEY, userId);
-        log.info("refreshTokens = {}", hashOps.values(REFRESH_TOKEN_KEY));
+        hashOps.delete(refreshTokenKey, userId);
+        log.info("refreshTokens = {}", hashOps.values(refreshTokenKey));
     }
 
     @Override
-    public RefreshToken findById(Long id) {
-        return getTokenHashOps().get(REFRESH_TOKEN_KEY, id);
+    public Optional<RefreshToken> findById(Long id) {
+        return Optional.ofNullable(getTokenHashOps().get(refreshTokenKey, id));
     }
 
 
     private HashOperations<String, Long, RefreshToken> getTokenHashOps() {
+
         return redisTemplate.opsForHash();
     }
 }
