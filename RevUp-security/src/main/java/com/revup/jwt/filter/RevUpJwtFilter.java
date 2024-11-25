@@ -1,11 +1,9 @@
 package com.revup.jwt.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revup.auth.dto.token.AccessToken;
 import com.revup.auth.service.TokenValidator;
 import com.revup.constants.SecurityConstants;
 import com.revup.error.AppException;
-import com.revup.error.SecurityException;
 import com.revup.exception.UnsupportedTokenException;
 import com.revup.jwt.RevUpJwtProvider;
 import com.revup.auth.dto.token.TokenInfo;
@@ -42,54 +40,44 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try {
-            String requestUrl = request.getServletPath();
-            log.info("requestUrl = {}", requestUrl);
-            if("/favicon.ico".equals(requestUrl)) return;
 
-            HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
-            String tokenValue = extractToken(request);
-            String tokenType = jwtProvider.getTokenType(tokenValue);
+        String requestUrl = request.getServletPath();
+        log.info("requestUrl = {}", requestUrl);
 
-            switch (requestUrl) {
-                case REFRESH_URL -> handleRefreshUrl(tokenValue, requestMethod);
-                case LOGOUT_URL -> handleLogoutUrl(tokenValue, requestMethod);
-                default -> handleOthersUrl(new AccessToken(tokenValue), tokenType);
-            }
+        HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
 
-        } catch (SecurityException e) {
-            log.error("Application Exception: {}", e.getErrorCode(), e);
-            setErrorResponse(
-                    response,
-                    e
-            );
-            return;
-        } catch (Exception e) {
-            log.error("Unexpected Exception: {}", e.getMessage(), e);
-            setErrorResponse(
-                    response,
-                    new SecurityException(UNKNOWN_EXCEPTION)
-            );
+        String tokenValue;
+        if((tokenValue = extractToken(request)) == null) {
+            filterChain.doFilter(request, response);
             return;
         }
+        String tokenType = jwtProvider.getTokenType(tokenValue);
 
+        switch (requestUrl) {
+            case REFRESH_URL -> handleRefreshUrl(requestMethod);
+            case LOGOUT_URL -> handleLogoutUrl(requestMethod);
+            default -> handleOthersUrl(new AccessToken(tokenValue), tokenType);
+        }
+
+        saveSecurityUserInfo(tokenValue);
         log.debug("다음으로 이동");
         filterChain.doFilter(request, response);
     }
 
-    private void handleLogoutUrl(String tokenValue, HttpMethod requestMethod) {
+    //TODO: refreshToken을 지우기 위한 목적으로 메서드만 맞으면 통과.
+    private void handleLogoutUrl(HttpMethod requestMethod) {
         if(!requestMethod.equals(HttpMethod.GET)) {
             throw new AppException(REQUEST_INVALID);
         }
-
-
     }
 
-    private void handleRefreshUrl(String tokenValue, HttpMethod requestMethod) {
+    private void handleRefreshUrl(HttpMethod requestMethod) {
         if(!requestMethod.equals(HttpMethod.POST)) {
             throw new AppException(REQUEST_INVALID);
         }
+    }
 
+    private void saveSecurityUserInfo(String tokenValue) {
         TokenInfo tokenInfo = extractTokenInfo(tokenValue);
         setSecurityContextHolder(tokenInfo);
     }
@@ -97,8 +85,6 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     private void handleOthersUrl(AccessToken token, String tokenType) {
         if(!tokenType.equals("ACCESS")) throw UnsupportedTokenException.EXCEPTION;
         jwtValidator.validate(token);
-        TokenInfo tokenInfo = extractTokenInfo(token.value());
-        setSecurityContextHolder(tokenInfo);
     }
 
     private TokenInfo extractTokenInfo(String token) {
@@ -116,11 +102,10 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
                 bearerToken.startsWith(SecurityConstants.BEARER) &&
                 bearerToken.length() > SecurityConstants.BEARER.length()
         ) {
-                return bearerToken.substring(SecurityConstants.BEARER.length());
-            }
+            return bearerToken.substring(SecurityConstants.BEARER.length());
+        }
 
-        // 토큰 정보 칸이 비어있으면 없는 토큰으로 간주하고 오류 발생
-        throw new AppException(TOKEN_NOT_EXIST);
+        return null;
     }
 
     private void setSecurityContextHolder(
@@ -129,17 +114,5 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userPrincipal, null, List.of());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-    }
-
-    private void setErrorResponse(HttpServletResponse response, SecurityException e) {
-        response.setStatus(e.getErrorCode().getHttpStatus().value());
-        response.setContentType("application/json");
-        response.setCharacterEncoding("utf-8");
-        try {
-
-            response.getWriter().write(new ObjectMapper().writeValueAsString(e));
-        } catch (IOException ioException) {
-            log.error("Error writing response: {}", ioException.getMessage());
-        }
     }
 }

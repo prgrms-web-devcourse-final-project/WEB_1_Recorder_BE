@@ -1,19 +1,19 @@
 package com.revup.config;
 
 import com.revup.error.AppException;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import java.io.IOException;
 
-import static com.revup.error.ErrorCode.UNKNOWN_EXCEPTION;
+import static com.revup.error.ErrorCode.TOKEN_TIMEOUT;
 
+@Slf4j
 @Component
 public class RevUpAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -28,15 +28,14 @@ public class RevUpAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(
             HttpServletRequest request,
             HttpServletResponse response,
-            AuthenticationException authException)
-            throws IOException, ServletException {
-        System.out.println("JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint");
+            AuthenticationException authException) {
+        log.info("JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint");
         if (isExceptionInSecurityFilter(request)) {
             resolver.resolveException(
                     request, response, null, (Exception) request.getAttribute("exception"));
             return;
         }
-        resolver.resolveException(request, response, null, new AppException(UNKNOWN_EXCEPTION));
+        resolver.resolveException(request, response, null, new AppException(TOKEN_TIMEOUT));
     }
 
     private boolean isExceptionInSecurityFilter(HttpServletRequest request) {
