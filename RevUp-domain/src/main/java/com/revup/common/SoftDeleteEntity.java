@@ -11,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@SQLRestriction("is_delete = 'FALSE'")
 public abstract class SoftDeleteEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)

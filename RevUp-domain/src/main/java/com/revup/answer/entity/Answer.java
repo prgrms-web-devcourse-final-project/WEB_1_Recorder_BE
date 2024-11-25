@@ -1,7 +1,7 @@
 package com.revup.answer.entity;
 
-import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.common.SoftDeleteEntity;
 import com.revup.question.entity.Question;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
@@ -9,12 +9,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @Table(name = "answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Answer extends BaseTimeEntity {
+@SQLRestriction("is_deleted = 'FALSE'")
+public class Answer extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
