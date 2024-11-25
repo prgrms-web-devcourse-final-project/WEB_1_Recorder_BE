@@ -4,7 +4,9 @@ import com.revup.auth.dto.token.RefreshToken;
 
 public interface RefreshTokenRepository {
 
-    void save(RefreshToken token);
+    void save(RefreshToken token, Long id);
 
-    RefreshToken remove(Long userId);
+    void remove(Long userId);
+
+    RefreshToken findById(Long id);
 }

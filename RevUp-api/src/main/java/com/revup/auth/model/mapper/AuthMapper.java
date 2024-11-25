@@ -17,12 +17,10 @@ public class AuthMapper {
 
 
     public RefreshTokenResponse toRefreshTokenResponse(Tokens tokens) {
-        String value = tokens.accessToken().value();
-        return new RefreshTokenResponse(value);
-    }
-
-    public TokenInfo toTokenInfo(User user) {
-        return new TokenInfo(user.getSocialId(), user.getLoginType());
+        return new RefreshTokenResponse(
+                tokens.accessToken().value(),
+                tokens.refreshToken().value()
+        );
     }
 
     public FirstLoginResponse toFirstLoginResponse(String nickname) {

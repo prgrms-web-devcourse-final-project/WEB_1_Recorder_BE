@@ -11,15 +11,15 @@ public class RefreshTokenAdapter {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public RefreshToken getRefreshTokenById(Long id) {
-        return refreshTokenRepository.remove(id);
+    public RefreshToken findById(Long id) {
+        return refreshTokenRepository.findById(id);
     }
 
     public void remove(Long id) {
         refreshTokenRepository.remove(id);
     }
 
-    public void saveRefreshToken(RefreshToken refreshToken) {
-        refreshTokenRepository.save(refreshToken);
+    public void saveRefreshToken(RefreshToken refreshToken, Long id) {
+        refreshTokenRepository.save(refreshToken, id);
     }
 }

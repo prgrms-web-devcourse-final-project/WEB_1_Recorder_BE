@@ -1,7 +1,6 @@
 package com.revup.config;
 
 import com.revup.config.converter.RevUpAuthorizationCodeGrantRequestEntityConverter;
-import com.revup.jwt.RevUpJwtValidator;
 import com.revup.oauth.handler.Oauth2AuthenticationFailureHandler;
 import com.revup.oauth.handler.Oauth2AuthenticationSuccessHandler;
 import com.revup.oauth.repository.HttpCookieOauth2AuthorizationRequestRepository;
@@ -29,7 +28,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final RevUpJwtProvider jwtProvider;
-    private final RevUpJwtValidator jwtValidator;
 
     private final WebConfig webConfig;
     private final RevUpOAuth2UserService oAuth2UserService;
@@ -61,7 +59,7 @@ public class SecurityConfig {
                                         SessionCreationPolicy.STATELESS))
                 // 필터 추가
                 .addFilterBefore(
-                        new RevUpJwtFilter(jwtProvider, jwtValidator),
+                        new RevUpJwtFilter(jwtProvider),
                         UsernamePasswordAuthenticationFilter.class)
 
                 // 접근 제어 설정

@@ -34,6 +34,7 @@ public class AuthController {
         RefreshTokenResponse tokenResponse = refreshTokenUseCase.execute();
         return ResponseEntity.noContent()
                 .header(SecurityConstants.AUTHORIZATION_HEADER, tokenResponse.accessToken())
+                .header(SecurityConstants.AUTHORIZATION_REFRESH_HEADER, tokenResponse.refreshToken())
                 .build();
     }
 

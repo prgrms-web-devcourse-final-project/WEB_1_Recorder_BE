@@ -38,7 +38,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         User user = getUser(authentication);
         Tokens tokens = createTokens(user);
-        refreshTokenRepository.save(tokens.refreshToken());
+        refreshTokenRepository.save(tokens.refreshToken(), user.getId());
 
         if (response.isCommitted()) {
             return;
@@ -68,10 +68,10 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private Tokens createTokens(User loginUser) {
         return jwtGenerator.generate(
                 new TokenInfo(
+                        loginUser.getId(),
                         loginUser.getSocialId(),
                         loginUser.getLoginType()
-                ),
-                loginUser.getId()
+                )
         );
     }
 

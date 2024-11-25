@@ -29,6 +29,6 @@ public class SecurityUserUtil implements UserUtil {
 
     @Override
     public User getCurrentUser() {
-        return userReader.findByTokenInfo(getPrincipal());
+        return userReader.findById(getPrincipal().id());
     }
 }

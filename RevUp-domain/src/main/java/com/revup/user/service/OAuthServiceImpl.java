@@ -23,7 +23,7 @@ public class OAuthServiceImpl implements OAuthService {
         User loginUser;
         try {
             loginUser = userReader.findByTokenInfo(
-                    new TokenInfo(user.getSocialId(), user.getLoginType())
+                    new TokenInfo(user.getId(), user.getSocialId(), user.getLoginType())
             );
         } catch (AppException e) {
             loginUser = userRegistrar.register(user);

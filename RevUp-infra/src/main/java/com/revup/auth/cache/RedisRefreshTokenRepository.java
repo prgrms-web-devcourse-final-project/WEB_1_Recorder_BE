@@ -17,23 +17,24 @@ public class RedisRefreshTokenRepository implements RefreshTokenRepository {
     private static final String REFRESH_TOKEN_KEY = "refresh-tokens"; // Redis의 Hash key 이름
 
     @Override
-    public void save(RefreshToken token) {
+    public void save(RefreshToken token, Long id) {
         HashOperations<String, Long, RefreshToken> hashOps = getTokenHashOps();
-        hashOps.put(REFRESH_TOKEN_KEY, token.userId(), token); // userId를 Field로 저장
+        hashOps.put(REFRESH_TOKEN_KEY, id, token); // userId를 Field로 저장
         log.info("refreshTokens = {}", hashOps.values(REFRESH_TOKEN_KEY));
     }
 
     @Override
-    public RefreshToken remove(Long userId) {
+    public void remove(Long userId) {
         HashOperations<String, Long, RefreshToken> hashOps = getTokenHashOps();
-        RefreshToken token = hashOps.get(REFRESH_TOKEN_KEY, userId);
-
-        if (token != null) {
-            hashOps.delete(REFRESH_TOKEN_KEY, userId);
-        }
+        hashOps.delete(REFRESH_TOKEN_KEY, userId);
         log.info("refreshTokens = {}", hashOps.values(REFRESH_TOKEN_KEY));
-        return token;
     }
+
+    @Override
+    public RefreshToken findById(Long id) {
+        return getTokenHashOps().get(REFRESH_TOKEN_KEY, id);
+    }
+
 
     private HashOperations<String, Long, RefreshToken> getTokenHashOps() {
         return redisTemplate.opsForHash();

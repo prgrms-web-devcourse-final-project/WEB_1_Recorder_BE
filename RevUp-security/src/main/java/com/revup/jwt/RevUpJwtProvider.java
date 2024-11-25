@@ -2,8 +2,10 @@ package com.revup.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revup.error.AppException;
 import com.revup.auth.dto.token.TokenInfo;
+import com.revup.exception.ExpiredTokenException;
+import com.revup.exception.InvalidTokenException;
+import com.revup.exception.UnsupportedTokenException;
 import com.revup.user.entity.LoginType;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +15,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Base64;
 
-import static com.revup.error.ErrorCode.*;
 
 @Component
 public class RevUpJwtProvider {
@@ -33,9 +34,10 @@ public class RevUpJwtProvider {
     }
 
     public TokenInfo getTokenUserPrincipal(String token) {
+        Long userId = getUserId(token);
         String loginType = getLoginType(token);
-        String userId = getSocialId(token);
-        return TokenInfo.of(userId, LoginType.findByType(loginType));
+        String socialId = getSocialId(token);
+        return TokenInfo.of(userId, socialId, LoginType.findByType(loginType));
     }
 
     public String getTokenType(String token) throws JsonProcessingException {
@@ -49,30 +51,36 @@ public class RevUpJwtProvider {
         return new ObjectMapper().readTree(headerString).get("tokenType").asText();
     }
 
-    private String getSocialId(String token) {
-        return getTokenSubject(getKey(), token);
+    private Long getUserId(String token) {
+        return Long.parseLong(getTokenSubject(getKey(), token));
     }
 
     private String getLoginType(String token) {
         return (String) getTokenClaims(getKey(), token).get(LOGIN_TYPE);
     }
 
+    private String getSocialId(String token) {
+        return (String) getTokenClaims(getKey(), token).get(SOCIAL_ID);
+    }
+
     private static Claims getTokenClaims(Key key, String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
         } catch (ExpiredJwtException e) {
-            throw new AppException(TOKEN_TIMEOUT);
+            throw ExpiredTokenException.EXCEPTION;
+        } catch (MalformedJwtException | UnsupportedJwtException e) {
+            throw UnsupportedTokenException.EXCEPTION;
         } catch (Exception e) {
-            throw new AppException(TOKEN_INVALID);
+            throw InvalidTokenException.EXCEPTION;
         }
     }
 
     private static String getTokenSubject(Key key, String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
+        return getTokenClaims(key,token)
                 .getSubject();
     }
 }

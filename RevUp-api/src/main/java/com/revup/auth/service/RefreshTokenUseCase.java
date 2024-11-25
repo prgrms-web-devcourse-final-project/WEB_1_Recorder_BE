@@ -8,6 +8,7 @@ import com.revup.auth.dto.token.Tokens;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
 import com.revup.auth.model.mapper.AuthMapper;
 import com.revup.jwt.RevUpJwtGenerator;
+import com.revup.jwt.RevUpJwtProvider;
 import com.revup.user.entity.User;
 import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class RefreshTokenUseCase {
 
     private final UserUtil userUtil;
     private final RevUpJwtGenerator jwtGenerator;
-    private final TokenValidator jwtValidator;
+    private final RevUpJwtProvider jwtProvider;
     private final RefreshTokenAdapter refreshTokenAdapter;
     private final AuthMapper authMapper;
 
@@ -38,16 +39,11 @@ public class RefreshTokenUseCase {
      * @return
      */
     public RefreshTokenResponse execute() {
-        User currentUser = userUtil.getCurrentUser();
-        Long userId = currentUser.getId();
-
-        RefreshToken refreshToken = refreshTokenAdapter.getRefreshTokenById(userId);
-        jwtValidator.validate(refreshToken);
-
-        TokenInfo tokenInfo = authMapper.toTokenInfo(currentUser);
-        Tokens newTokens = jwtGenerator.generate(tokenInfo, userId);
-        refreshTokenAdapter.saveRefreshToken(newTokens.refreshToken());
-
+        TokenInfo tokenInfo = userUtil.getPrincipal();
+        RefreshToken refreshToken = refreshTokenAdapter.findById(tokenInfo.id());
+        TokenInfo redisUserInfo = jwtProvider.getTokenUserPrincipal(refreshToken.value());
+        Tokens newTokens = jwtGenerator.generate(redisUserInfo);
+        refreshTokenAdapter.saveRefreshToken(newTokens.refreshToken(), tokenInfo.id());
         return authMapper.toRefreshTokenResponse(newTokens);
     }
 }
