@@ -1,9 +1,11 @@
 package com.revup.jwt.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revup.auth.dto.token.AccessToken;
 import com.revup.auth.service.TokenValidator;
 import com.revup.constants.SecurityConstants;
 import com.revup.error.AppException;
+import com.revup.error.SecurityException;
 import com.revup.exception.UnsupportedTokenException;
 import com.revup.jwt.RevUpJwtProvider;
 import com.revup.auth.dto.token.TokenInfo;
@@ -14,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,8 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-import static com.revup.error.ErrorCode.REQUEST_INVALID;
-import static com.revup.error.ErrorCode.TOKEN_NOT_EXIST;
+import static com.revup.error.ErrorCode.*;
 
 @Slf4j
 @Component
@@ -35,8 +35,8 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     private final RevUpJwtProvider jwtProvider;
     private final TokenValidator jwtValidator;
 
-    private final static String REFRESH_URL = "/api/v1/auth/refresh";
-    private final static String LOGOUT_URL = "/api/v1/auth/logout";
+    private static final String REFRESH_URL = "/api/v1/auth/refresh";
+    private static final String LOGOUT_URL = "/api/v1/auth/logout";
 
     @Override
     protected void doFilterInternal(
@@ -57,20 +57,18 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
                 default -> handleOthersUrl(new AccessToken(tokenValue), tokenType);
             }
 
-        } catch (AppException e) {
+        } catch (SecurityException e) {
             log.error("Application Exception: {}", e.getErrorCode(), e);
             setErrorResponse(
                     response,
-                    e.getErrorCode().getHttpStatus(),
-                    e.getErrorCode().getMessageTemplate()
+                    e
             );
             return;
         } catch (Exception e) {
             log.error("Unexpected Exception: {}", e.getMessage(), e);
             setErrorResponse(
                     response,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Internal Server Error"
+                    new SecurityException(UNKNOWN_EXCEPTION)
             );
             return;
         }
@@ -133,11 +131,13 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
-    private void setErrorResponse(HttpServletResponse response, HttpStatus status, String message) {
-        response.setStatus(status.value());
+    private void setErrorResponse(HttpServletResponse response, SecurityException e) {
+        response.setStatus(e.getErrorCode().getHttpStatus().value());
         response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
         try {
-            response.getWriter().write(String.format("{\"error\": \"%s\"}", message));
+
+            response.getWriter().write(new ObjectMapper().writeValueAsString(e));
         } catch (IOException ioException) {
             log.error("Error writing response: {}", ioException.getMessage());
         }
