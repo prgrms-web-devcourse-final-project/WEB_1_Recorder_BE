@@ -1,13 +1,13 @@
 package com.revup.auth.service;
 
 
+import com.revup.annotation.UseCase;
 import com.revup.auth.adapter.RefreshTokenAdapter;
 import com.revup.user.entity.User;
 import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
+@UseCase
 @RequiredArgsConstructor
 public class LogoutUseCase {
 
