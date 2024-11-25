@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/feedback")
+@RequestMapping("/api/v1/feedback")
 @RequiredArgsConstructor
 public class FeedbackController {
 

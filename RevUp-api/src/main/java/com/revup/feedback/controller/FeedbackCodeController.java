@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/feedback-code")
+@RequestMapping("/api/v1/feedback-code")
 public class FeedbackCodeController {
 
     private final FeedbackWebSocketHandler feedbackWebSocketHandler;
