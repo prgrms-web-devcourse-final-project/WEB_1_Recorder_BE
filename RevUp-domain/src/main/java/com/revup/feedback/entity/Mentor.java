@@ -1,12 +1,16 @@
 package com.revup.feedback.entity;
 
 import com.revup.common.BaseTimeEntity;
+import com.revup.question.entity.QuestionTag;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,9 +29,13 @@ public class Mentor extends BaseTimeEntity {
     @Column(length = 100)
     private String description;
 
+    @OneToMany(mappedBy = "mentor")
+    private List<MentorSkillStack> mentorSkillStacks = new ArrayList<>();
+
     @Builder
     private Mentor(User user, String description) {
         this.user = user;
         this.description = description;
     }
+
 }
