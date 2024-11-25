@@ -37,6 +37,8 @@ public class Question extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAnonymous;
 
+    private int answerCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private User user;
@@ -57,6 +59,7 @@ public class Question extends BaseTimeEntity {
         this.state = state;
         this.content = content;
         this.readCount = 0L;
+        this.answerCount = 0;
         this.isAnonymous = isAnonymous;
         this.user = user;
     }

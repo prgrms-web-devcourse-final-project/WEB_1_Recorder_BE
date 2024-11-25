@@ -12,6 +12,7 @@ public record QuestionBriefResponse(
         String title,
         String createdAt,
         Long readCount,
+        int answerCount,
         List<TagNameResponse> tags
 ) {
     public static QuestionBriefResponse of(Question question) {
@@ -21,10 +22,12 @@ public record QuestionBriefResponse(
                 question.getTitle(),
                 question.getCreatedAt().toString(),
                 question.getReadCount(),
+                question.getAnswerCount(),
                 question.getQuestionTags()
                         .stream()
                         .map(questionTag -> TagNameResponse.of(questionTag.getTag()))
                         .toList()
         );
     }
+
 }
