@@ -1,9 +1,9 @@
-package com.revup.feedback.controller.command;
+package com.revup.feedback.usecase;
 
-import com.revup.feedback.controller.mapper.FeedbackCodeMapper;
-import com.revup.feedback.controller.request.FeedbackCodeCreateRequest;
-import com.revup.feedback.controller.request.FeedbackCreateRequest;
-import com.revup.feedback.controller.mapper.FeedbackMapper;
+import com.revup.feedback.mapper.FeedbackCodeMapper;
+import com.revup.feedback.request.FeedbackCodeCreateRequest;
+import com.revup.feedback.request.FeedbackCreateRequest;
+import com.revup.feedback.mapper.FeedbackMapper;
 import com.revup.feedback.entity.Feedback;
 import com.revup.feedback.service.FeedbackCodeService;
 import com.revup.feedback.service.FeedbackService;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FeedbackCommand {
+public class CreateFeedbackUseCase {
 
     private final FeedbackService feedbackService;
     private final FeedbackCodeService feedbackCodeService;
@@ -22,7 +22,7 @@ public class FeedbackCommand {
     private final FeedbackCodeMapper feedbackCodeMapper;
     private final UserAdaptor userAdaptor;
 
-    public Long feedbackCreateCommand(FeedbackCreateRequest feedbackCreateRequest) {
+    public Long execute(FeedbackCreateRequest feedbackCreateRequest) {
         User student = userAdaptor.findById(feedbackCreateRequest.getStudentId());
         User teacher = userAdaptor.findById(feedbackCreateRequest.getTeacherId());
 

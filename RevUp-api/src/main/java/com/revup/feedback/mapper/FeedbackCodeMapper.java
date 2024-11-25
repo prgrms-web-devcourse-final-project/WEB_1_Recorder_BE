@@ -1,6 +1,6 @@
-package com.revup.feedback.controller.mapper;
+package com.revup.feedback.mapper;
 
-import com.revup.feedback.controller.request.FeedbackCodeCreateRequest;
+import com.revup.feedback.request.FeedbackCodeCreateRequest;
 import com.revup.feedback.entity.Feedback;
 import com.revup.feedback.entity.FeedbackCode;
 import org.springframework.stereotype.Component;

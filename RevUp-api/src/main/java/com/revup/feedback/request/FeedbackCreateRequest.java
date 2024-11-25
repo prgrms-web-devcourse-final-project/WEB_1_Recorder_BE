@@ -1,4 +1,4 @@
-package com.revup.feedback.controller.request;
+package com.revup.feedback.request;
 
 import lombok.Data;
 

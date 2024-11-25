@@ -1,7 +1,7 @@
-package com.revup.feedback.controller.mapper;
+package com.revup.feedback.mapper;
 
 import com.revup.common.BooleanStatus;
-import com.revup.feedback.controller.request.FeedbackCreateRequest;
+import com.revup.feedback.request.FeedbackCreateRequest;
 import com.revup.feedback.entity.Feedback;
 import com.revup.feedback.entity.enums.FeedbackType;
 import com.revup.user.entity.User;

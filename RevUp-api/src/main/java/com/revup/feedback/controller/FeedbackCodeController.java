@@ -1,10 +1,11 @@
 package com.revup.feedback.controller;
 
 import com.revup.feedback.FeedbackWebSocketHandler;
-import com.revup.feedback.controller.command.FeedbackCodeCommand;
-import com.revup.feedback.controller.request.FeedbackCodeCreateRequest;
-import com.revup.feedback.controller.request.FeedbackCodeUpdateRequest;
-import com.revup.feedback.service.FeedbackCodeService;
+import com.revup.feedback.usecase.CreateFeedbackCodeUseCase;
+import com.revup.feedback.usecase.GetFeedbackCodeUseCase;
+import com.revup.feedback.usecase.UpdateFeedbackCodeUseCase;
+import com.revup.feedback.request.FeedbackCodeCreateRequest;
+import com.revup.feedback.request.FeedbackCodeUpdateRequest;
 import com.revup.feedback.service.response.FeedbackCodeResponse;
 import com.revup.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class FeedbackCodeController {
 
     private final FeedbackWebSocketHandler feedbackWebSocketHandler;
-    private final FeedbackCodeService feedbackCodeService;
-    private final FeedbackCodeCommand feedbackCodeCommand;
+    private final UpdateFeedbackCodeUseCase updateFeedbackCodeUseCase;
+    private final CreateFeedbackCodeUseCase createFeedbackCodeUseCase;
+    private final GetFeedbackCodeUseCase getFeedbackCodeUseCase;
 
     /**
      * 특정 피드백코드의 라이브 세션에 연결된 사람 수 반환
@@ -40,7 +42,7 @@ public class FeedbackCodeController {
     @GetMapping("/{feedbackCodeId}")
     public ResponseEntity<ApiResponse<FeedbackCodeResponse>> getFeedbackCode(@PathVariable Long feedbackCodeId) {
         return ResponseEntity.ok(
-                ApiResponse.success(feedbackCodeService.feedbackCodeGet(feedbackCodeId))
+                ApiResponse.success(getFeedbackCodeUseCase.execute(feedbackCodeId))
         );
     }
 
@@ -54,7 +56,7 @@ public class FeedbackCodeController {
     public ResponseEntity<ApiResponse<Long>> autoUpdateFeedbackCode(@PathVariable Long feedbackCodeId, @RequestBody FeedbackCodeUpdateRequest feedbackCodeUpdateRequest) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        feedbackCodeCommand.feedbackCodeUpdateCommand(feedbackCodeId, feedbackCodeUpdateRequest)
+                        updateFeedbackCodeUseCase.execute(feedbackCodeId, feedbackCodeUpdateRequest)
                 )
         );
     }
@@ -68,7 +70,7 @@ public class FeedbackCodeController {
     public ResponseEntity<?> createFeedbackCode(@RequestBody FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        feedbackCodeCommand.feedbackCodeCreateCommand(feedbackCodeCreateRequest)
+                        createFeedbackCodeUseCase.execute(feedbackCodeCreateRequest)
                 )
         );
     }
