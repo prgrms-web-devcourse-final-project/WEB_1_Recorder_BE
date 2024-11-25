@@ -14,7 +14,7 @@ public record QuestionCreateRequest(
 
         @BlockedContent
         @NotBlank(message = "내용은 비어 있을 수 없습니다.")
-        @Size(max = 65535, message = "내용은 최대 사이즈를 초과하였습니다.")
+        @Size(max = 65535, message = "내용이 최대 사이즈를 초과하였습니다.")
         String content,
 
         String type,
