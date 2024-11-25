@@ -2,6 +2,7 @@ package com.revup.answer.mapper;
 
 import com.revup.answer.dto.request.AnswerCreateRequest;
 import com.revup.answer.entity.Answer;
+import com.revup.common.BooleanStatus;
 import com.revup.image.dto.request.ImageRequest;
 import com.revup.image.entity.AnswerImage;
 import com.revup.question.entity.Question;
@@ -17,6 +18,7 @@ public class AnswerMapper {
         return Answer.builder()
                 .title(request.title())
                 .content(request.content())
+                .isAccept(BooleanStatus.FALSE)
                 .user(user)
                 .question(question)
                 .build();

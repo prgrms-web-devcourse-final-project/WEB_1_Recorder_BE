@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
-import static com.revup.answer.QAnswer.answer;
+import static com.revup.answer.entity.QAnswer.answer;
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.question.entity.QQuestionTag.questionTag;
 import static com.revup.tag.entity.QTag.tag;
@@ -57,6 +57,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .leftJoin(question.user, user).fetchJoin()
                 .leftJoin(question.questionTags, questionTag).fetchJoin()
                 .leftJoin(questionTag.tag, tag).fetchJoin()
+                .leftJoin(question.answers, answer).fetchJoin()
                 .where(question.id.eq(id))
                 .fetchOne());
     }
