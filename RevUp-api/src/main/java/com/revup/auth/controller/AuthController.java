@@ -1,13 +1,16 @@
 package com.revup.auth.controller;
 
 
+import com.revup.auth.model.dto.response.FirstLoginResponse;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
+import com.revup.auth.service.LoginUseCase;
 import com.revup.auth.service.LogoutUseCase;
 import com.revup.auth.service.RefreshTokenUseCase;
 import com.revup.constants.SecurityConstants;
 import com.revup.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +23,7 @@ public class AuthController {
 
     private final RefreshTokenUseCase refreshTokenUseCase;
     private final LogoutUseCase logoutUseCase;
+    private final LoginUseCase loginUseCase;
 
     /**
      * refreshToken으로 토큰 갱신
@@ -44,4 +48,15 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 리다이렉트 페이지에서
+     * 사용자의 최초 로그인 여부를 반환해주는 api
+     * (토큰 필수)
+     * @return
+     */
+    @GetMapping("/first-login")
+    public ResponseEntity<ApiResponse<FirstLoginResponse>> checkFirstLogin() {
+        FirstLoginResponse response = loginUseCase.execute();
+        return ResponseEntity.ok().body(ApiResponse.success(response));
+    }
 }
