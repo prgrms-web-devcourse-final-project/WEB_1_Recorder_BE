@@ -14,13 +14,12 @@ import java.util.List;
 
 @Component
 public class AnswerMapper {
-    public Answer toEntity(AnswerCreateRequest request, User user, Question question) {
+    public Answer toEntity(AnswerCreateRequest request, User user) {
         return Answer.builder()
                 .title(request.title())
                 .content(request.content())
                 .isAccept(BooleanStatus.FALSE)
                 .user(user)
-                .question(question)
                 .build();
     }
 

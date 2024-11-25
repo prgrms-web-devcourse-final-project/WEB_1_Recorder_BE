@@ -6,9 +6,6 @@ import com.revup.answer.entity.Answer;
 import com.revup.answer.mapper.AnswerMapper;
 import com.revup.answer.service.AnswerService;
 import com.revup.image.entity.AnswerImage;
-import com.revup.image.entity.QuestionImage;
-import com.revup.question.adaptor.QuestionAdaptor;
-import com.revup.question.entity.Question;
 import com.revup.user.entity.User;
 import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +18,18 @@ import java.util.List;
 public class CreateAnswerUseCase {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
-    private final QuestionAdaptor questionAdaptor;
     private final UserUtil userUtil;
 
     public AnswerIdResponse execute(AnswerCreateRequest request){
         User user = userUtil.getCurrentUser();
 
-        Question question = questionAdaptor.findById(request.questionId());
-
-        Answer answer = answerMapper.toEntity(request, user, question);
+        Answer answer = answerMapper.toEntity(request, user);
 
         List<AnswerImage> answerImages = answerMapper.toAnswerImages(request.images(), answer);
 
-        return new AnswerIdResponse(answerService.createAnswer(answer, answerImages));
+        Long answerId = answerService.createAnswer(request.questionId(), answer, answerImages);
+
+        return new AnswerIdResponse(answerId);
         
     }
 }

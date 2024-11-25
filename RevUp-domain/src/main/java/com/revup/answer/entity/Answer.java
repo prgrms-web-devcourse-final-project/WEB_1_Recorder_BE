@@ -47,7 +47,6 @@ public class Answer extends SoftDeleteEntity {
     @Builder
     private Answer(
             User user,
-            Question question,
             String title,
             String content,
             BooleanStatus isAccept,
@@ -55,12 +54,16 @@ public class Answer extends SoftDeleteEntity {
             int goodCount,
             int badCount) {
         this.user = user;
-        this.question = question;
         this.title = title;
         this.content = content;
         this.isAccept = isAccept;
         this.review = review;
         this.goodCount = goodCount;
         this.badCount = badCount;
+    }
+
+    public void assignQuestion(Question question){
+        this.question = question;
+        question.addAnswer(this);
     }
 }

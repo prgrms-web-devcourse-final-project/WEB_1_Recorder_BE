@@ -45,6 +45,7 @@ public class Question extends SoftDeleteEntity {
 
     private int answerCount;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private User user;
@@ -79,6 +80,9 @@ public class Question extends SoftDeleteEntity {
 
     public void addAnswer(Answer answer){
         this.answers.add(answer);
+    }
+
+    public void increaseAnswerCount(){
         this.answerCount++;
     }
 
