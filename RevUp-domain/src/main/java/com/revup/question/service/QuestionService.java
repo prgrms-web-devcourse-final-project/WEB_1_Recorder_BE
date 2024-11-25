@@ -5,6 +5,7 @@ import com.revup.image.repository.QuestionImageRepository;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionTag;
 import com.revup.question.entity.QuestionType;
+import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionRepository;
 import com.revup.question.repository.QuestionTagRepository;
 import com.revup.question.repository.TagRepository;
@@ -58,5 +59,10 @@ public class QuestionService {
 
     public long getTotalQuestionCount(QuestionType type) {
         return questionRepository.countQuestionsByType(type);
+    }
+
+    public Question getQuestionDetails(Long id) {
+        return questionRepository.findByIdWithTagsAndAnswers(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
     }
 }

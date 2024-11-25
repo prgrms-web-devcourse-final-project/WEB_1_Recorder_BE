@@ -1,5 +1,6 @@
 package com.revup.question.entity;
 
+import com.revup.answer.Answer;
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
 import com.revup.user.entity.User;
@@ -10,7 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,7 +47,10 @@ public class Question extends BaseTimeEntity {
     private User user;
 
     @OneToMany(mappedBy = "question")
-    private List<QuestionTag> questionTags = new ArrayList<>();
+    private Set<QuestionTag> questionTags = new HashSet<>();
+
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers = new ArrayList<>();
 
     @Builder
     private Question(
@@ -66,6 +72,11 @@ public class Question extends BaseTimeEntity {
 
     public void addQuestionTag(QuestionTag questionTag){
         this.questionTags.add(questionTag);
+    }
+
+    public void addAnswer(Answer answer){
+        this.answers.add(answer);
+        this.answerCount++;
     }
 
 }

@@ -6,7 +6,9 @@ import com.revup.question.entity.QuestionType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
+import static com.revup.answer.QAnswer.answer;
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.question.entity.QQuestionTag.questionTag;
 import static com.revup.tag.entity.QTag.tag;
@@ -47,6 +49,16 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(type == null ? null : question.type.eq(type))
                 .fetchOne();
         return count != null ? count : 0;
+    }
+
+    @Override
+    public Optional<Question> findByIdWithTagsAndAnswers(Long id) {
+        return Optional.ofNullable(queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .leftJoin(question.questionTags, questionTag).fetchJoin()
+                .leftJoin(questionTag.tag, tag).fetchJoin()
+                .where(question.id.eq(id))
+                .fetchOne());
     }
 
 
