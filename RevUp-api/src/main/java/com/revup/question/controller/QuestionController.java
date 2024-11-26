@@ -45,6 +45,10 @@ public class QuestionController {
         return ResponseEntity.ok().body(success((questionUseCases.update(request))));
     }
 
-    
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@RequestParam Long id) {
+        questionUseCases.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

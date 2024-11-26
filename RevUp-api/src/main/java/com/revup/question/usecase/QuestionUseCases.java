@@ -35,7 +35,7 @@ public class QuestionUseCases {
         return updateQuestionUseCase.execute(request);
     }
 
-//    public void delete(Long id) {
-//        deleteQuestionUseCase.execute(id);
-//    }
+    public void delete(Long id) {
+        deleteQuestionUseCase.execute(id);
+    }
 }

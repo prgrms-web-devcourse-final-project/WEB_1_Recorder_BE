@@ -16,4 +16,7 @@ public abstract class SoftDeleteEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BooleanStatus isDeleted = BooleanStatus.FALSE;
 
+    public void softDelete(){
+        this.isDeleted = BooleanStatus.TRUE;
+    }
 }

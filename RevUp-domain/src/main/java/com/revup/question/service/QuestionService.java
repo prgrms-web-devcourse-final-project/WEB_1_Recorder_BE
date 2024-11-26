@@ -59,4 +59,12 @@ public class QuestionService {
         questionCodeRepository.deleteByQuestionId(id);
         questionCodeRepository.saveAll(codes);
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+
+        question.softDelete();
+    }
 }
