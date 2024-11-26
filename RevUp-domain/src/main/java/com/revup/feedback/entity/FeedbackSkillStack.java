@@ -4,6 +4,7 @@ import com.revup.common.BaseTimeEntity;
 import com.revup.common.SkillStack;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,5 +24,11 @@ public class FeedbackSkillStack extends BaseTimeEntity {
 
     @Enumerated(value = EnumType.STRING)
     private SkillStack skillStack;
+
+    @Builder
+    private FeedbackSkillStack(Feedback feedback, SkillStack skillStack) {
+        this.feedback = feedback;
+        this.skillStack = skillStack;
+    }
 
 }

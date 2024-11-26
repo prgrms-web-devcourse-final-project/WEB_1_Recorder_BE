@@ -26,18 +26,6 @@ public class FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
-    public List<FeedbackResponse> feedbackWaitingList(User currentUser) {
-        return feedbackRepository.findByTeacherAndState(currentUser, FeedbackState.WAITING_ACCEPTANCE)
-                .stream()
-                .map(FeedbackResponse::from).toList();
-    }
-
-    public List<FeedbackResponse> feedbackSubmittedList(User currentUser) {
-        return feedbackRepository.findByTeacher(currentUser)
-                .stream()
-                .map(FeedbackResponse::from).toList();
-    }
-
     public Long feedbackAccept(User currentUser, Long feedbackId) {
         Feedback feedback = feedbackRepository.findById(feedbackId)
                 .orElseThrow(() -> new AppException(ErrorCode.FEEDBACK_NOT_FOUND));
@@ -47,6 +35,21 @@ public class FeedbackService {
         return feedback.getId();
     }
 
+    @Transactional(readOnly = true)
+    public List<FeedbackResponse> feedbackWaitingList(User currentUser) {
+        return feedbackRepository.findByTeacherAndState(currentUser, FeedbackState.WAITING_ACCEPTANCE)
+                .stream()
+                .map(FeedbackResponse::from).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<FeedbackResponse> feedbackSubmittedList(User currentUser) {
+        return feedbackRepository.findByTeacher(currentUser)
+                .stream()
+                .map(FeedbackResponse::from).toList();
+    }
+
+    @Transactional(readOnly = true)
     public List<FeedbackResponse> feedbackAcceptedList(User currentUser) {
         return feedbackRepository.findByTeacherAndState(currentUser, FeedbackState.ACCEPTED)
                 .stream()

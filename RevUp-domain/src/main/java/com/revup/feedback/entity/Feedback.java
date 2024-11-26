@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "feedback")
@@ -46,6 +49,14 @@ public class Feedback extends BaseTimeEntity {
 
     @Enumerated(value = EnumType.STRING)
     private FeedbackState state = FeedbackState.WAITING_ACCEPTANCE;
+
+
+    @OneToMany(mappedBy = "feedback")
+    private List<FeedbackCode> feedbackCodes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "feedback")
+    private List<FeedbackSkillStack> feedbackSkillStacks = new ArrayList<>();
+
 
     @Builder
     private Feedback(User student, User teacher, FeedbackType type, String title, String githubLink, BooleanStatus githubLinkReveal, String description) {
