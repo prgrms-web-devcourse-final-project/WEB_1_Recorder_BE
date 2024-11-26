@@ -1,19 +1,15 @@
 package com.revup.oauth.service;
 
 import com.revup.error.AppException;
-import com.revup.oauth.OAuth2UserInfo;
 import com.revup.oauth.OAuth2UserPrincipal;
 import com.revup.oauth.google.GoogleOauth2UserInfo;
 import com.revup.oauth.kakao.KakaoOauth2UserInfo;
 import com.revup.user.entity.User;
-import com.revup.user.repository.UserRepository;
 import com.revup.user.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
