@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 public class FeedbackCreateRequest {
 
-    private Long studentId;
     private Long teacherId;
     private String type;
     private String title;

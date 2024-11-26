@@ -18,6 +18,7 @@ public class CreateFeedbackCodeUseCase {
     private final FeedbackCodeMapper feedbackCodeMapper;
 
     public Long execute(FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
+        // TODO: 자기 피드백 아니면 예외
         Feedback feedback = feedbackAdaptor.findById(feedbackCodeCreateRequest.getFeedbackId());
         FeedbackCode feedbackCode = feedbackCodeMapper.toEntity(feedback, feedbackCodeCreateRequest);
         return feedbackCodeService.feedbackCodeCreate(feedbackCode);
