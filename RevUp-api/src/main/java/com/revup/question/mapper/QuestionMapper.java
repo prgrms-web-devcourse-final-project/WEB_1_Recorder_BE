@@ -33,7 +33,7 @@ public class QuestionMapper {
                 .user(user)
                 .build();
     }
-    
+
     public List<QuestionImage> toQuestionImages(List<ImageRequest> images, Question question) {
         if (images == null || images.isEmpty()) {
             return Collections.emptyList();

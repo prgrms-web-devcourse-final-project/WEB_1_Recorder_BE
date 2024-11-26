@@ -1,5 +1,9 @@
 package com.revup.common;
 
+import com.revup.common.exception.InvalidSkillStackException;
+import com.revup.question.entity.QuestionType;
+import com.revup.question.exception.InvalidQuestionTypeException;
+
 public enum SkillStack {
     JAVA,
     SPRING,
@@ -26,5 +30,15 @@ public enum SkillStack {
     FLUTTER,
     DART,
     UNITY,
-    UNREAL
+    UNREAL;
+
+    public static SkillStack of(String stack) {
+        try {
+            return SkillStack.valueOf(stack.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidSkillStackException();
+        }
+    }
+
+
 }

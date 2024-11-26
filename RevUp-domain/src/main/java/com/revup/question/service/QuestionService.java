@@ -3,6 +3,7 @@ package com.revup.question.service;
 import com.revup.common.SkillStack;
 import com.revup.image.entity.QuestionImage;
 import com.revup.image.repository.QuestionImageRepository;
+import com.revup.question.criteria.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;
 import com.revup.question.entity.QuestionType;
@@ -37,12 +38,12 @@ public class QuestionService {
 
     }
 
-    public List<Question> getQuestionsByPage(QuestionType type, long offset, int size) {
-        return questionRepository.findQuestionsByType(type, offset, size);
+    public List<Question> getQuestionsByPage(QuestionSearchCriteria criteria, long offset, int size) {
+        return questionRepository.findQuestionsByCriteria(criteria, offset, size);
     }
 
-    public long getTotalQuestionCount(QuestionType type) {
-        return questionRepository.countQuestionsByType(type);
+    public long getTotalQuestionCount(QuestionSearchCriteria criteria) {
+        return questionRepository.countQuestionsByCriteria(criteria);
     }
 
     public Question getQuestionDetails(Long id) {
