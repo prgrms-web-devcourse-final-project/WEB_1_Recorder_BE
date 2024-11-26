@@ -38,7 +38,6 @@ public class Question extends SoftDeleteEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Long readCount;
 
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAnonymous;
@@ -70,7 +69,6 @@ public class Question extends SoftDeleteEntity {
         this.type = type;
         this.state = state;
         this.content = content;
-        this.readCount = 0L;
         this.answerCount = 0;
         this.isAnonymous = isAnonymous;
         this.user = user;

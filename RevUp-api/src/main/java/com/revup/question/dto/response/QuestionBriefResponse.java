@@ -11,7 +11,6 @@ public record QuestionBriefResponse(
         String writer,
         String title,
         String createdAt,
-        Long readCount,
         int answerCount,
         List<TagNameResponse> tags
 ) {
@@ -21,7 +20,6 @@ public record QuestionBriefResponse(
                 question.getIsAnonymous().equals(BooleanStatus.FALSE) ? question.getUser().getNickname() : "익명",
                 question.getTitle(),
                 question.getCreatedAt().toString(),
-                question.getReadCount(),
                 question.getAnswerCount(),
                 question.getQuestionTags()
                         .stream()

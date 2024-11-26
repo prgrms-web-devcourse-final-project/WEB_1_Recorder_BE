@@ -11,7 +11,6 @@ public record QuestionDetailsResponse(
         String writer,
         String title,
         String createdAt,
-        Long readCount,
         List<TagNameResponse> tags,
         List<AnswerDetailsResponse> answers
 ) {
@@ -21,7 +20,6 @@ public record QuestionDetailsResponse(
                 question.getUser().getNickname(),
                 question.getTitle(),
                 question.getCreatedAt().toString(),
-                question.getReadCount(),
                 question.getQuestionTags()
                         .stream()
                         .map(questionTag -> TagNameResponse.of(questionTag.getTag()))
