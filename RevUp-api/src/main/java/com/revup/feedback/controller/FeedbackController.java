@@ -1,10 +1,9 @@
 package com.revup.feedback.controller;
 
+import com.revup.feedback.request.FeedbackAcceptRequest;
 import com.revup.feedback.request.FeedbackCreateRequest;
 import com.revup.feedback.service.response.FeedbackResponse;
-import com.revup.feedback.usecase.CreateFeedbackUseCase;
-import com.revup.feedback.usecase.GetSubmittedFeedbackListUseCase;
-import com.revup.feedback.usecase.GetWaitingFeedbackListUseCase;
+import com.revup.feedback.usecase.*;
 import com.revup.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,8 @@ public class FeedbackController {
     private final CreateFeedbackUseCase createFeedbackUseCase;
     private final GetWaitingFeedbackListUseCase getWaitingFeedbackListUseCase;
     private final GetSubmittedFeedbackListUseCase getSubmittedFeedbackListUseCase;
+    private final AcceptFeedbackUseCase acceptFeedbackUseCase;
+    private final GetAcceptedFeedbackListUseCase getAcceptedFeedbackListUseCase;
 
     /**
      * 피드백 생성 메서드
@@ -57,6 +58,33 @@ public class FeedbackController {
         return ResponseEntity.ok(
                 ApiResponse.success(
                         getSubmittedFeedbackListUseCase.execute()
+                )
+        );
+    }
+
+    /**
+     * 자기한테 신청 피드백 승인하기
+     * @param feedbackAcceptRequest 승인할 피드백 id
+     * @return 승인된 피드백 id
+     */
+    @PostMapping("/submitted/accepted")
+    public ResponseEntity<ApiResponse<Long>> acceptFeedback(@RequestBody FeedbackAcceptRequest feedbackAcceptRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        acceptFeedbackUseCase.execute(feedbackAcceptRequest)
+                )
+        );
+    }
+
+    /**
+     * 자기한테 신청되어서 승인된 피드백 목록 조회
+     * @return 해당 목록
+     */
+    @GetMapping("/submitted/accepted")
+    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedAcceptedFeedbackList() {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        getAcceptedFeedbackListUseCase.execute()
                 )
         );
     }

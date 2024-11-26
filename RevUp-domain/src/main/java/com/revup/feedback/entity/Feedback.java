@@ -58,4 +58,8 @@ public class Feedback extends BaseTimeEntity {
         this.description = description;
     }
 
+    public void updateState(FeedbackState state) {
+        this.state = state;
+    }
+
 }
