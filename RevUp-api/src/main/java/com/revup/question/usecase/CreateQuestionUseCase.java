@@ -6,6 +6,8 @@ import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;
+import com.revup.question.mapper.QuestionCodeMapper;
+import com.revup.question.mapper.QuestionImageMapper;
 import com.revup.question.mapper.QuestionMapper;
 import com.revup.question.service.QuestionService;
 import com.revup.user.entity.User;
@@ -21,19 +23,20 @@ import java.util.Set;
 public class CreateQuestionUseCase {
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
+    private final QuestionImageMapper imageMapper;
+    private final QuestionCodeMapper codeMapper;
     private final UserUtil userUtil;
 
 
     public QuestionIdResponse execute(QuestionCreateRequest request) {
         User user = userUtil.getCurrentUser();
 
-        Set<SkillStack> questionStacks = questionMapper.toQuestionStacks(request.stacks());
 
-        Question question = questionMapper.toEntity(request, user, questionStacks);
+        Question question = questionMapper.toEntity(request, user);
 
-        List<QuestionCode> questionCodes = questionMapper.toQuestionCodes(request.codes(), question);
+        List<QuestionCode> questionCodes = codeMapper.toEntity(request.codes(), question);
 
-        List<QuestionImage> questionImages = questionMapper.toQuestionImages(request.images(), question);
+        List<QuestionImage> questionImages = imageMapper.toEntity(request.images(), question);
 
         Long id = questionService.createQuestion(question, questionImages, questionCodes);
 

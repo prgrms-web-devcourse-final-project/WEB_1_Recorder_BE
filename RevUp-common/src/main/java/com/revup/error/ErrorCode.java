@@ -24,6 +24,9 @@ public enum ErrorCode {
 
     //user
     USER_NOT_FOUND(NOT_FOUND, "일치하는 회원이 없습니다."),
+    USER_PERMISSION(FORBIDDEN, "권한이 없는 사용자입니다"),
+    USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 id : %s 가 존재하지 않습니다"),
+
 
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),
@@ -46,15 +49,13 @@ public enum ErrorCode {
 
 
 
-    USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 id : %s 가 존재하지 않습니다"),
-
     FILE_INVALID_NAME(HttpStatus.BAD_REQUEST, "파일 이름이 유효하지 않습니다"),
     FILE_EXCEED_SIZE(HttpStatus.PAYLOAD_TOO_LARGE, "파일 크기가 허용된 최대 크기를 초과했습니다"),
     FILE_UNSUPPORTED_EXTENSION(HttpStatus.BAD_REQUEST, "허용되지 않은 파일 확장자 입니다"),
     S3_SERVICE(HttpStatus.BAD_REQUEST,"Amazon S3 서비스 오류: %s" ),
     S3_CLIENT(HttpStatus.BAD_REQUEST, "Amazon S3 클라이언트 오류: %s"),
 
-    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요"),;
+    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요"),
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;

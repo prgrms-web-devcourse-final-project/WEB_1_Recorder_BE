@@ -88,12 +88,30 @@ public class Question extends SoftDeleteEntity {
         this.stacks = stacks;
     }
 
+    public void update(
+            String title,
+            QuestionType type,
+            QuestionState state,
+            String content,
+            String githubLink,
+            BooleanStatus githubLinkReveal,
+            BooleanStatus isAnonymous,
+            Set<SkillStack> stacks) {
+        this.title = title;
+        this.type = type;
+        this.state = state;
+        this.content = content;
+        this.githubLink = githubLink;
+        this.githubLinkReveal = githubLinkReveal;
+        this.isAnonymous = isAnonymous;
+        this.stacks = stacks;
+    }
 
-    public void addAnswer(Answer answer){
+    public void addAnswer(Answer answer) {
         this.answers.add(answer);
     }
 
-    public void increaseAnswerCount(){
+    public void increaseAnswerCount() {
         this.answerCount++;
     }
 

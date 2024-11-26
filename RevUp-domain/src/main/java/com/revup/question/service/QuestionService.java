@@ -1,12 +1,10 @@
 package com.revup.question.service;
 
-import com.revup.common.SkillStack;
 import com.revup.image.entity.QuestionImage;
 import com.revup.image.repository.QuestionImageRepository;
 import com.revup.question.criteria.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;
-import com.revup.question.entity.QuestionType;
 import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionCodeRepository;
 import com.revup.question.repository.QuestionRepository;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -49,5 +46,17 @@ public class QuestionService {
     public Question getQuestionDetails(Long id) {
         return questionRepository.findByIdWithTagsAndAnswers(id)
                 .orElseThrow(() -> new QuestionNotFoundException(id));
+    }
+
+    @Transactional
+    public void updateImages(Long id, List<QuestionImage> images) {
+        questionImageRepository.deleteByQuestionId(id);
+        questionImageRepository.saveAll(images);
+    }
+
+    @Transactional
+    public void updateCodes(Long id, List<QuestionCode> codes) {
+        questionCodeRepository.deleteByQuestionId(id);
+        questionCodeRepository.saveAll(codes);
     }
 }
