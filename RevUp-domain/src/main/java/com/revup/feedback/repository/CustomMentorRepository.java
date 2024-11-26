@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CustomMentorRepository {
 
-    List<Mentor> findAllWithMentorSkillStacksAndUser();
+    List<Mentor> findMentorsByPageAndSize(long offset, int size);
 
 }

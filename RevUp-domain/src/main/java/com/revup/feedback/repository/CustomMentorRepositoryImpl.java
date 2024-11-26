@@ -16,12 +16,14 @@ public class CustomMentorRepositoryImpl implements CustomMentorRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Mentor> findAllWithMentorSkillStacksAndUser() {
+    public List<Mentor> findMentorsByPageAndSize(long offset, int size) {
         return queryFactory.selectFrom(mentor)
                 .join(mentor.mentorSkillStacks, mentorSkillStack).fetchJoin()
                 .join(mentor.user, user).fetchJoin()
-                .fetch()
-                ;
+                .orderBy(mentor.createdAt.desc())
+                .offset(offset)
+                .limit(size)
+                .fetch();
     }
 
 }
