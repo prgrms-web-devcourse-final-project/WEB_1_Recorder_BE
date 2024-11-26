@@ -13,6 +13,8 @@ import java.util.List;
 @Builder(access = AccessLevel.PRIVATE)
 public class MentorResponse {
 
+    private Long userId;
+
     private String description;
 
     private String nickname;
@@ -21,6 +23,7 @@ public class MentorResponse {
 
     public static MentorResponse from(Mentor mentor) {
         return MentorResponse.builder()
+                .userId(mentor.getUser().getId())
                 .description(mentor.getDescription())
                 .nickname(mentor.getUser().getSocialId())
                 .skillStacks(mentor.getMentorSkillStacks().stream().map(MentorSkillStack::getSkillStack).toList())
