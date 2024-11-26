@@ -25,6 +25,7 @@ public enum ErrorCode {
 
     //user
     USER_NOT_FOUND(NOT_FOUND, "일치하는 회원이 없습니다."),
+    INVALID_CERTIFICATION_NUMBER(BAD_REQUEST, "인증 번호가 유효하지 않습니다."),
 
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),
