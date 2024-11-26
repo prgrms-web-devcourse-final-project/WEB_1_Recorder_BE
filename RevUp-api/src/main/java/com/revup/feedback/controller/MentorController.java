@@ -19,6 +19,11 @@ public class MentorController {
     private final CreateMentorUseCase createMentorUseCase;
     private final GetMentorListUseCase getMentorListUseCase;
 
+    /**
+     * 피드백 멘토 지원
+     * @param mentorCreateRequest 멘토 지원에 필요한 내용들
+     * @return 생성된 멘토 id
+     */
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> createMentor(@RequestBody MentorCreateRequest mentorCreateRequest) {
         return ResponseEntity.ok(
@@ -28,6 +33,11 @@ public class MentorController {
         );
     }
 
+    /**
+     * 피드백 멘토 전체 목록 조회
+     * TODO: 페이징 처리
+     * @return 전체 멘토 목록
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<MentorResponse>>> getMentorList() {
         return ResponseEntity.ok(
