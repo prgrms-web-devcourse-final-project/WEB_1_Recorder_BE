@@ -5,7 +5,7 @@ import com.revup.oauth.OAuth2UserInfoFactory;
 import com.revup.oauth.OAuth2UserPrincipal;
 import com.revup.oauth.exception.Oauth2AuthenticationProcessingException;
 import com.revup.oauth.github.EmailUpdatable;
-import com.revup.auth.dto.Email;
+import com.revup.user.dto.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -55,9 +55,9 @@ public class RevUpOAuth2UserService extends DefaultOAuth2UserService {
                 "github",
                 oAuth2User.getAttributes());
 
-        if (oAuth2UserInfo instanceof EmailUpdatable) {
+        if (oAuth2UserInfo instanceof EmailUpdatable emailUpdatable) {
             Email email = getGitHubEmail(accessToken);
-            ((EmailUpdatable) oAuth2UserInfo).updateEmail(email);
+            emailUpdatable.updateEmail(email);
         }
 
         return new OAuth2UserPrincipal(oAuth2UserInfo);

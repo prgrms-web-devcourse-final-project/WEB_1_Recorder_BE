@@ -1,7 +1,5 @@
 package com.revup.user.adaptor;
 
-import com.revup.error.AppException;
-import com.revup.error.ErrorCode;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserIdNotFoundException;
 import com.revup.user.repository.UserRepository;
