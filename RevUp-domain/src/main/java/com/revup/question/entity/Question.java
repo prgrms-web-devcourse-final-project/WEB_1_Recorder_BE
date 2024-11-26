@@ -45,6 +45,8 @@ public class Question extends SoftDeleteEntity {
 
     private int answerCount;
 
+    @Version
+    private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")

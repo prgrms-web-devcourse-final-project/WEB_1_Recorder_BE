@@ -43,7 +43,9 @@ public enum ErrorCode {
     FILE_EXCEED_SIZE(HttpStatus.PAYLOAD_TOO_LARGE, "파일 크기가 허용된 최대 크기를 초과했습니다"),
     FILE_UNSUPPORTED_EXTENSION(HttpStatus.BAD_REQUEST, "허용되지 않은 파일 확장자 입니다"),
     S3_SERVICE(HttpStatus.BAD_REQUEST,"Amazon S3 서비스 오류: %s" ),
-    S3_CLIENT(HttpStatus.BAD_REQUEST, "Amazon S3 클라이언트 오류: %s"),;
+    S3_CLIENT(HttpStatus.BAD_REQUEST, "Amazon S3 클라이언트 오류: %s"),
+
+    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요");
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;
