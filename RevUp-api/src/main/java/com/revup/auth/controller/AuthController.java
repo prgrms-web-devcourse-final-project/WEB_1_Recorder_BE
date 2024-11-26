@@ -10,10 +10,7 @@ import com.revup.constants.SecurityConstants;
 import com.revup.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -30,8 +27,10 @@ public class AuthController {
      * @return
      */
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse<Void>> refreshToken() {
-        RefreshTokenResponse tokenResponse = refreshTokenUseCase.execute();
+    public ResponseEntity<ApiResponse<Void>> refreshToken(
+            @RequestHeader(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER) String refreshToken
+    ) {
+        RefreshTokenResponse tokenResponse = refreshTokenUseCase.execute(refreshToken);
         return ResponseEntity.noContent()
                 .header(SecurityConstants.AUTHORIZATION_HEADER, tokenResponse.accessToken())
                 .header(SecurityConstants.AUTHORIZATION_REFRESH_HEADER, tokenResponse.refreshToken())

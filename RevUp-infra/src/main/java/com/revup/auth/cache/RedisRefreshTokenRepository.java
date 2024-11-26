@@ -23,26 +23,25 @@ public class RedisRefreshTokenRepository implements RefreshTokenRepository {
 
     @Override
     public void save(RefreshToken token, Long id) {
-        HashOperations<String, Long, RefreshToken> hashOps = getTokenHashOps();
+        HashOperations<String, Long, RefreshToken> hashOps = getHashOps();
         hashOps.put(refreshTokenKey, id, token); // userId를 Field로 저장
         log.info("refreshTokens = {}", hashOps.values(refreshTokenKey));
     }
 
     @Override
     public void remove(Long userId) {
-        HashOperations<String, Long, RefreshToken> hashOps = getTokenHashOps();
+        HashOperations<String, Long, RefreshToken> hashOps = getHashOps();
         hashOps.delete(refreshTokenKey, userId);
         log.info("refreshTokens = {}", hashOps.values(refreshTokenKey));
     }
 
     @Override
     public Optional<RefreshToken> findById(Long id) {
-        return Optional.ofNullable(getTokenHashOps().get(refreshTokenKey, id));
+        return Optional.ofNullable(getHashOps().get(refreshTokenKey, id));
     }
 
 
-    private HashOperations<String, Long, RefreshToken> getTokenHashOps() {
-
+    private HashOperations<String, Long, RefreshToken> getHashOps() {
         return redisTemplate.opsForHash();
     }
 }
