@@ -10,6 +10,7 @@ import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -26,12 +27,12 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final AnswerImageRepository answerImageRepository;
 
+    @Transactional
     @Retryable(
             retryFor = {OptimisticLockingFailureException.class},
-            maxAttempts = 2,
-            backoff = @Backoff(delay = 1000)
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 500,multiplier = 2.0)
     )
-    @Transactional
     public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images) {
 
         Question question = questionRepository.findByIdWithOptimisticLock(questionId)
