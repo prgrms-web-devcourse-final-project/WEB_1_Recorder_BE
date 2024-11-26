@@ -2,7 +2,6 @@ package com.revup.question.dto.request;
 
 import com.revup.global.validation.BlockedContent;
 import com.revup.image.dto.request.ImageRequest;
-import com.revup.tag.dto.request.TagRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -17,13 +16,20 @@ public record QuestionCreateRequest(
         @Size(max = 65535, message = "내용이 최대 사이즈를 초과하였습니다.")
         String content,
 
+        boolean githubLinkReveal,
+
+        String githubLink,
+
         String type,
 
         boolean isTemporary,
 
         boolean isAnonymous,
 
-        List<TagRequest> tags,
+
+        List<String> stacks,
+
+        List<QuestionCodeCreateRequest> codes,
 
         List<ImageRequest> images
 ) {

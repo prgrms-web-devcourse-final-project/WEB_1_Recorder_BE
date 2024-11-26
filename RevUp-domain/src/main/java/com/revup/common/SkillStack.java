@@ -1,0 +1,30 @@
+package com.revup.common;
+
+public enum SkillStack {
+    JAVA,
+    SPRING,
+    REACT,
+    PYTHON,
+    JAVASCRIPT,
+    TYPESCRIPT,
+    NODEJS,
+    VUEJS,
+    KOTLIN,
+    SWIFT,
+    C,
+    CPLUSPLUS,
+    RUBY,
+    PHP,
+    SCALA,
+    AWS,
+    GCP,
+    DOCKER,
+    KUBERNETES,
+    MONGODB,
+    MYSQL,
+    POSTGRESQL,
+    FLUTTER,
+    DART,
+    UNITY,
+    UNREAL
+}

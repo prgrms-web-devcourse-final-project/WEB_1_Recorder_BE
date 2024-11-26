@@ -10,8 +10,6 @@ import java.util.Optional;
 
 import static com.revup.answer.entity.QAnswer.answer;
 import static com.revup.question.entity.QQuestion.question;
-import static com.revup.question.entity.QQuestionTag.questionTag;
-import static com.revup.tag.entity.QTag.tag;
 import static com.revup.user.entity.QUser.user;
 
 @RequiredArgsConstructor
@@ -30,11 +28,9 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .offset(offset)
                 .limit(size)
                 .fetch();
-
         return queryFactory.selectFrom(question)
                 .leftJoin(question.user, user).fetchJoin()
-                .leftJoin(question.questionTags, questionTag).fetchJoin()
-                .leftJoin(questionTag.tag, tag).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
                 .where(
                         question.id.in(questionIds) // 페이징된 ID에 대해서만 조인
                 )
@@ -55,8 +51,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
     public Optional<Question> findByIdWithTagsAndAnswers(Long id) {
         return Optional.ofNullable(queryFactory.selectFrom(question)
                 .leftJoin(question.user, user).fetchJoin()
-                .leftJoin(question.questionTags, questionTag).fetchJoin()
-                .leftJoin(questionTag.tag, tag).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
                 .where(question.id.eq(id))
                 .fetchOne());

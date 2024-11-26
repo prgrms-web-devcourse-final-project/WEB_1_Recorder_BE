@@ -1,8 +1,8 @@
 package com.revup.question.entity;
 
 import com.revup.answer.entity.Answer;
-import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.common.SkillStack;
 import com.revup.common.SoftDeleteEntity;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,11 +37,21 @@ public class Question extends SoftDeleteEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(length = 500)
+    private String githubLink;
+
+    @Enumerated(value = EnumType.STRING)
+    private BooleanStatus githubLinkReveal;
+
 
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAnonymous;
 
     private int answerCount;
+
+    @ElementCollection(targetClass = SkillStack.class, fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    private Set<SkillStack> stacks;
 
     @Version
     private Long version;
@@ -51,8 +60,6 @@ public class Question extends SoftDeleteEntity {
     @JoinColumn(name = "writer_id")
     private User user;
 
-    @OneToMany(mappedBy = "question")
-    private Set<QuestionTag> questionTags = new HashSet<>();
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
@@ -63,20 +70,24 @@ public class Question extends SoftDeleteEntity {
             QuestionType type,
             QuestionState state,
             String content,
+            String githubLink,
+            BooleanStatus githubLinkReveal,
             BooleanStatus isAnonymous,
-            User user) {
+            User user,
+            Set<SkillStack> stacks
+    ) {
         this.title = title;
         this.type = type;
         this.state = state;
         this.content = content;
+        this.githubLink = githubLink;
+        this.githubLinkReveal = githubLinkReveal;
         this.answerCount = 0;
         this.isAnonymous = isAnonymous;
         this.user = user;
+        this.stacks = stacks;
     }
 
-    public void addQuestionTag(QuestionTag questionTag){
-        this.questionTags.add(questionTag);
-    }
 
     public void addAnswer(Answer answer){
         this.answers.add(answer);

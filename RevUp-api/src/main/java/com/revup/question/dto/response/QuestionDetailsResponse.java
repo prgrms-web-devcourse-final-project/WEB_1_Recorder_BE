@@ -2,7 +2,6 @@ package com.revup.question.dto.response;
 
 import com.revup.answer.dto.response.AnswerDetailsResponse;
 import com.revup.question.entity.Question;
-import com.revup.tag.dto.response.TagNameResponse;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ public record QuestionDetailsResponse(
         String writer,
         String title,
         String createdAt,
-        List<TagNameResponse> tags,
+        List<String> stacks,
         List<AnswerDetailsResponse> answers
 ) {
     public static QuestionDetailsResponse of(Question question) {
@@ -20,9 +19,9 @@ public record QuestionDetailsResponse(
                 question.getUser().getNickname(),
                 question.getTitle(),
                 question.getCreatedAt().toString(),
-                question.getQuestionTags()
+                question.getStacks()
                         .stream()
-                        .map(questionTag -> TagNameResponse.of(questionTag.getTag()))
+                        .map(Enum::toString)
                         .toList(),
                 question.getAnswers()
                         .stream()
