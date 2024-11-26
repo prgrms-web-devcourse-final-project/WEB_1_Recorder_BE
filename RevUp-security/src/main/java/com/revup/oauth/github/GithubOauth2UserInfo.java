@@ -1,7 +1,7 @@
 package com.revup.oauth.github;
 
 import com.revup.oauth.OAuth2UserInfo;
-import com.revup.auth.dto.Email;
+import com.revup.user.dto.Email;
 import com.revup.user.entity.LoginType;
 import com.revup.user.entity.User;
 import lombok.ToString;
@@ -89,7 +89,6 @@ public class GithubOauth2UserInfo implements OAuth2UserInfo, EmailUpdatable {
                 .socialEmail(email)
                 .loginType(LoginType.GITHUB)
                 .socialId(id)
-                .profileImage(null) //나중에 기본 이미지 파일로 변경해야함.
                 .build();
     }
 }

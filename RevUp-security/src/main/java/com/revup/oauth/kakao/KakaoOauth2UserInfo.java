@@ -81,7 +81,6 @@ public class KakaoOauth2UserInfo implements OAuth2UserInfo {
                 .socialEmail(email)
                 .loginType(LoginType.KAKAO)
                 .socialId(id)
-                .profileImage(null) //나중에 기본 이미지 파일로 변경해야함.
                 .build();
     }
 }
