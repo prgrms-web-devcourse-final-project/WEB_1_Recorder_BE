@@ -28,12 +28,12 @@ public class QuestionMapper {
                 .githubLinkReveal(BooleanStatus.from(request.githubLinkReveal()))
                 .type(QuestionType.of(request.type()))
                 .isAnonymous(BooleanStatus.from(request.isAnonymous()))
-                .state(QuestionState.PENDING)
+                .state(QuestionState.from(request.isTemporary()))
                 .stacks(stacks)
                 .user(user)
                 .build();
     }
-
+    
     public List<QuestionImage> toQuestionImages(List<ImageRequest> images, Question question) {
         if (images == null || images.isEmpty()) {
             return Collections.emptyList();
