@@ -67,7 +67,7 @@ public class FeedbackCodeController {
      * @return 추가된 피드백코드 id
      */
     @PostMapping
-    public ResponseEntity<?> createFeedbackCode(@RequestBody FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
+    public ResponseEntity<ApiResponse<Long>> createFeedbackCode(@RequestBody FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
         return ResponseEntity.ok(
                 ApiResponse.success(
                         createFeedbackCodeUseCase.execute(feedbackCodeCreateRequest)
