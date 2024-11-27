@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -21,7 +20,6 @@ class RevUpJwtProviderTest {
 
     @InjectMocks private static RevUpJwtProvider jwtProvider;
 
-    @Value("${jwt.secret-key}")
     private static final String TEST_SECRET_KEY = "ae49c94fdee6f40ab8788e5b6d5656cef07699bd842011e558bcd2065add4d9d";
 
     @BeforeEach()
