@@ -1,4 +1,4 @@
-package com.revup.config;
+package com.revup.common.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
