@@ -5,7 +5,9 @@ import com.revup.error.ErrorCode;
 import com.revup.user.entity.LoginType;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserIdNotFoundException;
+import com.revup.user.exception.UserPermissionException;
 import com.revup.user.repository.UserRepository;
+import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserAdaptor {
     private final UserRepository userRepository;
+    private final UserUtil userUtil;
 
     public User findById(Long userId){
         return userRepository.findById(userId)
@@ -26,5 +29,11 @@ public class UserAdaptor {
     public User findByTokenClaim(String socialId, LoginType loginType) {
         return userRepository.findBySocialIdAndLoginType(socialId, loginType)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public void checkPermission(User user){
+        if (!user.equals(userUtil.getCurrentUser())) {
+            throw new UserPermissionException();
+        }
     }
 }

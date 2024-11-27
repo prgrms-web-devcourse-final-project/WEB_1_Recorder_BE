@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class S3Service {
     @Value("${aws.s3.bucket}")
     private String bucket;
 
-    public String uploadFileToS3(MultipartFile file) throws IOException {
+    public Map<String, String> uploadFileToS3(MultipartFile file) throws IOException {
 
         FileValidator.validateFile(file);
 
@@ -42,7 +44,21 @@ public class S3Service {
             throw new S3ClientException(e.getMessage());
         }
 
-        return amazonS3.getUrl(bucket, fileName).toString(); // S3에서 접근 가능한 URL 반환
+        String url = amazonS3.getUrl(bucket, fileName).toString();
+        Map<String, String> result = new HashMap<>();
+        result.put("fileName", fileName);
+        result.put("url", url);
+        return result;
+    }
+
+    public void deleteFileFromS3(String fileName) {
+        try {
+            amazonS3.deleteObject(bucket, fileName);
+        } catch (AmazonServiceException e) {
+            throw new S3ServiceException(e.getMessage());
+        } catch (AmazonClientException e) {
+            throw new S3ClientException(e.getMessage());
+        }
     }
 
 }
