@@ -1,10 +1,8 @@
 package com.revup.oauth.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revup.auth.dto.LoginInfo;
 import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
-import com.revup.constants.SecurityConstants;
+import com.revup.auth.repository.RefreshTokenRepository;
 import com.revup.jwt.RevUpJwtGenerator;
 import com.revup.oauth.repository.HttpCookieOauth2AuthorizationRequestRepository;
 import com.revup.oauth.service.UserCreator;
@@ -33,12 +31,14 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final HttpCookieOauth2AuthorizationRequestRepository httpCookieOauth2AuthorizationRequestRepository;
     private final UserCreator userCreator;
     private final RevUpJwtGenerator jwtGenerator;
+    private final RefreshTokenRepository refreshTokenRepository;
     //redisToken 넣는 작업 필요.
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         User user = getUser(authentication);
         Tokens tokens = createTokens(user);
+        refreshTokenRepository.save(tokens.refreshToken(), user.getId());
 
         if (response.isCommitted()) {
             return;
@@ -46,11 +46,6 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = determineTargetUrl(request, tokens);
 
-        // 쿠키 설정 (예: accessToken을 쿠키로 설정)
-        setCookie(response, tokens);
-        setResponse(response, tokens, user);
-
-//        response.sendRedirect(targetUrl);
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
@@ -73,6 +68,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private Tokens createTokens(User loginUser) {
         return jwtGenerator.generate(
                 new TokenInfo(
+                        loginUser.getId(),
                         loginUser.getSocialId(),
                         loginUser.getLoginType()
                 )
@@ -83,33 +79,6 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         User loginUser = userCreator.create(authentication);
         log.info("getUser().loginUser = {}", loginUser);
         return loginUser;
-    }
-
-    // 쿠키 설정
-    private void setCookie(HttpServletResponse response, Tokens tokens) {
-        Cookie accessTokenCookie = new Cookie(
-                SecurityConstants.AUTHORIZATION_HEADER, tokens.accessToken().value()
-        );
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setMaxAge(3600); // 1시간
-        accessTokenCookie.setPath("/"); // 전체 경로에서 사용 가능
-
-
-        response.addCookie(accessTokenCookie);
-    }
-
-    private static void setResponse(
-            HttpServletResponse response,
-            Tokens tokens,
-            User loginUser
-    ) throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_CREATED);
-        response.setHeader(SecurityConstants.AUTHORIZATION_HEADER, tokens.accessToken().value());
-
-        LoginInfo loginInfo = new LoginInfo(loginUser.getNickname() == null);
-        response.getWriter().write(new ObjectMapper().writeValueAsString(loginInfo));
     }
 
     protected void clearAuthenticationAttributes(

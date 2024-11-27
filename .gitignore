@@ -41,4 +41,6 @@ out/
 /RevUp-common/src/main/resources/common-variable.yaml
 /RevUp-domain/src/main/resources/domain-variable.yaml
 /RevUp-infra/src/main/resources/infra-variable.yaml
+/RevUp-security/**-variable.yaml
 /RevUp-domain/src/main/resources/import.sql
+

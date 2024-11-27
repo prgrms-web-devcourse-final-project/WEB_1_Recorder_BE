@@ -17,6 +17,12 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
         default_batch_fetch_size: 1000
+
+  sql:
+    init:
+      data-locations: classpath:sql/data.sql
+      mode: always
+        
 logging:
   level:
     org.hibernate.SQL: DEBUG

@@ -6,11 +6,9 @@ import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class OAuthServiceImpl implements OAuthService {
 
@@ -19,11 +17,11 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public User loginOrSignup(User user) {
-        log.info("{}, {}", user.getSocialId(), user.getLoginType());
         User loginUser;
         try {
+            //소셜 서비스에서 받아온 정보에는 id값이 없음.
             loginUser = userReader.findByTokenInfo(
-                    new TokenInfo(user.getSocialId(), user.getLoginType())
+                    new TokenInfo(user.getId(), user.getSocialId(), user.getLoginType())
             );
         } catch (AppException e) {
             loginUser = userRegistrar.register(user);
@@ -31,5 +29,4 @@ public class OAuthServiceImpl implements OAuthService {
 
         return loginUser;
     }
-
 }

@@ -1,9 +1,10 @@
 package com.revup.user.entity;
 
-import com.revup.common.BaseTimeEntity;
-import com.revup.user.dto.UserDto;
+import com.revup.common.SoftDeleteEntity;
+import com.revup.user.dto.Email;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter @ToString
@@ -14,16 +15,16 @@ import lombok.*;
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseTimeEntity {
+@SQLRestriction("is_deleted = 'FALSE'")
+public class User extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50)
-    private String nickname;
+    @Embedded private Profile profile;
 
-    @Column(length = 500)
-    private String profileImage;
+    @Column(length = 50)
+    private String businessEmail;
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
@@ -34,38 +35,34 @@ public class User extends BaseTimeEntity {
     @Column(length = 50)
     private String socialEmail;
 
-    @Column(length = 50)
-    private String businessEmail;
-
-    @Column(length = 500)
-    private String introduction;
-
     @Builder
-    private User(String nickname,
-                String profileImage,
+    private User(
                 LoginType loginType,
                 String socialEmail,
-                String socialId,
-                String businessEmail,
-                String introduction) {
-        this.nickname = nickname;
-        this.profileImage = profileImage;
+                String socialId) {
+        this.profile = createNewProfile();
         this.loginType = loginType;
         this.socialEmail = socialEmail;
         this.socialId = socialId;
-        this.businessEmail = businessEmail;
-        this.introduction = introduction;
     }
 
-    public static User from(UserDto userDto) {
-        return User.builder()
-                .nickname(userDto.nickname())
-                .profileImage(userDto.profileImage())
-                .loginType(userDto.loginType())
-                .socialEmail(userDto.socialEmail())
-                .socialId(userDto.socialId())
-                .businessEmail(userDto.businessEmail())
-                .introduction(userDto.introduction())
+    private static Profile createNewProfile() {
+        return Profile.builder()
+                .profileImage(null)
+                .nickname(null)
+                .introduction(null)
                 .build();
+    }
+
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public String getNickname() {
+        return this.profile.getNickname();
+    }
+
+    public void updateBusinessEmail(Email email) {
+        this.businessEmail = email.value();
     }
 }

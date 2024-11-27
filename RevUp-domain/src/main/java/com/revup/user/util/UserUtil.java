@@ -7,5 +7,7 @@ public interface UserUtil {
 
     TokenInfo getPrincipal();
 
+    Long getSubject();
+
     User getCurrentUser();
 }

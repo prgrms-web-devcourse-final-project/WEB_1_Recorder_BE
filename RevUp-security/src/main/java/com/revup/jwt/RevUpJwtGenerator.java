@@ -59,7 +59,7 @@ public class RevUpJwtGenerator implements TokenGenerator {
         return Jwts.builder()
                 .setHeader(setHeader("ACCESS"))
                 .setClaims(setClaims(principal))
-                .setSubject(principal.socialId())
+                .setSubject(String.valueOf(principal.id()))
                 .setIssuedAt(getNowDate())
                 .setExpiration(new Date(getNowDate().getTime() + ACCESS_EXPIRATION_TIME))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
@@ -70,7 +70,7 @@ public class RevUpJwtGenerator implements TokenGenerator {
         return Jwts.builder()
                 .setHeader(setHeader("REFRESH"))
                 .setClaims(setClaims(principal))
-                .setSubject(principal.socialId())
+                .setSubject(String.valueOf(principal.id()))
                 .setIssuedAt(getNowDate())
                 .setExpiration(new Date(getNowDate().getTime() + REFRESH_EXPIRATION_TIME))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
@@ -88,6 +88,7 @@ public class RevUpJwtGenerator implements TokenGenerator {
     private static Map<String, Object> setClaims(TokenInfo principal) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(LOGIN_TYPE, principal.loginType().getType());
+        claims.put(SOCIAL_ID, principal.socialId());
         return claims;
     }
 

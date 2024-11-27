@@ -80,11 +80,9 @@ public class GoogleOauth2UserInfo implements OAuth2UserInfo {
     @Override
     public User toEntity() {
         return User.builder()
-
                 .socialEmail(email)
                 .loginType(LoginType.GOOGLE)
                 .socialId(id)
-                .profileImage(null) //나중에 기본 이미지 파일로 변경해야함.
                 .build();
     }
 

@@ -1,7 +1,6 @@
 package com.revup.config;
 
 import com.revup.config.converter.RevUpAuthorizationCodeGrantRequestEntityConverter;
-import com.revup.jwt.RevUpJwtValidator;
 import com.revup.oauth.handler.Oauth2AuthenticationFailureHandler;
 import com.revup.oauth.handler.Oauth2AuthenticationSuccessHandler;
 import com.revup.oauth.repository.HttpCookieOauth2AuthorizationRequestRepository;
@@ -14,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +28,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final RevUpJwtProvider jwtProvider;
-    private final RevUpJwtValidator jwtValidator;
 
     private final WebConfig webConfig;
     private final RevUpOAuth2UserService oAuth2UserService;
@@ -60,7 +59,7 @@ public class SecurityConfig {
                                         SessionCreationPolicy.STATELESS))
                 // 필터 추가
                 .addFilterBefore(
-                        new RevUpJwtFilter(jwtProvider, jwtValidator),
+                        new RevUpJwtFilter(jwtProvider),
                         UsernamePasswordAuthenticationFilter.class)
 
                 // 접근 제어 설정
@@ -97,12 +96,12 @@ public class SecurityConfig {
     }
 
     // 특정 URI 필터 제외
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web ->
-//                web.ignoring()
-//                        .requestMatchers("/favicon.ico");
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web ->
+                web.ignoring()
+                        .requestMatchers("/favicon.ico");
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

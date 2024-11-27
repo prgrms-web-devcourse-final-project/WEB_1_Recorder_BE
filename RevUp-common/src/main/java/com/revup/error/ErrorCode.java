@@ -19,14 +19,15 @@ public enum ErrorCode {
     TOKEN_INVALID(FORBIDDEN, "유효하지 않은 토큰입니다"),
     REQUEST_INVALID(BAD_REQUEST, "잘못된 요청방식입니다."),
     TOKEN_BAD_SIGNATURE(FORBIDDEN, "서명 불일치"),
-    ACCESS_TOKEN_NOT_FOUNT(NOT_FOUND, "ACCESS TOKEN이 없음"),
+    ACCESS_TOKEN_NOT_FOUND(NOT_FOUND, "accessToken이 없음"),
+    REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "refreshToken이 없음"),
     UNKNOWN_EXCEPTION(INTERNAL_SERVER_ERROR, "알 수 없는 오류 발생"),
 
     //user
     USER_NOT_FOUND(NOT_FOUND, "일치하는 회원이 없습니다."),
+    INVALID_CERTIFICATION_NUMBER(BAD_REQUEST, "인증 번호가 유효하지 않습니다."),
     USER_PERMISSION(FORBIDDEN, "권한이 없는 사용자입니다"),
     USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 id : %s 가 존재하지 않습니다"),
-
 
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),

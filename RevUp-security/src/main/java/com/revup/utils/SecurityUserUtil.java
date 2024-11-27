@@ -1,8 +1,6 @@
 package com.revup.utils;
 
 import com.revup.auth.dto.token.TokenInfo;
-import com.revup.error.AppException;
-import com.revup.error.ErrorCode;
 import com.revup.user.util.UserUtil;
 import com.revup.user.entity.User;
 import com.revup.user.service.UserReader;
@@ -28,7 +26,12 @@ public class SecurityUserUtil implements UserUtil {
     }
 
     @Override
+    public Long getSubject() {
+        return getPrincipal().id();
+    }
+
+    @Override
     public User getCurrentUser() {
-        return userReader.findByTokenInfo(getPrincipal());
+        return userReader.findById(getPrincipal().id());
     }
 }

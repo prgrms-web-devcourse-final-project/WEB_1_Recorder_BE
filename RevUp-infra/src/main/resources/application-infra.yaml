@@ -9,6 +9,19 @@ spring:
       host: ${redis.host}
       port: ${redis.port}
       password: ${redis.password}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 aws:
   s3:
     bucket: ${aws.s3.bucket}
@@ -20,6 +33,10 @@ aws:
     auto : ${aws.region.auto}
     stack:
       auto:${aws.region.stack.auto}
+
+refresh:
+  expiration_time: ${refresh.expiration_time}
+  key: ${refresh.key}
 ---
 spring:
   config:
