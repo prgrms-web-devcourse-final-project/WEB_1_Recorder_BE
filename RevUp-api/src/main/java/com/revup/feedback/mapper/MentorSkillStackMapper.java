@@ -11,7 +11,7 @@ public class MentorSkillStackMapper {
     public MentorSkillStack toEntity(Mentor mentor, String skillStack) {
         return MentorSkillStack.builder()
                 .mentor(mentor)
-                .skillStack(SkillStack.from(skillStack))
+                .skillStack(SkillStack.of(skillStack))
                 .build();
     }
 

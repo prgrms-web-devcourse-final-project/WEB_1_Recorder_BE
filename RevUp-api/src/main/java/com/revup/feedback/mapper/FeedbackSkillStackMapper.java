@@ -11,7 +11,7 @@ public class FeedbackSkillStackMapper {
     public FeedbackSkillStack toEntity(Feedback feedback, String skillStack) {
         return FeedbackSkillStack.builder()
                 .feedback(feedback)
-                .skillStack(SkillStack.from(skillStack))
+                .skillStack(SkillStack.of(skillStack))
                 .build();
     }
 

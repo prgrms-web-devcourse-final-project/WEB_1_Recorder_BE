@@ -10,4 +10,6 @@ public interface UserUtil {
     Long getSubject();
 
     User getCurrentUser();
+
+    void checkPermission(User user);
 }

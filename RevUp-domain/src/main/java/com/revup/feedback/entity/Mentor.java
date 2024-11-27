@@ -1,7 +1,6 @@
 package com.revup.feedback.entity;
 
 import com.revup.common.BaseTimeEntity;
-import com.revup.question.entity.QuestionTag;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
