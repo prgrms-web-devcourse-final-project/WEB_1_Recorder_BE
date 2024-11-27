@@ -17,9 +17,9 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public User loginOrSignup(User user) {
-        log.info("{}, {}", user.getSocialId(), user.getLoginType());
         User loginUser;
         try {
+            //소셜 서비스에서 받아온 정보에는 id값이 없음.
             loginUser = userReader.findByTokenInfo(
                     new TokenInfo(user.getId(), user.getSocialId(), user.getLoginType())
             );

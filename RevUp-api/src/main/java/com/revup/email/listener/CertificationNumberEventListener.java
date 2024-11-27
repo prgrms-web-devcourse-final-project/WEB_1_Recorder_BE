@@ -16,7 +16,9 @@ public class CertificationNumberEventListener {
 
     @Async
     @EventListener
-    public void certificationNumberEventListener(EmailCertificationNumberInfo info) {
+    public void certificationNumberEventListener(
+            EmailCertificationNumberInfo info
+    ) {
         emailService.sendMail(info);
     }
 }
