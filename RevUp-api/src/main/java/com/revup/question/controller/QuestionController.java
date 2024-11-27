@@ -55,6 +55,7 @@ public class QuestionController {
 
             Cookie cookie = new Cookie("viewed_questions", updatedViewedQuestions);
             cookie.setHttpOnly(true); // 클라이언트 스크립트에서 접근 불가
+            cookie.setPath("/api/v1/question");
             cookie.setMaxAge(24 * 60 * 60); // 24시간 유지
             response.addCookie(cookie);
         }
