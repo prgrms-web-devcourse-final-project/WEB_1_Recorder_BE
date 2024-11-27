@@ -2,7 +2,6 @@ package com.revup.question.dto.response;
 
 import com.revup.common.BooleanStatus;
 import com.revup.question.entity.Question;
-import com.revup.tag.dto.response.TagNameResponse;
 
 import java.util.List;
 
@@ -11,8 +10,9 @@ public record QuestionBriefResponse(
         String writer,
         String title,
         String createdAt,
-        Long readCount,
-        List<TagNameResponse> tags
+        int answerCount,
+        int readCount,
+        List<String> stacks
 ) {
     public static QuestionBriefResponse of(Question question) {
         return new QuestionBriefResponse(
@@ -20,11 +20,13 @@ public record QuestionBriefResponse(
                 question.getIsAnonymous().equals(BooleanStatus.FALSE) ? question.getUser().getNickname() : "익명",
                 question.getTitle(),
                 question.getCreatedAt().toString(),
+                question.getAnswerCount(),
                 question.getReadCount(),
-                question.getQuestionTags()
+                question.getStacks()
                         .stream()
-                        .map(questionTag -> TagNameResponse.of(questionTag.getTag()))
+                        .map(Enum::toString)
                         .toList()
         );
     }
+
 }

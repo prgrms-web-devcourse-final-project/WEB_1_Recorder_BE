@@ -1,16 +1,42 @@
 package com.revup.common;
 
-public enum SkillStack {
+import com.revup.common.exception.InvalidSkillStackException;
 
-    REACT,
+public enum SkillStack {
     JAVA,
-    KOTLIN,
     SPRING,
     SPRINGBOOT
-    ;
+    REACT,
+    PYTHON,
+    JAVASCRIPT,
+    TYPESCRIPT,
+    NODEJS,
+    VUEJS,
+    KOTLIN,
+    SWIFT,
+    C,
+    CPLUSPLUS,
+    RUBY,
+    PHP,
+    SCALA,
+    AWS,
+    GCP,
+    DOCKER,
+    KUBERNETES,
+    MONGODB,
+    MYSQL,
+    POSTGRESQL,
+    FLUTTER,
+    DART,
+    UNITY,
+    UNREAL;
 
-    public static SkillStack from(String value){
-        return SkillStack.valueOf(value);
+    public static SkillStack of(String stack) {
+        try {
+            return SkillStack.valueOf(stack.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidSkillStackException();
+        }
     }
 
 }
