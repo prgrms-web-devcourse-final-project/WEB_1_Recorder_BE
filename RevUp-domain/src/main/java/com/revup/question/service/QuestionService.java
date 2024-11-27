@@ -1,7 +1,7 @@
 package com.revup.question.service;
 
-import com.revup.image.entity.QuestionImage;
-import com.revup.image.repository.QuestionImageRepository;
+import com.revup.question.entity.QuestionImage;
+import com.revup.question.repository.QuestionImageRepository;
 import com.revup.question.criteria.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;

@@ -1,10 +1,12 @@
 package com.revup.answer.service;
 
 import com.revup.answer.entity.Answer;
+import com.revup.answer.entity.AnswerCode;
+import com.revup.answer.entity.AnswerImage;
 import com.revup.answer.exception.AnswerCreationConcurrencyException;
+import com.revup.answer.repository.AnswerCodeRepository;
+import com.revup.answer.repository.AnswerImageRepository;
 import com.revup.answer.repository.AnswerRepository;
-import com.revup.image.entity.AnswerImage;
-import com.revup.image.repository.AnswerImageRepository;
 import com.revup.question.entity.Question;
 import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionRepository;
@@ -25,6 +27,7 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final AnswerImageRepository answerImageRepository;
+    private final AnswerCodeRepository answerCodeRepository;
 
     @Transactional
     @Retryable(
@@ -32,7 +35,7 @@ public class AnswerService {
             maxAttempts = 5,
             backoff = @Backoff(delay = 500,multiplier = 2.0)
     )
-    public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images) {
+    public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images, List<AnswerCode> codes) {
 
         Question question = questionRepository.findByIdWithOptimisticLock(questionId)
                 .orElseThrow(() -> new QuestionNotFoundException(questionId));
@@ -44,6 +47,8 @@ public class AnswerService {
         answerRepository.save(answer);
 
         answerImageRepository.saveAll(images);
+
+        answerCodeRepository.saveAll(codes);
 
         return answer.getId();
     }

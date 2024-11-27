@@ -1,6 +1,6 @@
-package com.revup.image.repository;
+package com.revup.question.repository;
 
-import com.revup.image.entity.QuestionImage;
+import com.revup.question.entity.QuestionImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

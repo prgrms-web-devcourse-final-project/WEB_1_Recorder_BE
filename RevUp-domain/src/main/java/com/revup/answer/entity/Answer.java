@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Getter
 @Table(name = "answer")
@@ -44,6 +47,9 @@ public class Answer extends SoftDeleteEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    @OneToMany(mappedBy = "answer")
+    private Set<AnswerCode> codes;
+
     @Builder
     private Answer(
             User user,
@@ -65,5 +71,9 @@ public class Answer extends SoftDeleteEntity {
     public void assignQuestion(Question question){
         this.question = question;
         question.addAnswer(this);
+    }
+
+    public void addAnswerCode(AnswerCode answerCode) {
+        this.codes.add(answerCode);
     }
 }

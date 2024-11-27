@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.revup.answer.entity.QAnswer.answer;
+import static com.revup.answer.entity.QAnswerCode.answerCode;
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.question.entity.QQuestionCode.questionCode;
 import static com.revup.user.entity.QUser.user;

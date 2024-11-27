@@ -2,6 +2,8 @@ package com.revup.answer.dto.response;
 
 import com.revup.answer.entity.Answer;
 
+import java.util.List;
+
 public record AnswerDetailsResponse(
         Long id,
         String title,
@@ -9,7 +11,8 @@ public record AnswerDetailsResponse(
         String createdAt,
         boolean isAccept,
         int goodCount,
-        int badCount
+        int badCount,
+        List<AnswerCodeResponse> codes
 ) {
     public static AnswerDetailsResponse of(Answer answer){
         return new AnswerDetailsResponse(
@@ -19,7 +22,12 @@ public record AnswerDetailsResponse(
                 answer.getCreatedAt().toString(),
                 answer.getIsAccept().toBoolean(),
                 answer.getGoodCount(),
-                answer.getBadCount()
+                answer.getBadCount(),
+                answer.getCodes()
+                        .stream()
+                        .map(AnswerCodeResponse::of)
+                        .toList()
         );
     }
+
 }

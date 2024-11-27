@@ -1,6 +1,8 @@
-package com.revup.question.mapper;
+package com.revup.answer.mapper;
 
-import com.revup.question.dto.request.QuestionCodeCreateRequest;
+import com.revup.answer.dto.request.AnswerCodeCreateRequest;
+import com.revup.answer.entity.Answer;
+import com.revup.answer.entity.AnswerCode;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;
 import org.springframework.stereotype.Component;
@@ -9,19 +11,17 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-public class QuestionCodeMapper {
-
-    public List<QuestionCode> toEntities(List<QuestionCodeCreateRequest> codes, Question question) {
+public class AnswerCodeMapper {
+    public List<AnswerCode> toEntities(List<AnswerCodeCreateRequest> codes, Answer answer) {
         if (codes == null || codes.isEmpty()) {
             return Collections.emptyList();
         }
         return codes.stream()
-                .map(code -> QuestionCode.builder()
-                        .question(question)
+                .map(code -> AnswerCode.builder()
+                        .answer(answer)
                         .name(code.name())
                         .content(code.content())
                         .build())
                 .toList();
     }
-
 }

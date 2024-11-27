@@ -1,6 +1,6 @@
 package com.revup.question.usecase;
 
-import com.revup.image.entity.QuestionImage;
+import com.revup.question.entity.QuestionImage;
 import com.revup.question.adaptor.QuestionAdaptor;
 import com.revup.question.dto.QuestionUpdateRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
@@ -35,10 +35,10 @@ public class UpdateQuestionUseCase {
 
         questionMapper.updateEntity(request, question);
 
-        List<QuestionImage> images = imageMapper.toEntity(request.images(), question);
+        List<QuestionImage> images = imageMapper.toEntities(request.images(), question);
         questionService.updateImages(question.getId(), images);
 
-        List<QuestionCode> codes = codeMapper.toEntity(request.codes(), question);
+        List<QuestionCode> codes = codeMapper.toEntities(request.codes(), question);
         questionService.updateCodes(question.getId(), codes);
 
         return new QuestionIdResponse(question.getId());

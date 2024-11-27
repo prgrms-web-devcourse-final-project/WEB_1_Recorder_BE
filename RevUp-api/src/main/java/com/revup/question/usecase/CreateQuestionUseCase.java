@@ -1,6 +1,6 @@
 package com.revup.question.usecase;
 
-import com.revup.image.entity.QuestionImage;
+import com.revup.question.entity.QuestionImage;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.entity.Question;
@@ -32,9 +32,9 @@ public class CreateQuestionUseCase {
 
         Question question = questionMapper.toEntity(request, user);
 
-        List<QuestionCode> questionCodes = codeMapper.toEntity(request.codes(), question);
+        List<QuestionCode> questionCodes = codeMapper.toEntities(request.codes(), question);
 
-        List<QuestionImage> questionImages = imageMapper.toEntity(request.images(), question);
+        List<QuestionImage> questionImages = imageMapper.toEntities(request.images(), question);
 
         Long id = questionService.createQuestion(question, questionImages, questionCodes);
 
