@@ -7,6 +7,7 @@ import com.revup.question.dto.request.QuestionPageRequest;
 import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionDetailsResponse;
 import com.revup.question.dto.response.QuestionIdResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +28,8 @@ public class QuestionUseCases {
         return getQuestionListUseCase.execute(request);
     }
 
-    public QuestionDetailsResponse getDetails(Long id) {
-        return getQuestionDetailsUseCase.execute(id);
+    public QuestionDetailsResponse getDetails(Long id,boolean alreadyViewed) {
+        return getQuestionDetailsUseCase.execute(id,alreadyViewed);
     }
 
     public QuestionIdResponse update(QuestionUpdateRequest request) {

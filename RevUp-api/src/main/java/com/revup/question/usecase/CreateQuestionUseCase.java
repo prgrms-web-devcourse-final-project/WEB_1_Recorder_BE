@@ -1,6 +1,5 @@
 package com.revup.question.usecase;
 
-import com.revup.common.SkillStack;
 import com.revup.image.entity.QuestionImage;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor

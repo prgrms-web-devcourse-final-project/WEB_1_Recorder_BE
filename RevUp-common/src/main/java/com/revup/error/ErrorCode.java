@@ -55,7 +55,7 @@ public enum ErrorCode {
     S3_SERVICE(HttpStatus.BAD_REQUEST,"Amazon S3 서비스 오류: %s" ),
     S3_CLIENT(HttpStatus.BAD_REQUEST, "Amazon S3 클라이언트 오류: %s"),
 
-    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요"),
+    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요"),;
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;

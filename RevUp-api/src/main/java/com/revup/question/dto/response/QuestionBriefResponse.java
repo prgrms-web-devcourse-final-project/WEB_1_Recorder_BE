@@ -11,6 +11,7 @@ public record QuestionBriefResponse(
         String title,
         String createdAt,
         int answerCount,
+        int readCount,
         List<String> stacks
 ) {
     public static QuestionBriefResponse of(Question question) {
@@ -20,6 +21,7 @@ public record QuestionBriefResponse(
                 question.getTitle(),
                 question.getCreatedAt().toString(),
                 question.getAnswerCount(),
+                question.getReadCount(),
                 question.getStacks()
                         .stream()
                         .map(Enum::toString)

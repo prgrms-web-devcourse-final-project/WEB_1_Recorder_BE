@@ -13,5 +13,5 @@ public interface CustomQuestionRepository {
 
     long countQuestionsByCriteria(QuestionSearchCriteria criteria);
 
-    Optional<Question> findByIdWithTagsAndAnswers(Long id);
+    Optional<Question> findByIdWithStacksAndAnswersAndCodes(Long id);
 }

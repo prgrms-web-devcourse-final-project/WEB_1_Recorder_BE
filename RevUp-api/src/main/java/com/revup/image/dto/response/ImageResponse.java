@@ -1,6 +1,7 @@
 package com.revup.image.dto.response;
 
-public record ImageUrlResponse(
+public record ImageResponse(
+        String name,
         String imageUrl
 ) {
 }

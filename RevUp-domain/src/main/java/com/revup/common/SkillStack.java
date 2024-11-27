@@ -1,8 +1,6 @@
 package com.revup.common;
 
 import com.revup.common.exception.InvalidSkillStackException;
-import com.revup.question.entity.QuestionType;
-import com.revup.question.exception.InvalidQuestionTypeException;
 
 public enum SkillStack {
     JAVA,

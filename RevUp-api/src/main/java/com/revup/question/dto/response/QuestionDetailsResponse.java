@@ -10,7 +10,10 @@ public record QuestionDetailsResponse(
         String writer,
         String title,
         String createdAt,
+        int answerCount,
+        int readCount,
         List<String> stacks,
+        List<QuestionCodeResponse> codes,
         List<AnswerDetailsResponse> answers
 ) {
     public static QuestionDetailsResponse of(Question question) {
@@ -19,9 +22,15 @@ public record QuestionDetailsResponse(
                 question.getUser().getNickname(),
                 question.getTitle(),
                 question.getCreatedAt().toString(),
+                question.getAnswerCount(),
+                question.getReadCount(),
                 question.getStacks()
                         .stream()
                         .map(Enum::toString)
+                        .toList(),
+                question.getCodes()
+                        .stream()
+                        .map(QuestionCodeResponse::of)
                         .toList(),
                 question.getAnswers()
                         .stream()

@@ -44,8 +44,17 @@ public class QuestionService {
     }
 
     public Question getQuestionDetails(Long id) {
-        return questionRepository.findByIdWithTagsAndAnswers(id)
+        return questionRepository.findByIdWithStacksAndAnswersAndCodes(id)
                 .orElseThrow(() -> new QuestionNotFoundException(id));
+    }
+
+    @Transactional
+    public Question getQuestionDetailsWithIncrement(Long id) {
+        Question question = questionRepository.findByIdWithStacksAndAnswersAndCodes(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+        question.increaseReadCount();
+
+        return question;
     }
 
     @Transactional
@@ -61,10 +70,9 @@ public class QuestionService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new QuestionNotFoundException(id));
-
+    public void delete(Question question) {
         question.softDelete();
     }
+
+
 }

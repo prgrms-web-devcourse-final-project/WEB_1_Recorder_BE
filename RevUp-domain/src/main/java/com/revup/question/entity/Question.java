@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +50,8 @@ public class Question extends SoftDeleteEntity {
 
     private int answerCount;
 
+    private int readCount;
+
     @ElementCollection(targetClass = SkillStack.class, fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private Set<SkillStack> stacks;
@@ -63,6 +66,9 @@ public class Question extends SoftDeleteEntity {
 
     @OneToMany(mappedBy = "question")
     private List<Answer> answers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "question")
+    private Set<QuestionCode> codes = new HashSet<>();
 
     @Builder
     private Question(
@@ -83,6 +89,7 @@ public class Question extends SoftDeleteEntity {
         this.githubLink = githubLink;
         this.githubLinkReveal = githubLinkReveal;
         this.answerCount = 0;
+        this.readCount = 0;
         this.isAnonymous = isAnonymous;
         this.user = user;
         this.stacks = stacks;
@@ -111,8 +118,15 @@ public class Question extends SoftDeleteEntity {
         this.answers.add(answer);
     }
 
+    public void addQuestionCode(QuestionCode code){
+        this.codes.add(code);
+    }
+
     public void increaseAnswerCount() {
         this.answerCount++;
     }
 
+    public void increaseReadCount() {
+        this.readCount++;
+    }
 }

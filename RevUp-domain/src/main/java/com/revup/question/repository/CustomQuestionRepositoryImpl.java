@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.revup.common.SkillStack;
 import com.revup.question.criteria.QuestionSearchCriteria;
+import com.revup.question.entity.QQuestionCode;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionState;
 import com.revup.question.entity.QuestionType;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import static com.revup.answer.entity.QAnswer.answer;
 import static com.revup.question.entity.QQuestion.question;
+import static com.revup.question.entity.QQuestionCode.questionCode;
 import static com.revup.user.entity.QUser.user;
 
 @RequiredArgsConstructor
@@ -56,11 +58,12 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
     }
 
     @Override
-    public Optional<Question> findByIdWithTagsAndAnswers(Long id) {
+    public Optional<Question> findByIdWithStacksAndAnswersAndCodes(Long id) {
         return Optional.ofNullable(queryFactory.selectFrom(question)
                 .leftJoin(question.user, user).fetchJoin()
                 .innerJoin(question.stacks).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
+                .leftJoin(question.codes, questionCode).fetchJoin()
                 .where(question.id.eq(id))
                 .fetchOne());
     }
