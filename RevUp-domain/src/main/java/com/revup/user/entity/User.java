@@ -34,7 +34,6 @@ public class User extends BaseTimeEntity {
     @Column(length = 50)
     private String socialEmail;
 
-
     @Builder
     private User(
                 LoginType loginType,
