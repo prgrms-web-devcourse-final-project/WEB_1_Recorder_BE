@@ -5,7 +5,7 @@ import com.revup.common.exception.InvalidSkillStackException;
 public enum SkillStack {
     JAVA,
     SPRING,
-    SPRINGBOOT
+    SPRINGBOOT,
     REACT,
     PYTHON,
     JAVASCRIPT,

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserAdaptor {
     private final UserRepository userRepository;
-    private final UserUtil userUtil;
 
     public User findById(Long userId){
         return userRepository.findById(userId)
@@ -31,9 +30,4 @@ public class UserAdaptor {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
-    public void checkPermission(User user){
-        if (!user.equals(userUtil.getCurrentUser())) {
-            throw new UserPermissionException();
-        }
-    }
 }

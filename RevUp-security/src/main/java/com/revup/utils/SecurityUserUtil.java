@@ -1,6 +1,7 @@
 package com.revup.utils;
 
 import com.revup.auth.dto.token.TokenInfo;
+import com.revup.user.exception.UserPermissionException;
 import com.revup.user.util.UserUtil;
 import com.revup.user.entity.User;
 import com.revup.user.service.UserReader;
@@ -33,5 +34,12 @@ public class SecurityUserUtil implements UserUtil {
     @Override
     public User getCurrentUser() {
         return userReader.findById(getPrincipal().id());
+    }
+
+    @Override
+    public void checkPermission(User user) {
+        if (!user.equals(getCurrentUser())) {
+            throw new UserPermissionException();
+        }
     }
 }

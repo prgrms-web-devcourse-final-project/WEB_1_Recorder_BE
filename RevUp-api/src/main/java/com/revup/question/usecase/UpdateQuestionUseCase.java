@@ -11,6 +11,7 @@ import com.revup.question.mapper.QuestionImageMapper;
 import com.revup.question.mapper.QuestionMapper;
 import com.revup.question.service.QuestionService;
 import com.revup.user.adaptor.UserAdaptor;
+import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,14 +25,14 @@ public class UpdateQuestionUseCase {
     private final QuestionMapper questionMapper;
     private final QuestionImageMapper imageMapper;
     private final QuestionCodeMapper codeMapper;
-    private final UserAdaptor userAdaptor;
+    private final UserUtil userUtil;
 
     public QuestionIdResponse execute(QuestionUpdateRequest request) {
         // Question 조회
         Question question = questionAdaptor.findById(request.id());
 
         // 권한 검증
-        userAdaptor.checkPermission(question.getUser());
+        userUtil.checkPermission(question.getUser());
 
         questionMapper.updateEntity(request, question);
 
