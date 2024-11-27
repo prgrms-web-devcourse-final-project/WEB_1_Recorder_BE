@@ -17,9 +17,6 @@ public class UpdateProfileUseCase {
     private final UserUtil userUtil;
 
 
-    /**
-     * 회원 정보 업데이트
-     */
     public UpdateProfileResponse execute(UpdateProfileRequest request) {
         User currentUser = userUtil.getCurrentUser();
         User updatedUser = userUpdater.updateProfile(currentUser, request.toProfile());

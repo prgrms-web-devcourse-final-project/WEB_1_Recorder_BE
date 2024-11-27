@@ -21,8 +21,10 @@ public class UpdateEmailUseCase {
     public UpdateEmailResponse execute(UpdateEmailRequest request) {
         CertificationKey key = request.toCertificationKey();
         CertificationNumber inputNumber = request.toCertificationNumber();
+
         certificationService.validateCertificationNumber(key, inputNumber);
         certificationService.deleteNumber(key);
+
         User currentUser = userUtil.getCurrentUser();
         User user = userUpdater.updateEmail(currentUser, request.toEmail());
         return userMapper.toUpdateEmailResponse(user);
