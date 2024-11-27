@@ -1,9 +1,10 @@
 package com.revup.user.entity;
 
-import com.revup.common.BaseTimeEntity;
+import com.revup.common.SoftDeleteEntity;
 import com.revup.user.dto.Email;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter @ToString
@@ -14,8 +15,8 @@ import lombok.*;
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
-public class User extends BaseTimeEntity {
+@SQLRestriction("is_deleted = 'FALSE'")
+public class User extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
