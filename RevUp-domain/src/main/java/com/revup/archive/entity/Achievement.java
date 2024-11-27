@@ -1,5 +1,6 @@
 package com.revup.archive.entity;
 
+import com.revup.achieve.AchieveType;
 import com.revup.common.SoftDeleteEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,14 +27,14 @@ public class Achievement extends SoftDeleteEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private ArchiveType type;
+    private AchieveType type;
 
     private Integer standard;
 
     @Builder
     private Achievement(
             String description,
-            ArchiveType type,
+            AchieveType type,
             Integer standard
     ) {
         this.description = description;
