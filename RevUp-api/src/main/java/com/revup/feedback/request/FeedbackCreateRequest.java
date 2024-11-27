@@ -1,4 +1,4 @@
-package com.revup.feedback.controller.request;
+package com.revup.feedback.request;
 
 import lombok.Data;
 
@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 public class FeedbackCreateRequest {
 
-    private Long studentId;
     private Long teacherId;
     private String type;
     private String title;
@@ -16,5 +15,7 @@ public class FeedbackCreateRequest {
     private String description;
 
     private List<FeedbackCodeCreateRequest> feedbackCodes;
+
+    private List<String> skillStacks;
 
 }
