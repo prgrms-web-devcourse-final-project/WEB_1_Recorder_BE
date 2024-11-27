@@ -58,6 +58,10 @@ public class User extends BaseTimeEntity {
         this.profile = profile;
     }
 
+    public String getNickname() {
+        return this.profile.getNickname();
+    }
+
     public void updateBusinessEmail(Email email) {
         this.businessEmail = email.value();
     }
