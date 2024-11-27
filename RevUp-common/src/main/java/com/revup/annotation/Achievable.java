@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@interface Achievable {
+public @interface Achievable {
 
     AchieveType type();
 }
