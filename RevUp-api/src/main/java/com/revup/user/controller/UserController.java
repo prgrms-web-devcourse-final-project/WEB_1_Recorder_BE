@@ -30,7 +30,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @PatchMapping
+    @PostMapping
     public ResponseEntity<ApiResponse<UpdateProfileResponse>> updateProfile(
             @RequestBody UpdateProfileRequest request
     ) {
