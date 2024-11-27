@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +49,7 @@ public class Answer extends SoftDeleteEntity {
     private Question question;
 
     @OneToMany(mappedBy = "answer")
-    private Set<AnswerCode> codes;
+    private Set<AnswerCode> codes = new HashSet<>();
 
     @Builder
     private Answer(
