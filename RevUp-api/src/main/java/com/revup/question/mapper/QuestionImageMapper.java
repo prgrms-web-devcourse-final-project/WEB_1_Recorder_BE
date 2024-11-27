@@ -17,9 +17,11 @@ public class QuestionImageMapper {
         }
         return images.stream()
                 .map(imageRequest -> QuestionImage.builder()
+                        .name(imageRequest.name())
                         .imageUrl(imageRequest.imageUrl())
                         .question(question)
                         .build())
                 .toList();
     }
+
 }

@@ -17,6 +17,8 @@ public class AnswerImage extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,9 +28,11 @@ public class AnswerImage extends BaseTimeEntity {
     @Builder
     private AnswerImage(
             String imageUrl,
+            String name,
             Answer answer) {
 
         this.imageUrl = imageUrl;
+        this.name = name;
         this.answer = answer;
     }
 }

@@ -28,9 +28,11 @@ public class AnswerMapper {
         }
         return images.stream()
                 .map(imageRequest -> AnswerImage.builder()
+                        .name(imageRequest.name())
                         .imageUrl(imageRequest.imageUrl())
                         .answer(answer)
                         .build())
                 .toList();
     }
+    
 }
