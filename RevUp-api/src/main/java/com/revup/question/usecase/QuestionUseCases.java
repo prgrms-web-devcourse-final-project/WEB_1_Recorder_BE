@@ -1,5 +1,6 @@
 package com.revup.question.usecase;
 
+import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
 import com.revup.question.dto.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
@@ -11,12 +12,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class QuestionUseCases {
     private final CreateQuestionUseCase createQuestionUseCase;
     private final GetQuestionListUseCase getQuestionListUseCase;
     private final GetQuestionDetailsUseCase getQuestionDetailsUseCase;
+    private final GetPopularQuestionsUseCase getPopularQuestionsUseCase;
+    private final GetRecentQuestionUseCase getRecentQuestionUseCase;
+    private final GetMyQuestionsUseCase getMyQuestionsUseCase;
     private final UpdateQuestionUseCase updateQuestionUseCase;
     private final DeleteQuestionUseCase deleteQuestionUseCase;
 
@@ -32,6 +38,18 @@ public class QuestionUseCases {
         return getQuestionDetailsUseCase.execute(id,alreadyViewed);
     }
 
+    public List<ApiResponse<QuestionBriefResponse>> getPopulars() {
+        return getPopularQuestionsUseCase.execute();
+    }
+
+    public ApiResponse<List<QuestionBriefResponse>> getRecent() {
+        return getRecentQuestionUseCase.execute();
+    }
+
+    public ApiResponse<List<QuestionBriefResponse>> getMine() {
+        return getRecentQuestionUseCase.execute();
+    }
+
     public QuestionIdResponse update(QuestionUpdateRequest request) {
         return updateQuestionUseCase.execute(request);
     }
@@ -39,4 +57,6 @@ public class QuestionUseCases {
     public void delete(Long id) {
         deleteQuestionUseCase.execute(id);
     }
+
+
 }

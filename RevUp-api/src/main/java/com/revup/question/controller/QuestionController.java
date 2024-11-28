@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.revup.global.dto.ApiResponse.success;
 
 @RestController
@@ -61,6 +63,21 @@ public class QuestionController {
         }
 
         return ResponseEntity.ok().body(success(questionDetailsResponse));
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<ApiResponse<QuestionBriefResponse>>> getPopularQuestions(){
+        return ResponseEntity.ok().body(questionUseCases.getPopulars());
+    }
+
+    @GetMapping("/recent")
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getRecentQuestions(){
+        return ResponseEntity.ok().body(questionUseCases.getRecent());
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(){
+        return ResponseEntity.ok().body(questionUseCases.getMine());
     }
 
 
