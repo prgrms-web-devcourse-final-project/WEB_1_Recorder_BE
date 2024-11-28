@@ -8,6 +8,7 @@ import com.revup.question.entity.QuestionCode;
 import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionCodeRepository;
 import com.revup.question.repository.QuestionRepository;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +69,10 @@ public class QuestionService {
         return questionRepository.findQuestionsByCreatedAt(limit);
     }
 
+    public List<Question> getMyQuestions(User currentUser, Long lastId, int limit) {
+        return questionRepository.findQuestionsByUserAndLastId(currentUser, lastId, limit);
+    }
+
     @Transactional
     public void updateImages(Long id, List<QuestionImage> images) {
         questionImageRepository.deleteByQuestionId(id);
@@ -84,7 +89,6 @@ public class QuestionService {
     public void delete(Question question) {
         question.softDelete();
     }
-
 
 
 }

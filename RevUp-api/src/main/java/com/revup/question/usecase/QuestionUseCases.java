@@ -46,8 +46,8 @@ public class QuestionUseCases {
         return getRecentQuestionUseCase.execute();
     }
 
-    public List<QuestionBriefResponse> getMine() {
-        return getRecentQuestionUseCase.execute();
+    public List<QuestionBriefResponse> getMine(Long lastId) {
+        return getMyQuestionsUseCase.execute(lastId);
     }
 
     public QuestionIdResponse update(QuestionUpdateRequest request) {

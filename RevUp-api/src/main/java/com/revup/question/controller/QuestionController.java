@@ -4,6 +4,7 @@ import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
 import com.revup.question.dto.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
+import com.revup.question.dto.request.QuestionMyRequest;
 import com.revup.question.dto.request.QuestionPageRequest;
 import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionDetailsResponse;
@@ -76,8 +77,8 @@ public class QuestionController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(){
-        return ResponseEntity.ok().body(success(questionUseCases.getMine()));
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(@RequestParam(required = false) Long lsatId) {
+        return ResponseEntity.ok().body(success(questionUseCases.getMine(lsatId)));
     }
 
 
