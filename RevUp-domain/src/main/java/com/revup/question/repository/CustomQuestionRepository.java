@@ -4,6 +4,7 @@ import com.revup.question.criteria.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ public interface CustomQuestionRepository {
     long countQuestionsByCriteria(QuestionSearchCriteria criteria);
 
     Optional<Question> findByIdWithStacksAndAnswersAndCodes(Long id);
+
+    List<Question> findQuestionsByReadCountAndAnswerCount(int limit, LocalDateTime from);
 }

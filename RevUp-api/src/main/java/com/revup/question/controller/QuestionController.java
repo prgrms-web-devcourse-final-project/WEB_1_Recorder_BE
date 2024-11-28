@@ -66,8 +66,8 @@ public class QuestionController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<List<ApiResponse<QuestionBriefResponse>>> getPopularQuestions(){
-        return ResponseEntity.ok().body(questionUseCases.getPopulars());
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getPopularQuestions(){
+        return ResponseEntity.ok().body(success(questionUseCases.getPopulars()));
     }
 
     @GetMapping("/recent")

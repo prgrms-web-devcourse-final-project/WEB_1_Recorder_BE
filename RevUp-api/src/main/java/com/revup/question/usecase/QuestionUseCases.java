@@ -38,15 +38,15 @@ public class QuestionUseCases {
         return getQuestionDetailsUseCase.execute(id,alreadyViewed);
     }
 
-    public List<ApiResponse<QuestionBriefResponse>> getPopulars() {
+    public List<QuestionBriefResponse> getPopulars() {
         return getPopularQuestionsUseCase.execute();
     }
 
-    public ApiResponse<List<QuestionBriefResponse>> getRecent() {
+    public List<QuestionBriefResponse> getRecent() {
         return getRecentQuestionUseCase.execute();
     }
 
-    public ApiResponse<List<QuestionBriefResponse>> getMine() {
+    public List<QuestionBriefResponse> getMine() {
         return getRecentQuestionUseCase.execute();
     }
 

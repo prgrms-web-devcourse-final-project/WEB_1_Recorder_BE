@@ -10,6 +10,7 @@ import com.revup.question.entity.QuestionState;
 import com.revup.question.entity.QuestionType;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +101,27 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
 
         return builder;
     }
+
+    @Override
+    public List<Question> findQuestionsByReadCountAndAnswerCount(int limit, LocalDateTime from) {
+
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .where(question.createdAt.after(from))
+                .orderBy(question.readCount.desc(), question.answerCount.desc())
+                .limit(limit)
+                .fetch();
+
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
+                .where(
+                        question.id.in(questionIds)
+                )
+                .fetch();
+    }
+
+
 
 
 }

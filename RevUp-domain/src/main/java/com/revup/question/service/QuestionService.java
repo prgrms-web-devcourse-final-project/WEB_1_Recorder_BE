@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,6 +58,12 @@ public class QuestionService {
         return question;
     }
 
+    public List<Question> getPopularQuestions(int limit,int days) {
+        LocalDateTime from = LocalDateTime.now().minusDays(days);
+        return questionRepository.findQuestionsByReadCountAndAnswerCount(limit, from);
+
+    }
+
     @Transactional
     public void updateImages(Long id, List<QuestionImage> images) {
         questionImageRepository.deleteByQuestionId(id);
@@ -73,6 +80,7 @@ public class QuestionService {
     public void delete(Question question) {
         question.softDelete();
     }
+
 
 
 }
