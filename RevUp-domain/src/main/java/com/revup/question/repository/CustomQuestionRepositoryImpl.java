@@ -121,7 +121,22 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .fetch();
     }
 
+    @Override
+    public List<Question> findQuestionsByCreatedAt(int limit) {
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .orderBy(question.createdAt.desc())
+                .limit(limit)
+                .fetch();
 
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
+                .where(
+                        question.id.in(questionIds)
+                )
+                .fetch();
+    }
 
 
 }

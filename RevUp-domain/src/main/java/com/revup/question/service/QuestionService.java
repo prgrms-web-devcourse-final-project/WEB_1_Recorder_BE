@@ -64,6 +64,10 @@ public class QuestionService {
 
     }
 
+    public List<Question> getRecentQuestions(int limit) {
+        return questionRepository.findQuestionsByCreatedAt(limit);
+    }
+
     @Transactional
     public void updateImages(Long id, List<QuestionImage> images) {
         questionImageRepository.deleteByQuestionId(id);

@@ -72,12 +72,12 @@ public class QuestionController {
 
     @GetMapping("/recent")
     public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getRecentQuestions(){
-        return ResponseEntity.ok().body(questionUseCases.getRecent());
+        return ResponseEntity.ok().body(success(questionUseCases.getRecent()));
     }
 
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(){
-        return ResponseEntity.ok().body(questionUseCases.getMine());
+        return ResponseEntity.ok().body(success(questionUseCases.getMine()));
     }
 
 

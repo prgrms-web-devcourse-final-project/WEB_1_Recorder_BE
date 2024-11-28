@@ -17,4 +17,6 @@ public interface CustomQuestionRepository {
     Optional<Question> findByIdWithStacksAndAnswersAndCodes(Long id);
 
     List<Question> findQuestionsByReadCountAndAnswerCount(int limit, LocalDateTime from);
+
+    List<Question> findQuestionsByCreatedAt(int limit);
 }
