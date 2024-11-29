@@ -16,12 +16,11 @@ public class GetMyQuestionsUseCase {
     private final QuestionService questionService;
     private final UserUtil userUtil;
 
-    private static final int LIMIT = 5;
 
-    public List<QuestionBriefResponse> execute(Long lastId) {
+    public List<QuestionBriefResponse> execute(Long lastId,int size) {
         User currentUser = userUtil.getCurrentUser();
 
-        List<Question> myQuestions = questionService.getMyQuestions(currentUser, lastId, LIMIT);
+        List<Question> myQuestions = questionService.getMyQuestions(currentUser, lastId, size);
 
         return myQuestions.stream()
                 .map(QuestionBriefResponse::of)

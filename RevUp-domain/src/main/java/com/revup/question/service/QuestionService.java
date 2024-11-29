@@ -59,7 +59,7 @@ public class QuestionService {
         return question;
     }
 
-    public List<Question> getPopularQuestions(int limit,int days) {
+    public List<Question> getPopularQuestions(int limit, int days) {
         LocalDateTime from = LocalDateTime.now().minusDays(days);
         return questionRepository.findQuestionsByReadCountAndAnswerCount(limit, from);
 
@@ -67,6 +67,10 @@ public class QuestionService {
 
     public List<Question> getRecentQuestions(int limit) {
         return questionRepository.findQuestionsByCreatedAt(limit);
+    }
+
+    public List<Question> getByStack(int limit, String stack) {
+        return questionRepository.findQuestionsByStack(limit, stack);
     }
 
     public List<Question> getMyQuestions(User currentUser, Long lastId, int limit) {

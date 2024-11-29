@@ -4,7 +4,6 @@ import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
 import com.revup.question.dto.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
-import com.revup.question.dto.request.QuestionMyRequest;
 import com.revup.question.dto.request.QuestionPageRequest;
 import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionDetailsResponse;
@@ -26,18 +25,24 @@ import static com.revup.global.dto.ApiResponse.success;
 @RequestMapping("/api/v1/question")
 @RequiredArgsConstructor
 public class QuestionController {
-    private final QuestionUseCases questionUseCases;
+    private final CreateQuestionUseCase createQuestionUseCase;
+    private final UpdateQuestionUseCase updateQuestionUseCase;
+    private final DeleteQuestionUseCase deleteQuestionUseCase;
+    private final GetQuestionListUseCase getQuestionListUseCase;
+    private final GetQuestionDetailsUseCase getQuestionDetailsUseCase;
+    private final GetMyQuestionsUseCase getMyQuestionsUseCase;
+    private final GetSpecificQuestionsUseCase getSpecificQuestionsUseCase;
 
     @PostMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(success(questionUseCases.create(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(success(createQuestionUseCase.execute(request)));
 
     }
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<Page<QuestionBriefResponse>>> getQuestionList(@Valid QuestionPageRequest request) {
-        return ResponseEntity.ok().body(success(questionUseCases.getList(request)));
+        return ResponseEntity.ok().body(success(getQuestionListUseCase.execute(request)));
     }
 
     @GetMapping
@@ -48,7 +53,7 @@ public class QuestionController {
         // 쿠키에서 해당 ID 조회 여부 확인
         boolean alreadyViewed = viewedQuestions.contains(id.toString());
 
-        QuestionDetailsResponse questionDetailsResponse = questionUseCases.getDetails(id, alreadyViewed);
+        QuestionDetailsResponse questionDetailsResponse = getQuestionDetailsUseCase.execute(id, alreadyViewed);
 
         // 조회수가 증가된 경우에만 쿠키 업데이트
         if (!alreadyViewed) {
@@ -67,29 +72,39 @@ public class QuestionController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getPopularQuestions(){
-        return ResponseEntity.ok().body(success(questionUseCases.getPopulars()));
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getPopularQuestions(@RequestParam int size,
+                                                                                        @RequestParam int days
+    ) {
+        return ResponseEntity.ok().body(success(getSpecificQuestionsUseCase.getPopulars(size, days)));
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getRecentQuestions(){
-        return ResponseEntity.ok().body(success(questionUseCases.getRecent()));
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getRecentQuestions(@RequestParam int size){
+        return ResponseEntity.ok().body(success(getSpecificQuestionsUseCase.getRecent(size)));
+    }
+
+    @GetMapping("/stack")
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getStackQuestions(@RequestParam int size,
+                                                                                      @RequestParam String stack){
+        return ResponseEntity.ok().body(success(getSpecificQuestionsUseCase.getByStack(size, stack)));
     }
 
     @GetMapping("/my")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(@RequestParam(required = false) Long lsatId) {
-        return ResponseEntity.ok().body(success(questionUseCases.getMine(lsatId)));
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(@RequestParam(required = false) Long lastId,
+                                                                                      @RequestParam int size
+    ) {
+        return ResponseEntity.ok().body(success(getMyQuestionsUseCase.execute(lastId, size)));
     }
 
 
     @PutMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> update(@Valid @RequestBody QuestionUpdateRequest request){
-        return ResponseEntity.ok().body(success((questionUseCases.update(request))));
+        return ResponseEntity.ok().body(success((updateQuestionUseCase.execute(request))));
     }
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam Long id) {
-        questionUseCases.delete(id);
+        deleteQuestionUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
 

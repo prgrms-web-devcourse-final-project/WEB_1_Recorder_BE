@@ -22,4 +22,6 @@ public interface CustomQuestionRepository {
     List<Question> findQuestionsByCreatedAt(int limit);
 
     List<Question> findQuestionsByUserAndLastId(User currentUser, Long lastId, int limit);
+
+    List<Question> findQuestionsByStack(int limit, String stack);
 }
