@@ -77,4 +77,10 @@ public class Answer extends SoftDeleteEntity {
     public void addAnswerCode(AnswerCode answerCode) {
         this.codes.add(answerCode);
     }
+
+
+    public void adoptWithReview(AdoptedReview adoptedReview) {
+        this.isAccept = BooleanStatus.TRUE;
+        this.review = adoptedReview;
+    }
 }
