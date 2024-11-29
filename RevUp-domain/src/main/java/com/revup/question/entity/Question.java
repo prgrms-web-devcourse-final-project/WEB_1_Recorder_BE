@@ -129,4 +129,9 @@ public class Question extends SoftDeleteEntity {
     public void increaseReadCount() {
         this.readCount++;
     }
+
+    public void adoptAnswer() {
+        this.state = QuestionState.ADOPTED;
+    }
+
 }

@@ -3,12 +3,15 @@ package com.revup.question.controller;
 import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
 import com.revup.question.dto.QuestionUpdateRequest;
+import com.revup.question.dto.request.QuestionAcceptAnswerRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.dto.request.QuestionPageRequest;
 import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionDetailsResponse;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.usecase.*;
+import com.revup.user.entity.User;
+import com.revup.user.util.UserUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -32,6 +35,7 @@ public class QuestionController {
     private final GetQuestionDetailsUseCase getQuestionDetailsUseCase;
     private final GetMyQuestionsUseCase getMyQuestionsUseCase;
     private final GetSpecificQuestionsUseCase getSpecificQuestionsUseCase;
+    private final UserUtil userUtil;
 
     @PostMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request) {
@@ -96,10 +100,15 @@ public class QuestionController {
         return ResponseEntity.ok().body(success(getMyQuestionsUseCase.execute(lastId, size)));
     }
 
+    @PatchMapping("/accept")
+    public ResponseEntity<ApiResponse<QuestionIdResponse>> acceptAnswer(@RequestBody QuestionAcceptAnswerRequest request){
+        User currentUser = userUtil.getCurrentUser();
+        return ResponseEntity.ok().body(success(updateQuestionUseCase.acceptAnswer(request, currentUser)));
+    }
 
     @PutMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> update(@Valid @RequestBody QuestionUpdateRequest request){
-        return ResponseEntity.ok().body(success((updateQuestionUseCase.execute(request))));
+        return ResponseEntity.ok().body(success((updateQuestionUseCase.updateQuestion(request))));
     }
 
     @DeleteMapping

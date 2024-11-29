@@ -21,4 +21,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, Custo
             "LIMIT 5",
             nativeQuery = true)
     List<String> findTop5StacksNative();
+
+    @Query("select q from Question q join fetch q.user u where q.id = :questionId")
+    Optional<Question> findByIdWithUser(Long questionId);
 }
