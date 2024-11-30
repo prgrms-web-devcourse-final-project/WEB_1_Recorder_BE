@@ -118,6 +118,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(
                         question.id.in(questionIds)
                 )
+                .orderBy(question.createdAt.desc())
                 .fetch();
     }
 
@@ -135,6 +136,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(
                         question.id.in(questionIds)
                 )
+                .orderBy(question.createdAt.desc())
                 .fetch();
     }
 
@@ -163,6 +165,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(
                         question.id.in(questionIds)
                 )
+                .orderBy(question.createdAt.desc())
                 .fetch();
     }
 
