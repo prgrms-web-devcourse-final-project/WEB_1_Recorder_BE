@@ -8,6 +8,7 @@ import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionState;
 import com.revup.question.entity.QuestionType;
 import com.revup.user.entity.User;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.revup.answer.entity.QAnswer.answer;
+import static com.revup.answer.entity.QAnswerCode.answerCode;
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.question.entity.QQuestionCode.questionCode;
 import static com.revup.user.entity.QUser.user;
@@ -64,7 +66,9 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .leftJoin(question.user, user).fetchJoin()
                 .innerJoin(question.stacks).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
+                .leftJoin(answer.codes, answerCode).fetchJoin()
                 .leftJoin(question.codes, questionCode).fetchJoin()
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .where(question.id.eq(id))
                 .fetchOne());
     }
