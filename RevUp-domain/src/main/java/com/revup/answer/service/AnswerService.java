@@ -33,7 +33,7 @@ public class AnswerService {
     @Retryable(
             retryFor = {OptimisticLockingFailureException.class},
             maxAttempts = 5,
-            backoff = @Backoff(delay = 500,multiplier = 2.0)
+            backoff = @Backoff(delay = 500, multiplier = 2.0)
     )
     public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images, List<AnswerCode> codes) {
 
@@ -47,6 +47,11 @@ public class AnswerService {
 
         // 답변 수 증가
         question.increaseAnswerCount();
+
+        // 연관관계 매핑
+        for(AnswerCode code : codes){
+            answer.addAnswerCode(code);
+        }
 
         // 답변 저장
         answerRepository.save(answer);

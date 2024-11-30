@@ -36,7 +36,11 @@ public class QuestionService {
 
     @Transactional
     public Long createQuestion(Question question, List<QuestionImage> images, List<QuestionCode> codes) {
+        // 연관관계 매핑
+        for (QuestionCode code : codes) {
+            question.addQuestionCode(code);
 
+        }
         questionRepository.save(question);
 
         questionImageRepository.saveAll(images);
