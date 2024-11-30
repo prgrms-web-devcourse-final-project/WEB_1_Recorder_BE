@@ -71,7 +71,6 @@ public class Answer extends SoftDeleteEntity {
 
     public void assignQuestion(Question question){
         this.question = question;
-        question.addAnswer(this);
     }
 
     public void addAnswerCode(AnswerCode answerCode) {

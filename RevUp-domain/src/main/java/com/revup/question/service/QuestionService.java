@@ -84,16 +84,48 @@ public class QuestionService {
     }
 
     @Transactional
-    public void updateImages(Long id, List<QuestionImage> images) {
+    public Long updateQuestion(Long id, User currentUser, Question question, List<QuestionImage> images, List<QuestionCode> codes) {
+        //질문 조회
+        Question existQuestion = questionRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+
+        // 권한 검증
+        checkPermission(currentUser, existQuestion.getUser());
+
+        // 질문 업데이트
+        existQuestion.update(
+                question.getTitle(),
+                question.getType(),
+                question.getContent(),
+                question.getGithubLink(),
+                question.getGithubLinkReveal(),
+                question.getIsAnonymous(),
+                question.getStacks()
+        );
+
+        // 연관관계 매핑
+        for(QuestionImage image:images){
+            image.assignQuestion(existQuestion);
+        }
+
+        // 연관관계 매핑
+        for (QuestionCode code:codes){
+            code.assignQuestion(existQuestion);
+            existQuestion.addQuestionCode(code);
+        }
+
+        // 관련 이미지 삭제 후 새로 저장
         questionImageRepository.deleteByQuestionId(id);
         questionImageRepository.saveAll(images);
-    }
 
-    @Transactional
-    public void updateCodes(Long id, List<QuestionCode> codes) {
+        //관련 코드 삭제 후 새로 저장
         questionCodeRepository.deleteByQuestionId(id);
         questionCodeRepository.saveAll(codes);
+
+        return existQuestion.getId();
+
     }
+
 
     @Transactional
     public Long adoptAnswer(Long questionId, Long answerId, String review, User currentUser) {

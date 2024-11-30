@@ -24,4 +24,16 @@ public class QuestionImageMapper {
                 .toList();
     }
 
+    public List<QuestionImage> toUpdateEntity(List<ImageRequest> images){
+        if (images == null || images.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return images.stream()
+                .map(imageRequest -> QuestionImage.builder()
+                        .name(imageRequest.name())
+                        .imageUrl(imageRequest.imageUrl())
+                        .build())
+                .toList();
+    }
+
 }

@@ -37,7 +37,8 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request) {
-        return success(HttpStatus.CREATED, createQuestionUseCase.execute(request));
+        User currentUser = userUtil.getCurrentUser();
+        return success(HttpStatus.CREATED, createQuestionUseCase.execute(request, currentUser));
 
     }
 
@@ -71,9 +72,9 @@ public class QuestionController {
 
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(@RequestParam(required = false) Long lastId,
-                                                                                      @RequestParam int size
-    ) {
-        return success(getMyQuestionsUseCase.execute(lastId, size));
+                                                                                      @RequestParam int size) {
+        User currentUser = userUtil.getCurrentUser();
+        return success(getMyQuestionsUseCase.execute(lastId, size, currentUser));
     }
 
     @PatchMapping("/accept")
@@ -84,7 +85,8 @@ public class QuestionController {
 
     @PutMapping
     public ResponseEntity<ApiResponse<QuestionIdResponse>> update(@Valid @RequestBody QuestionUpdateRequest request){
-        return success((updateQuestionUseCase.updateQuestion(request)));
+        User currentUser = userUtil.getCurrentUser();
+        return success((updateQuestionUseCase.updateQuestion(request, currentUser)));
     }
 
     @DeleteMapping

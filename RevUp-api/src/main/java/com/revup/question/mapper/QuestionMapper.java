@@ -31,16 +31,16 @@ public class QuestionMapper {
     }
 
 
-    public void updateEntity(QuestionUpdateRequest request, Question question) {
-        question.update(
-                request.title(),
-                QuestionType.of(request.type()),
-                request.content(),
-                request.githubLink(),
-                BooleanStatus.from(request.githubLinkReveal()),
-                BooleanStatus.from(request.isAnonymous()),
-                toQuestionStacks(request.stacks())
-                );
+    public Question toUpdateEntity(QuestionUpdateRequest request) {
+        return Question.builder()
+                .title(request.title())
+                .type(QuestionType.of(request.type()))
+                .content(request.content())
+                .githubLink(request.githubLink())
+                .githubLinkReveal(BooleanStatus.from(request.githubLinkReveal()))
+                .isAnonymous(BooleanStatus.from(request.isAnonymous()))
+                .stacks(toQuestionStacks(request.stacks()))
+                .build();
     }
 
     private Set<SkillStack> toQuestionStacks(List<String> stacks) {

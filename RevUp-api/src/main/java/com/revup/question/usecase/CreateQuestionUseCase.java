@@ -23,14 +23,11 @@ public class CreateQuestionUseCase {
     private final QuestionMapper questionMapper;
     private final QuestionImageMapper imageMapper;
     private final QuestionCodeMapper codeMapper;
-    private final UserUtil userUtil;
 
 
-    public QuestionIdResponse execute(QuestionCreateRequest request) {
-        User user = userUtil.getCurrentUser();
+    public QuestionIdResponse execute(QuestionCreateRequest request,User currentUser) {
 
-
-        Question question = questionMapper.toEntity(request, user);
+        Question question = questionMapper.toEntity(request, currentUser);
 
         List<QuestionCode> questionCodes = codeMapper.toEntities(request.codes(), question);
 

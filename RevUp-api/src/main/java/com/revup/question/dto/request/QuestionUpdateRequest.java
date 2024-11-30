@@ -25,8 +25,6 @@ public record QuestionUpdateRequest(
 
         String type,
 
-        boolean isTemporary,
-
         boolean isAnonymous,
 
         List<String> stacks,

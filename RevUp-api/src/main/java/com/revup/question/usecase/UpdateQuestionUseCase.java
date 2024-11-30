@@ -22,28 +22,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UpdateQuestionUseCase {
     private final QuestionService questionService;
-    private final QuestionAdaptor questionAdaptor;
     private final QuestionMapper questionMapper;
     private final QuestionImageMapper imageMapper;
     private final QuestionCodeMapper codeMapper;
-    private final UserUtil userUtil;
 
-    public QuestionIdResponse updateQuestion(QuestionUpdateRequest request) {
-        // Question 조회
-        Question question = questionAdaptor.findById(request.id());
+    public QuestionIdResponse updateQuestion(QuestionUpdateRequest request, User currentUser) {
 
-        // 권한 검증
-        userUtil.checkPermission(question.getUser());
+        Question question = questionMapper.toUpdateEntity(request);
 
-        questionMapper.updateEntity(request, question);
+        List<QuestionImage> images = imageMapper.toUpdateEntity(request.images());
 
-        List<QuestionImage> images = imageMapper.toEntities(request.images(), question);
-        questionService.updateImages(question.getId(), images);
+        List<QuestionCode> codes = codeMapper.toUpdateEntity(request.codes());
 
-        List<QuestionCode> codes = codeMapper.toEntities(request.codes(), question);
-        questionService.updateCodes(question.getId(), codes);
+        Long id = questionService.updateQuestion(request.id(), currentUser, question, images, codes);
 
-        return new QuestionIdResponse(question.getId());
+        return new QuestionIdResponse(id);
 
     }
 

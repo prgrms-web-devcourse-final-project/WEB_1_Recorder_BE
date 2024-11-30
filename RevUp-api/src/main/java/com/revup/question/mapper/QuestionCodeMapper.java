@@ -24,4 +24,17 @@ public class QuestionCodeMapper {
                 .toList();
     }
 
+    public List<QuestionCode> toUpdateEntity(List<QuestionCodeCreateRequest> codes) {
+        if (codes == null || codes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return codes.stream()
+                .map(code -> QuestionCode.builder()
+                        .name(code.name())
+                        .content(code.content())
+                        .build())
+                .toList();
+    }
+
+
 }
