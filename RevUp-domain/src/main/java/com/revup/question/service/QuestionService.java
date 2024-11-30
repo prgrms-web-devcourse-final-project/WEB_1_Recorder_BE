@@ -55,10 +55,6 @@ public class QuestionService {
         return questionRepository.countQuestionsByCriteria(criteria);
     }
 
-    public Question getQuestionDetails(Long id) {
-        return questionRepository.findByIdWithStacksAndAnswersAndCodes(id)
-                .orElseThrow(() -> new QuestionNotFoundException(id));
-    }
 
     @Transactional
     public Question getQuestionDetailsWithIncrement(Long id) {
