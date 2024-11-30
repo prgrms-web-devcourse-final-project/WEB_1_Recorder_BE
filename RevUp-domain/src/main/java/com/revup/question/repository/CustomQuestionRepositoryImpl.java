@@ -76,9 +76,6 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
     private BooleanBuilder buildSearchConditions(QuestionSearchCriteria criteria) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        // 기본 조건: 임시저장 제외
-        builder.and(question.state.ne(QuestionState.TEMPORARY));
-
         // 질문 유형
         if (criteria.type() != null) {
             builder.and(question.type.eq(QuestionType.of(criteria.type())));

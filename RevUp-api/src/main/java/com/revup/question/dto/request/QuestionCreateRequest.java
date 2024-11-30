@@ -22,10 +22,7 @@ public record QuestionCreateRequest(
 
         String type,
 
-        boolean isTemporary,
-
         boolean isAnonymous,
-
 
         List<String> stacks,
 

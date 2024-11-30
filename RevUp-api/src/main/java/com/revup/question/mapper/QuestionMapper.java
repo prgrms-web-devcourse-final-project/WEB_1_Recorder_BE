@@ -24,7 +24,7 @@ public class QuestionMapper {
                 .githubLinkReveal(BooleanStatus.from(request.githubLinkReveal()))
                 .type(QuestionType.of(request.type()))
                 .isAnonymous(BooleanStatus.from(request.isAnonymous()))
-                .state(QuestionState.from(request.isTemporary()))
+                .state(QuestionState.PENDING)
                 .stacks(toQuestionStacks(request.stacks()))
                 .user(user)
                 .build();
@@ -35,7 +35,6 @@ public class QuestionMapper {
         question.update(
                 request.title(),
                 QuestionType.of(request.type()),
-                QuestionState.from(request.isTemporary()),
                 request.content(),
                 request.githubLink(),
                 BooleanStatus.from(request.githubLinkReveal()),

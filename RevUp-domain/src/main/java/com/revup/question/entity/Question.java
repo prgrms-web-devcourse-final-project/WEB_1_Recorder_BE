@@ -98,7 +98,6 @@ public class Question extends SoftDeleteEntity {
     public void update(
             String title,
             QuestionType type,
-            QuestionState state,
             String content,
             String githubLink,
             BooleanStatus githubLinkReveal,
@@ -106,7 +105,6 @@ public class Question extends SoftDeleteEntity {
             Set<SkillStack> stacks) {
         this.title = title;
         this.type = type;
-        this.state = state;
         this.content = content;
         this.githubLink = githubLink;
         this.githubLinkReveal = githubLinkReveal;
