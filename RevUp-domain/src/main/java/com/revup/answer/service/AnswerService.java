@@ -37,17 +37,24 @@ public class AnswerService {
     )
     public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images, List<AnswerCode> codes) {
 
+        // 질문 조회
         Question question = questionRepository.findByIdWithOptimisticLock(questionId)
                 .orElseThrow(() -> new QuestionNotFoundException(questionId));
 
+        // 연관관계 매핑
         answer.assignQuestion(question);
+        question.addAnswer(answer);
 
+        // 답변 수 증가
         question.increaseAnswerCount();
 
+        // 답변 저장
         answerRepository.save(answer);
 
+        // 답변 이미지 저장
         answerImageRepository.saveAll(images);
 
+        // 답변 코드 저장
         answerCodeRepository.saveAll(codes);
 
         return answer.getId();
