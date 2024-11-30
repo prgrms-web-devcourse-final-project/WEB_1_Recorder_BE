@@ -91,7 +91,8 @@ public class QuestionController {
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam Long id) {
-        deleteQuestionUseCase.execute(id);
+        User currentUser = userUtil.getCurrentUser();
+        deleteQuestionUseCase.execute(id, currentUser);
         return ResponseEntity.noContent().build();
     }
 

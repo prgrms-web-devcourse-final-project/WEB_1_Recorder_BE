@@ -104,12 +104,12 @@ public class QuestionService {
         );
 
         // 연관관계 매핑
-        for(QuestionImage image:images){
+        for (QuestionImage image : images) {
             image.assignQuestion(existQuestion);
         }
 
         // 연관관계 매핑
-        for (QuestionCode code:codes){
+        for (QuestionCode code : codes) {
             code.assignQuestion(existQuestion);
             existQuestion.addQuestionCode(code);
         }
@@ -159,11 +159,6 @@ public class QuestionService {
         return question;
     }
 
-    private void checkPermission(User currenUser, User writer) {
-        if (!currenUser.equals(writer)) {
-            throw new UserPermissionException();
-        }
-    }
 
     private Answer validateAnswer(Long answerId, Question question) {
         Answer answer = answerRepository.findByIdWithQuestion(answerId)
@@ -184,8 +179,22 @@ public class QuestionService {
     }
 
     @Transactional
-    public void delete(Question question) {
+    public void delete(Long id, User currentUser) {
+        // 질문 조회
+        Question question = questionRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+
+        // 권한 검증
+        checkPermission(currentUser, question.getUser());
+
+        // 질문 삭제
         question.softDelete();
+    }
+
+    private void checkPermission(User currenUser, User writer) {
+        if (!currenUser.equals(writer)) {
+            throw new UserPermissionException();
+        }
     }
 
 }
