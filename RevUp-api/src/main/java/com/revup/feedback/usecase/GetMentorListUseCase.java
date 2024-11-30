@@ -32,7 +32,7 @@ public class GetMentorListUseCase {
                 .map(MentorResponse::from)
                 .toList();
 
-        return PageUtil.createPage(content, mentorPageRequest.getPage(), SIZE);
+        return PageUtil.createPage(content, mentorPageRequest.getPage(), totalMentorCount);
     }
 
 }
