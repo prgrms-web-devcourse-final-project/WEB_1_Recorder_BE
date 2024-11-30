@@ -1,7 +1,7 @@
 package com.revup.question.usecase;
 
 import com.revup.question.adaptor.QuestionAdaptor;
-import com.revup.question.dto.QuestionUpdateRequest;
+import com.revup.question.dto.request.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionAcceptAnswerRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.entity.Question;

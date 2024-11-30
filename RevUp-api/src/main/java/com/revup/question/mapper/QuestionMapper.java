@@ -2,7 +2,7 @@ package com.revup.question.mapper;
 
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
-import com.revup.question.dto.QuestionUpdateRequest;
+import com.revup.question.dto.request.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionState;

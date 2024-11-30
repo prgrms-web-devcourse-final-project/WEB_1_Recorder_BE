@@ -2,6 +2,7 @@ package com.revup.global.exception;
 
 import com.revup.error.AppException;
 import com.revup.global.dto.ApiResponse;
+import com.revup.global.util.ResponseUtil;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<ApiResponse<Void>> handleException(final Exception e) {
-        return buildErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                e.getMessage()
-        );
+        return ResponseUtil.failure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 
     }
 
@@ -27,10 +25,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ApiResponse<Void>> handleAppException(AppException e) {
-        return buildErrorResponse(
-                e.getErrorCode().getHttpStatus(),
-                e.getMessage()
-        );
+        return ResponseUtil.failure(e.getErrorCode().getHttpStatus(), e.getMessage());
     }
 
     /**
@@ -44,14 +39,7 @@ public class GlobalExceptionHandler {
                 .findFirst()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .orElse("잘못된 요청입니다.");
-
-        return buildErrorResponse(
-                HttpStatus.BAD_REQUEST,
-                errorMessage);
+        return ResponseUtil.failure(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
-    private ResponseEntity<ApiResponse<Void>> buildErrorResponse(HttpStatus status, String message) {
-        return ResponseEntity.status(status)
-                .body(ApiResponse.error(message));
-    }
 }

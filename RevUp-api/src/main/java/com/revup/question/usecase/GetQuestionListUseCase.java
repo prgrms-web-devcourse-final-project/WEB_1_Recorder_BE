@@ -1,7 +1,7 @@
 package com.revup.question.usecase;
 
 import com.revup.page.Page;
-import com.revup.question.util.PageUtil;
+import com.revup.page.PageUtil;
 import com.revup.question.criteria.QuestionSearchCriteria;
 import com.revup.question.dto.request.QuestionPageRequest;
 import com.revup.question.dto.response.QuestionBriefResponse;
