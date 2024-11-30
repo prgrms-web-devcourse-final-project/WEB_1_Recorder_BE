@@ -5,8 +5,8 @@ import com.revup.common.SkillStack;
 import com.revup.question.dto.request.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionState;
-import com.revup.question.entity.QuestionType;
+import com.revup.question.enums.QuestionState;
+import com.revup.question.enums.QuestionType;
 import com.revup.user.entity.User;
 import org.springframework.stereotype.Component;
 

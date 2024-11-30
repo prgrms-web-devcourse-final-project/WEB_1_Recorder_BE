@@ -1,13 +1,13 @@
 package com.revup.question.service;
 
-import com.revup.answer.entity.AdoptedReview;
+import com.revup.answer.enums.AdoptedReview;
 import com.revup.answer.entity.Answer;
 import com.revup.answer.exception.AnswerAlreadyAdoptedException;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.exception.AnswerNotLinkedException;
 import com.revup.answer.repository.AnswerRepository;
 import com.revup.question.entity.QuestionImage;
-import com.revup.question.entity.QuestionState;
+import com.revup.question.enums.QuestionState;
 import com.revup.question.exception.QuestionAlreadyAcceptException;
 import com.revup.question.repository.QuestionImageRepository;
 import com.revup.question.criteria.QuestionSearchCriteria;

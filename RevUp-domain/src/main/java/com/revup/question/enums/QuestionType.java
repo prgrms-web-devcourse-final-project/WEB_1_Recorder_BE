@@ -1,4 +1,4 @@
-package com.revup.question.entity;
+package com.revup.question.enums;
 
 import com.revup.question.exception.InvalidQuestionTypeException;
 

@@ -4,6 +4,8 @@ import com.revup.answer.entity.Answer;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
 import com.revup.common.SoftDeleteEntity;
+import com.revup.question.enums.QuestionState;
+import com.revup.question.enums.QuestionType;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
