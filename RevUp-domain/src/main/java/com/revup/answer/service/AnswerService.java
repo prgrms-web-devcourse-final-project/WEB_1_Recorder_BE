@@ -76,11 +76,12 @@ public class AnswerService {
         throw new AnswerCreationConcurrencyException();
     }
 
-    public Long updateAnswer(Long answerId, AnswerUpdateInfo updateInfo, List<AnswerImage> images, List<AnswerCode> codes, User currentUser) {
+    @Transactional
+    public Long updateAnswer(Long id, AnswerUpdateInfo updateInfo, List<AnswerImage> images, List<AnswerCode> codes, User currentUser) {
 
         //질문 조회
-        Answer existAnswer = answerRepository.findByIdWithUser(answerId)
-                .orElseThrow(() -> new AnswerNotFoundException(answerId));
+        Answer existAnswer = answerRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new AnswerNotFoundException(id));
 
         // 권한 검증
         checkPermission(currentUser, existAnswer.getUser());
@@ -103,14 +104,26 @@ public class AnswerService {
         }
 
         // 관련 이미지 삭제 후 새로 저장
-        answerImageRepository.deleteByAnswerId(answerId);
+        answerImageRepository.deleteByAnswerId(id);
         answerImageRepository.saveAll(images);
 
         //관련 코드 삭제 후 새로 저장
-        answerCodeRepository.deleteByAnswerId(answerId);
+        answerCodeRepository.deleteByAnswerId(id);
         answerCodeRepository.saveAll(codes);
 
         return existAnswer.getId();
+    }
+
+    @Transactional
+    public void delete(Long id, User currentUser) {
+        // 답변 조회
+        Answer answer = answerRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new AnswerNotFoundException(id));
+
+        // 권한 검증
+        checkPermission(currentUser, answer.getUser());
+
+        answer.softDelete();
     }
 
     private void checkPermission(User currenUser, User writer) {

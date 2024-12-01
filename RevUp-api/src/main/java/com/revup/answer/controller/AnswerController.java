@@ -4,6 +4,8 @@ import com.revup.answer.dto.request.AnswerCreateRequest;
 import com.revup.answer.dto.request.AnswerUpdateRequest;
 import com.revup.answer.dto.response.AnswerIdResponse;
 import com.revup.answer.usecase.CreateAnswerUseCase;
+import com.revup.answer.usecase.DeleteAnswerUseCase;
+import com.revup.answer.usecase.GetMyAnswersUseCase;
 import com.revup.answer.usecase.UpdateAnswerUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
@@ -21,7 +23,9 @@ import static com.revup.global.util.ResponseUtil.success;
 @RequiredArgsConstructor
 public class AnswerController {
     private final CreateAnswerUseCase createAnswerUseCase;
+    private final GetMyAnswersUseCase getMyAnswersUseCase;
     private final UpdateAnswerUseCase updateAnswerUseCase;
+    private final DeleteAnswerUseCase deleteAnswerUseCase;
     private final UserUtil userUtil;
 
     @PostMapping
@@ -35,5 +39,11 @@ public class AnswerController {
         User currentUser = userUtil.getCurrentUser();
         return success(updateAnswerUseCase.execute(request, currentUser));
     }
-    
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@RequestParam Long id){
+        User currentUser = userUtil.getCurrentUser();
+        deleteAnswerUseCase.execute(id, currentUser);
+        return ResponseEntity.noContent().build();
+    }
 }
