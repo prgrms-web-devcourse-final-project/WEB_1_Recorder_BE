@@ -11,7 +11,7 @@ services:
       - "3306:3306"
 
   spring-boot-app:
-    image: ${{ secrets.DOCKER_USERNAME }}/revup:latest
+    image: eksrhk506/revup:latest
     container_name: spring-boot-container
     ports:
       - "9090:9090"
