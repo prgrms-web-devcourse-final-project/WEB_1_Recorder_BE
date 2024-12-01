@@ -4,7 +4,7 @@ services:
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: example
+      MYSQL_DATABASE: revup
       MYSQL_USER: docker_test
       MYSQL_PASSWORD: 1234
     ports:
