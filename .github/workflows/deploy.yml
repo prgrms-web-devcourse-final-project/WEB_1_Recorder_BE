@@ -43,7 +43,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_KNOWN_HOSTS }} # EC2 인스턴스 퍼블릭 DNS
           username: ${{secrets.SSH_USER}}
-          key: ${{ secrets.SSH_PEM_KEY }} # pem 키
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/revup:latest
