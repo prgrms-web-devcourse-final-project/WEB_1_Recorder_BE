@@ -1,5 +1,6 @@
 package com.revup.question.usecase;
 
+import com.revup.question.dto.QuestionUpdateInfo;
 import com.revup.question.dto.request.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionAcceptAnswerRequest;
 import com.revup.question.dto.response.QuestionIdResponse;
@@ -26,13 +27,13 @@ public class UpdateQuestionUseCase {
 
     public QuestionIdResponse updateQuestion(QuestionUpdateRequest request, User currentUser) {
 
-        Question question = questionMapper.toUpdateEntity(request);
+        QuestionUpdateInfo updateInfo = questionMapper.toUpdateInfo(request);
 
         List<QuestionImage> images = imageMapper.toUpdateEntity(request.images());
 
         List<QuestionCode> codes = codeMapper.toUpdateEntity(request.codes());
 
-        Long id = questionService.updateQuestion(request.id(), currentUser, question, images, codes);
+        Long id = questionService.updateQuestion(request.id(), currentUser, updateInfo, images, codes);
 
         return new QuestionIdResponse(id);
 

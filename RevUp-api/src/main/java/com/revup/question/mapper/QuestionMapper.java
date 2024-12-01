@@ -2,6 +2,7 @@ package com.revup.question.mapper;
 
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
+import com.revup.question.dto.QuestionUpdateInfo;
 import com.revup.question.dto.request.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.entity.Question;
@@ -31,21 +32,23 @@ public class QuestionMapper {
     }
 
 
-    public Question toUpdateEntity(QuestionUpdateRequest request) {
-        return Question.builder()
-                .title(request.title())
-                .type(QuestionType.of(request.type()))
-                .content(request.content())
-                .githubLink(request.githubLink())
-                .githubLinkReveal(BooleanStatus.from(request.githubLinkReveal()))
-                .isAnonymous(BooleanStatus.from(request.isAnonymous()))
-                .stacks(toQuestionStacks(request.stacks()))
-                .build();
-    }
 
     private Set<SkillStack> toQuestionStacks(List<String> stacks) {
         return stacks.stream()
                 .map(stack -> SkillStack.valueOf(stack.toUpperCase()))
                 .collect(Collectors.toSet());
+    }
+
+    public QuestionUpdateInfo toUpdateInfo(QuestionUpdateRequest request) {
+        return new QuestionUpdateInfo(
+                request.title(),
+                request.content(),
+                BooleanStatus.from(request.githubLinkReveal()),
+                request.githubLink(),
+                QuestionType.of(request.type()),
+                BooleanStatus.from(request.isAnonymous()),
+                toQuestionStacks(request.stacks())
+
+        );
     }
 }

@@ -6,11 +6,12 @@ import com.revup.answer.exception.AnswerAlreadyAdoptedException;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.exception.AnswerNotLinkedException;
 import com.revup.answer.repository.AnswerRepository;
+import com.revup.question.dto.QuestionUpdateInfo;
 import com.revup.question.entity.QuestionImage;
 import com.revup.question.enums.QuestionState;
 import com.revup.question.exception.QuestionAlreadyAcceptException;
 import com.revup.question.repository.QuestionImageRepository;
-import com.revup.question.criteria.QuestionSearchCriteria;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;
 import com.revup.question.exception.QuestionNotFoundException;
@@ -88,7 +89,7 @@ public class QuestionService {
     }
 
     @Transactional
-    public Long updateQuestion(Long id, User currentUser, Question question, List<QuestionImage> images, List<QuestionCode> codes) {
+    public Long updateQuestion(Long id, User currentUser, QuestionUpdateInfo updateInfo, List<QuestionImage> images, List<QuestionCode> codes) {
         //질문 조회
         Question existQuestion = questionRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new QuestionNotFoundException(id));
@@ -98,13 +99,13 @@ public class QuestionService {
 
         // 질문 업데이트
         existQuestion.update(
-                question.getTitle(),
-                question.getType(),
-                question.getContent(),
-                question.getGithubLink(),
-                question.getGithubLinkReveal(),
-                question.getIsAnonymous(),
-                question.getStacks()
+                updateInfo.title(),
+                updateInfo.type(),
+                updateInfo.content(),
+                updateInfo.githubLink(),
+                updateInfo.githubLinkReveal(),
+                updateInfo.isAnonymous(),
+                updateInfo.stacks()
         );
 
         // 연관관계 매핑

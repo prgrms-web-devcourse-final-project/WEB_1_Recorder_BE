@@ -3,7 +3,7 @@ package com.revup.question.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.revup.common.SkillStack;
-import com.revup.question.criteria.QuestionSearchCriteria;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.enums.QuestionState;
 import com.revup.question.enums.QuestionType;
