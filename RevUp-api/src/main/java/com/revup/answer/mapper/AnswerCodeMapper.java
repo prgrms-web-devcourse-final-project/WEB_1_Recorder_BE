@@ -22,4 +22,16 @@ public class AnswerCodeMapper {
                         .build())
                 .toList();
     }
+
+    public List<AnswerCode> toUpdateEntity(List<AnswerCodeCreateRequest> codes) {
+        if (codes == null || codes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return codes.stream()
+                .map(code -> AnswerCode.builder()
+                        .name(code.name())
+                        .content(code.content())
+                        .build())
+                .toList();
+    }
 }

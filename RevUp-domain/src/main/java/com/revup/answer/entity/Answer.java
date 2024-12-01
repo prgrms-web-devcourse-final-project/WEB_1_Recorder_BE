@@ -82,4 +82,9 @@ public class Answer extends SoftDeleteEntity {
         this.isAccept = BooleanStatus.TRUE;
         this.review = adoptedReview;
     }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

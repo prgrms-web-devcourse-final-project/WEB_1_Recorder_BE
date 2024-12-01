@@ -31,4 +31,8 @@ public class AnswerCode {
         this.name = name;
         this.content = content;
     }
+
+    public void assignAnswer(Answer answer) {
+        this.answer = answer;
+    }
 }
