@@ -31,12 +31,25 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Build and deploy
+      - name: Docker build
         run: |
-            echo "$SSH_PEM_KEY" >> $HOME/key.pem
-            chmod 400 $HOME/key.pem
-            ssh -i $HOME/key.pem -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_KNOWN_HOSTS} '~/script.sh'
-        env:
-            SSH_USER: ${{secrets.SSH_USER}}
-            SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-            SSH_PEM_KEY: ${{secrets.SSH_PEM_KEY}}
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t app .
+          docker tag app ${{ secrets.DOCKER_USERNAME }}/revup:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/revup :latest
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_KNOWN_HOSTS }} # EC2 인스턴스 퍼블릭 DNS
+          username: ${{secrets.SSH_USER}}
+          key: ${{ secrets.SSH_PEM_KEY }} # pem 키
+          # 도커 작업
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/revup:latest
+            docker stop $(docker ps -a -q)
+            docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/revup:latest
+            docker rm $(docker ps --filter 'status=exited' -a -q)
+            docker image prune -a -f
+
+      
