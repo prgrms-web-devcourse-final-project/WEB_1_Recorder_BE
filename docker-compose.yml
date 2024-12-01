@@ -1,0 +1,44 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: example
+      MYSQL_USER: docker_test
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+
+  spring-boot-app:
+    image: example:1.0
+    container_name: spring-boot-container
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysql
+      - redis_container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/example
+      SPRING_DATASOURCE_USERNAME: docker_test
+      SPRING_DATASOURCE_PASSWORD: 1234
+
+  redis_container:
+    image: redis:latest
+    # 컨테이너명
+    container_name: redis-container
+    # 접근 포트 설정(컨테이너 외부:컨테이너 내부)
+    ports:
+      - 7379:7379
+    # 스토리지 마운트(볼륨) 설정
+    volumes:
+      - ./redis/data:/data
+      - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
+    # 컨테이너에 docker label을 이용해서 메타데이터 추가
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    # 컨테이너 종료시 재시작 여부 설정
+    restart: always
+    command: redis-server /usr/local/conf/redis.conf
