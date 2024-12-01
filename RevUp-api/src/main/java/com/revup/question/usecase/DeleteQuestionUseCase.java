@@ -1,11 +1,7 @@
 package com.revup.question.usecase;
 
-import com.revup.question.adaptor.QuestionAdaptor;
-import com.revup.question.entity.Question;
-import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.service.QuestionService;
-import com.revup.user.adaptor.UserAdaptor;
-import com.revup.user.util.UserUtil;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +9,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DeleteQuestionUseCase {
     private final QuestionService questionService;
-    private final UserUtil userUtil;
-    private final QuestionAdaptor questionAdaptor;
 
-    public void execute(Long id) {
-        Question question = questionAdaptor.findById(id);
+    public void execute(Long id, User currentUser) {
 
-        //권한 검증
-        userUtil.checkPermission(question.getUser());
-
-        questionService.delete(question);
+        questionService.delete(id, currentUser);
     }
 }

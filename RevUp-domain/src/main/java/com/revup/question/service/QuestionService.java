@@ -1,16 +1,17 @@
 package com.revup.question.service;
 
-import com.revup.answer.entity.AdoptedReview;
+import com.revup.answer.enums.AdoptedReview;
 import com.revup.answer.entity.Answer;
 import com.revup.answer.exception.AnswerAlreadyAdoptedException;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.exception.AnswerNotLinkedException;
 import com.revup.answer.repository.AnswerRepository;
+import com.revup.question.dto.QuestionUpdateInfo;
 import com.revup.question.entity.QuestionImage;
-import com.revup.question.entity.QuestionState;
+import com.revup.question.enums.QuestionState;
 import com.revup.question.exception.QuestionAlreadyAcceptException;
 import com.revup.question.repository.QuestionImageRepository;
-import com.revup.question.criteria.QuestionSearchCriteria;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
 import com.revup.question.entity.QuestionCode;
 import com.revup.question.exception.QuestionNotFoundException;
@@ -36,7 +37,11 @@ public class QuestionService {
 
     @Transactional
     public Long createQuestion(Question question, List<QuestionImage> images, List<QuestionCode> codes) {
+        // 연관관계 매핑
+        for (QuestionCode code : codes) {
+            question.addQuestionCode(code);
 
+        }
         questionRepository.save(question);
 
         questionImageRepository.saveAll(images);
@@ -55,10 +60,6 @@ public class QuestionService {
         return questionRepository.countQuestionsByCriteria(criteria);
     }
 
-    public Question getQuestionDetails(Long id) {
-        return questionRepository.findByIdWithStacksAndAnswersAndCodes(id)
-                .orElseThrow(() -> new QuestionNotFoundException(id));
-    }
 
     @Transactional
     public Question getQuestionDetailsWithIncrement(Long id) {
@@ -88,16 +89,48 @@ public class QuestionService {
     }
 
     @Transactional
-    public void updateImages(Long id, List<QuestionImage> images) {
+    public Long updateQuestion(Long id, User currentUser, QuestionUpdateInfo updateInfo, List<QuestionImage> images, List<QuestionCode> codes) {
+        //질문 조회
+        Question existQuestion = questionRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+
+        // 권한 검증
+        checkPermission(currentUser, existQuestion.getUser());
+
+        // 질문 업데이트
+        existQuestion.update(
+                updateInfo.title(),
+                updateInfo.type(),
+                updateInfo.content(),
+                updateInfo.githubLink(),
+                updateInfo.githubLinkReveal(),
+                updateInfo.isAnonymous(),
+                updateInfo.stacks()
+        );
+
+        // 연관관계 매핑
+        for (QuestionImage image : images) {
+            image.assignQuestion(existQuestion);
+        }
+
+        // 연관관계 매핑
+        for (QuestionCode code : codes) {
+            code.assignQuestion(existQuestion);
+            existQuestion.addQuestionCode(code);
+        }
+
+        // 관련 이미지 삭제 후 새로 저장
         questionImageRepository.deleteByQuestionId(id);
         questionImageRepository.saveAll(images);
-    }
 
-    @Transactional
-    public void updateCodes(Long id, List<QuestionCode> codes) {
+        //관련 코드 삭제 후 새로 저장
         questionCodeRepository.deleteByQuestionId(id);
         questionCodeRepository.saveAll(codes);
+
+        return existQuestion.getId();
+
     }
+
 
     @Transactional
     public Long adoptAnswer(Long questionId, Long answerId, String review, User currentUser) {
@@ -131,11 +164,6 @@ public class QuestionService {
         return question;
     }
 
-    private void checkPermission(User currenUser, User writer) {
-        if (!currenUser.equals(writer)) {
-            throw new UserPermissionException();
-        }
-    }
 
     private Answer validateAnswer(Long answerId, Question question) {
         Answer answer = answerRepository.findByIdWithQuestion(answerId)
@@ -156,8 +184,22 @@ public class QuestionService {
     }
 
     @Transactional
-    public void delete(Question question) {
+    public void delete(Long id, User currentUser) {
+        // 질문 조회
+        Question question = questionRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+
+        // 권한 검증
+        checkPermission(currentUser, question.getUser());
+
+        // 질문 삭제
         question.softDelete();
+    }
+
+    private void checkPermission(User currenUser, User writer) {
+        if (!currenUser.equals(writer)) {
+            throw new UserPermissionException();
+        }
     }
 
 }

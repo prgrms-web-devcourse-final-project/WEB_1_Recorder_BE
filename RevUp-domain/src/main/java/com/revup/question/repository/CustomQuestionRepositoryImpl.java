@@ -3,11 +3,12 @@ package com.revup.question.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.revup.common.SkillStack;
-import com.revup.question.criteria.QuestionSearchCriteria;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionState;
-import com.revup.question.entity.QuestionType;
+import com.revup.question.enums.QuestionState;
+import com.revup.question.enums.QuestionType;
 import com.revup.user.entity.User;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.revup.answer.entity.QAnswer.answer;
+import static com.revup.answer.entity.QAnswerCode.answerCode;
 import static com.revup.question.entity.QQuestion.question;
 import static com.revup.question.entity.QQuestionCode.questionCode;
 import static com.revup.user.entity.QUser.user;
@@ -64,16 +66,15 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .leftJoin(question.user, user).fetchJoin()
                 .innerJoin(question.stacks).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
+                .leftJoin(answer.codes, answerCode).fetchJoin()
                 .leftJoin(question.codes, questionCode).fetchJoin()
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .where(question.id.eq(id))
                 .fetchOne());
     }
 
     private BooleanBuilder buildSearchConditions(QuestionSearchCriteria criteria) {
         BooleanBuilder builder = new BooleanBuilder();
-
-        // 기본 조건: 임시저장 제외
-        builder.and(question.state.ne(QuestionState.TEMPORARY));
 
         // 질문 유형
         if (criteria.type() != null) {
@@ -117,6 +118,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(
                         question.id.in(questionIds)
                 )
+                .orderBy(question.createdAt.desc())
                 .fetch();
     }
 
@@ -134,6 +136,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(
                         question.id.in(questionIds)
                 )
+                .orderBy(question.createdAt.desc())
                 .fetch();
     }
 
@@ -162,6 +165,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .where(
                         question.id.in(questionIds)
                 )
+                .orderBy(question.createdAt.desc())
                 .fetch();
     }
 

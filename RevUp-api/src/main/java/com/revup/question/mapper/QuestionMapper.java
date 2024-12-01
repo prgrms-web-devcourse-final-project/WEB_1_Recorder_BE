@@ -2,11 +2,12 @@ package com.revup.question.mapper;
 
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
-import com.revup.question.dto.QuestionUpdateRequest;
+import com.revup.question.dto.QuestionUpdateInfo;
+import com.revup.question.dto.request.QuestionUpdateRequest;
 import com.revup.question.dto.request.QuestionCreateRequest;
 import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionState;
-import com.revup.question.entity.QuestionType;
+import com.revup.question.enums.QuestionState;
+import com.revup.question.enums.QuestionType;
 import com.revup.user.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -24,29 +25,30 @@ public class QuestionMapper {
                 .githubLinkReveal(BooleanStatus.from(request.githubLinkReveal()))
                 .type(QuestionType.of(request.type()))
                 .isAnonymous(BooleanStatus.from(request.isAnonymous()))
-                .state(QuestionState.from(request.isTemporary()))
+                .state(QuestionState.PENDING)
                 .stacks(toQuestionStacks(request.stacks()))
                 .user(user)
                 .build();
     }
 
 
-    public void updateEntity(QuestionUpdateRequest request, Question question) {
-        question.update(
-                request.title(),
-                QuestionType.of(request.type()),
-                QuestionState.from(request.isTemporary()),
-                request.content(),
-                request.githubLink(),
-                BooleanStatus.from(request.githubLinkReveal()),
-                BooleanStatus.from(request.isAnonymous()),
-                toQuestionStacks(request.stacks())
-                );
-    }
 
     private Set<SkillStack> toQuestionStacks(List<String> stacks) {
         return stacks.stream()
                 .map(stack -> SkillStack.valueOf(stack.toUpperCase()))
                 .collect(Collectors.toSet());
+    }
+
+    public QuestionUpdateInfo toUpdateInfo(QuestionUpdateRequest request) {
+        return new QuestionUpdateInfo(
+                request.title(),
+                request.content(),
+                BooleanStatus.from(request.githubLinkReveal()),
+                request.githubLink(),
+                QuestionType.of(request.type()),
+                BooleanStatus.from(request.isAnonymous()),
+                toQuestionStacks(request.stacks())
+
+        );
     }
 }

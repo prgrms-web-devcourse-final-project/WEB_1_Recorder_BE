@@ -1,6 +1,5 @@
-package com.revup.question.util;
+package com.revup.page;
 
-import com.revup.page.Page;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

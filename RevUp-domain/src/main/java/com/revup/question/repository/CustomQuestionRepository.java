@@ -1,8 +1,7 @@
 package com.revup.question.repository;
 
-import com.revup.question.criteria.QuestionSearchCriteria;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionType;
 import com.revup.user.entity.User;
 
 import java.time.LocalDateTime;

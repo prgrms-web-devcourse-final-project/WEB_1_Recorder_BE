@@ -2,7 +2,6 @@ package com.revup.answer.dto.request;
 
 import com.revup.global.validation.BlockedContent;
 import com.revup.image.dto.request.ImageRequest;
-import com.revup.question.dto.request.QuestionCodeCreateRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

@@ -30,6 +30,9 @@ public class AnswerCode {
         this.answer = answer;
         this.name = name;
         this.content = content;
-        answer.addAnswerCode(this);
+    }
+
+    public void assignAnswer(Answer answer) {
+        this.answer = answer;
     }
 }

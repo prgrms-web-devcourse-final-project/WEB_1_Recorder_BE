@@ -1,4 +1,4 @@
-package com.revup.answer.entity;
+package com.revup.answer.enums;
 
 import com.revup.answer.exception.InvalidAdoptedReviewException;
 

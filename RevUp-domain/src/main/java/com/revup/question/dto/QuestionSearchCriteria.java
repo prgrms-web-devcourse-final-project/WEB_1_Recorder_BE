@@ -1,4 +1,4 @@
-package com.revup.question.criteria;
+package com.revup.question.dto;
 
 public record QuestionSearchCriteria(
         String type,

@@ -10,11 +10,7 @@ import org.springframework.stereotype.Component;
 public class GetQuestionDetailsUseCase {
     private final QuestionService questionService;
 
-    public QuestionDetailsResponse execute(Long id, boolean alreadyViewed) {
-        // 이미 조회 한적이 있다면 조회수 증가 없이 조회
-        if (alreadyViewed) {
-           return QuestionDetailsResponse.of(questionService.getQuestionDetails(id));
-        }
+    public QuestionDetailsResponse execute(Long id) {
 
         return QuestionDetailsResponse.of(questionService.getQuestionDetailsWithIncrement(id));
     }
