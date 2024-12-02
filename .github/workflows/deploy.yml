@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     env:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
@@ -48,8 +47,6 @@ jobs:
       JWT_KEY: ${{ secrets.JWT_KEY }}
       JWT_ACCESS_EXPIRATION_TIME: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
       JWT_REFRESH_EXPIRATION_TIME: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
-    permissions:
-      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -102,14 +99,14 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_KNOWN_HOSTS }} # EC2 인스턴스 퍼블릭 DNS
-          username: ${{secrets.SSH_USER}}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }}
-#            이전 컨테이너 중지 및 삭제
-            sudo docker-compose down
-      
 #            최신 이미지로 컨테이너 재시작
             sudo docker-compose up -d
+                    
+#            이전 컨테이너 중지 및 삭제
+            sudo docker-compose down
 #            sudo docker image prune -f
