@@ -28,8 +28,37 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
+      - name: Build Discovery Service with Gradle
+        working-directory: ./RevUp-api
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build -x test
+
+      - name: Build and Push Discovery Service
+        working-directory: ./RevUp-api
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/discovery-service .
+          docker push ${{ secrets.DOCKER_USERNAME }}/discovery-service
+
       - name: Build with Gradle Wrapper
         run: ./gradlew build
+
+      - name: Generate YAML Configuration Files
+        run: |
+          mkdir -p ./RevUp-api/src/main/resources
+          echo "${{ secrets.APPLICATION_YML }}" > ./RevUp-api/src/main/resources/application.yml
+          
+          mkdir -p ./RevUp-domain/src/main/resources
+          echo "${{ secrets.APPLICATION_DOMAIN_YML }}" > ./RevUp-domain/src/main/resources/application-domain.yml
+          
+          mkdir -p ./RevUp-infra/src/main/resources
+          echo "${{ secrets.APPLICATION_INFRA_YML }}" > ./RevUp-infra/src/main/resources/application-infra.yml
+          
+          mkdir -p ./RevUp-common/src/main/resources
+          echo "${{ secrets.APPLICATION_COMMON_YML }}" > ./RevUp-common/src/main/resources/application-common.yml
+          
+          mkdir -p ./RevUp-security/src/main/resources
+          echo "${{ secrets.APPLICATION_SECURITY_YML }}" > ./RevUp-security/src/main/resources/application-security.yml
 
       - name: Install Docker Compose
         run: |
@@ -39,15 +68,7 @@ jobs:
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build \
-          --build-arg AWS_REGION_AUTO="${{ secrets.AWS_REGION_AUTO }}" \
-          --build-arg AWS_REGION_STATIC="${{ secrets.AWS_REGION_STATIC }}" \
-          --build-arg AWS_S3_BUCKET="${{ secrets.AWS_S3_BUCKET }}" \
-          --build-arg AWS_STACK_AUTO="${{ secrets.AWS_STACK_AUTO }}" \
-          --build-arg DATABASE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
-          --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-          --build-arg DATABASE_USERNAME="${{ secrets.DATABASE_USERNAME }}" \
-          -t ${{ secrets.DOCKER_USERNAME }}/revup:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/revup:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/revup:latest
 
       - name: Deploy
