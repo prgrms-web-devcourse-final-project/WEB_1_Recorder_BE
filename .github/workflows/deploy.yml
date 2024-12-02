@@ -113,5 +113,3 @@ jobs:
 #            최신 이미지로 컨테이너 재시작
             sudo docker-compose up -d
 #            sudo docker image prune -f
-
-      
