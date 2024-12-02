@@ -1,7 +1,6 @@
 package com.revup.question.dto.response;
 
 import com.revup.answer.dto.response.AnswerDetailsResponse;
-import com.revup.common.BooleanStatus;
 import com.revup.question.entity.Question;
 
 import java.util.List;
@@ -11,6 +10,7 @@ public record QuestionDetailsResponse(
         String writer,
         String title,
         String content,
+        String profileImage,
         String createdAt,
         int answerCount,
         int readCount,
@@ -25,6 +25,7 @@ public record QuestionDetailsResponse(
                 question.getUser().getNickname(),
                 question.getTitle(),
                 question.getContent(),
+                question.getUser().getProfile().getProfileImage(),
                 question.getCreatedAt().toString(),
                 question.getAnswerCount(),
                 question.getReadCount(),
