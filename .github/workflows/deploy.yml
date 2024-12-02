@@ -69,10 +69,10 @@ jobs:
           # 도커 작업
           script: |
             sudo docker pull ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest
-            sudo docker-compose up -d
+            sudo docker compose up -d
             sudo docker image prune -f
 
       - name: Check docker-compose status
         run: |
-          sudo docker-compose ps
-          sudo docker-compose logs
+          sudo docker compose ps
+          sudo docker compose logs
