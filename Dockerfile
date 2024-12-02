@@ -6,4 +6,7 @@ COPY ${JAR_FILE} app.jar
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
+# MySQL 클라이언트 설치
+RUN apt-get update && apt-get install -y mysql-client
+
 ENTRYPOINT ["java","-Dspring.profiles.active=local", "-jar", "/app.jar"]
