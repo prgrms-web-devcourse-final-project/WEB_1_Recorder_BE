@@ -56,7 +56,9 @@ jobs:
 
       - name: Copy docker-compose.yml to EC2
         run: |
-          scp -i ${{ secrets.MINU_EC2_PRIVATE_KEY }} -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.MINU_SSH_USER }}@${{ secrets.MINU_KNOWN_HOSTS }}:/home/ubuntu/
+          echo "${{ secrets.MINU_EC2_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          scp -i private_key.pem -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.MINU_SSH_USER }}@${{ secrets.MINU_KNOWN_HOSTS }}:/home/ubuntu/
 
       - name: Deploy
         uses: appleboy/ssh-action@master
