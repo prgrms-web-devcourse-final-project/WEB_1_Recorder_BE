@@ -45,6 +45,15 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew bootJar
 
+      - name: Verify JAR Contents
+        run: |
+          JAR_FILE=$(find ./build/libs -name "*.jar" | head -n 1)
+          echo "Inspecting JAR file: $JAR_FILE"
+
+          # List all files in the JAR
+          echo "Listing resources in JAR file:"
+          unzip -l $JAR_FILE | grep "resources/"
+
       - name: Docker build
         run: |
           docker login -u ${{ secrets.MINU_DOCKERHUB_USERNAME }} -p ${{ secrets.MINU_DOCKERHUB_PASSWORD }}
