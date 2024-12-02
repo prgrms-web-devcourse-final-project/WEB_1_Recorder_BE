@@ -14,4 +14,4 @@ spring:
       on-profile: dev
 
 github-pages:
-  url: ${github-pages.url}
+  url: ${GIT_HUB_PAGES_URL}
