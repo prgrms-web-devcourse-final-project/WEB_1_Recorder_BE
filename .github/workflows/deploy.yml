@@ -30,20 +30,17 @@ jobs:
 
       - name: Generate YAML Configuration Files
         run: |
-          mkdir -p ./RevUp-api/src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" > ./RevUp-api/src/main/resources/application.yml
-          
           mkdir -p ./RevUp-domain/src/main/resources
-          echo "${{ secrets.APPLICATION_DOMAIN_YML }}" > ./RevUp-domain/src/main/resources/application-domain.yml
+          echo "${{ secrets.DOMAIN_VARIABLE_YML }}" > ./RevUp-domain/src/main/resources/domain-variable.yml
           
           mkdir -p ./RevUp-infra/src/main/resources
-          echo "${{ secrets.APPLICATION_INFRA_YML }}" > ./RevUp-infra/src/main/resources/application-infra.yml
+          echo "${{ secrets.INFRA_VARIABLE_YML }}" > ./RevUp-infra/src/main/resources/infra-variable.yml
           
           mkdir -p ./RevUp-common/src/main/resources
-          echo "${{ secrets.APPLICATION_COMMON_YML }}" > ./RevUp-common/src/main/resources/application-common.yml
+          echo "${{ secrets.COMMON_VARIABLE_YML }}" > ./RevUp-common/src/main/resources/common-variable.yml
           
           mkdir -p ./RevUp-security/src/main/resources
-          echo "${{ secrets.APPLICATION_SECURITY_YML }}" > ./RevUp-security/src/main/resources/application-security.yml
+          echo "${{ secrets.SECURITY_VARIABLE_YML }}" > ./RevUp-security/src/main/resources/application-security.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew bootJar
