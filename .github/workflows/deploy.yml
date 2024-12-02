@@ -49,36 +49,6 @@ jobs:
       JWT_REFRESH_EXPIRATION_TIME: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
 
     steps:
-      - name: Set environment variables
-        run: |
-          echo "DATABASE_PASSWORD=${{ secrets.JUNHO_DB_PASSWORD }}" >> .env
-          echo "DATABASE_URL=${{ secrets.JUNHO_DB_URL }}" >> .env
-          echo "DATABASE_USERNAME=${{ secrets.JUNHO_DB_USERNAME }}" >> .env
-          echo "GIT_HUB_PAGES_URL=${{ secrets.GIT_HUB_PAGES_URL }}" >> .env
-          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
-          echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> .env
-          echo "AWS_REGION_AUTO=${{ secrets.AWS_REGION_AUTO }}" >> .env
-          echo "AWS_REGION_STATIC=${{ secrets.AWS_REGION_STATIC }}" >> .env
-          echo "AWS_STACK_AUTO=${{ secrets.AWS_STACK_AUTO }}" >> .env
-          echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
-          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
-          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
-          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
-          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
-          echo "REFRESH_EXPIRATION_TIME=${{ secrets.REFRESH_EXPIRATION_TIME }}" >> .env
-          echo "REFRESH_KEY=${{ secrets.REFRESH_KEY }}" >> .env
-          echo "AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}" >> .env
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
-          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> .env
-          echo "KAKAO_REDIRECT_URL=${{ secrets.KAKAO_REDIRECT_URL }}"  >> .env
-          echo "OAUTH_GITHUB_CLIENT_ID=${{ secrets.OAUTH_GITHUB_CLIENT_ID }}"  >> .env
-          echo "OAUTH_GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}"  >> .env
-          echo "OAUTH_GITHUB_REDIRECT_URI=${{ secrets.OAUTH_GITHUB_REDIRECT_URI }}"  >> .env
-          echo "JWT_KEY=${{ secrets.JWT_KEY }}"  >> .env
-          echo "JWT_ACCESS_EXPIRATION_TIME=${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}"  >> .env
-          echo "JWT_REFRESH_EXPIRATION_TIME=${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}" >> .env
       - uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4
