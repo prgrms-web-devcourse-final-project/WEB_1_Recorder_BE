@@ -9,7 +9,6 @@ github-pages:
 ---
 spring:
   config:
-    import: common-variable.yaml
     activate:
       on-profile: dev
 
