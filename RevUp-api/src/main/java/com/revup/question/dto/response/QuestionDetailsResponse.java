@@ -8,9 +8,9 @@ import java.util.List;
 public record QuestionDetailsResponse(
         Long id,
         String writer,
+        String profileImage,
         String title,
         String content,
-        String profileImage,
         String createdAt,
         int answerCount,
         int readCount,
@@ -23,9 +23,9 @@ public record QuestionDetailsResponse(
         return new QuestionDetailsResponse(
                 question.getId(),
                 question.getUser().getNickname(),
+                question.getUser().getProfile().getProfileImage(),
                 question.getTitle(),
                 question.getContent(),
-                question.getUser().getProfile().getProfileImage(),
                 question.getCreatedAt().toString(),
                 question.getAnswerCount(),
                 question.getReadCount(),
@@ -44,4 +44,5 @@ public record QuestionDetailsResponse(
                         .toList()
         );
     }
+
 }

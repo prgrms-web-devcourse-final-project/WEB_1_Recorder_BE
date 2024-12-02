@@ -10,17 +10,14 @@ import java.util.List;
 
 @Component
 public class AnswerCodeMapper {
-    public List<AnswerCode> toEntities(List<AnswerCodeCreateRequest> codes, Answer answer) {
-        if (codes == null || codes.isEmpty()) {
-            return Collections.emptyList();
-        }
-        return codes.stream()
-                .map(code -> AnswerCode.builder()
-                        .answer(answer)
-                        .name(code.name())
-                        .content(code.content())
-                        .build())
-                .toList();
+    public AnswerCode toEntity(AnswerCodeCreateRequest code, Answer answer) {
+        if(code==null)
+            return null;
+        return AnswerCode.builder()
+                .answer(answer)
+                .name(code.name())
+                .content(code.content())
+                .build();
     }
 
     public List<AnswerCode> toUpdateEntity(List<AnswerCodeCreateRequest> codes) {

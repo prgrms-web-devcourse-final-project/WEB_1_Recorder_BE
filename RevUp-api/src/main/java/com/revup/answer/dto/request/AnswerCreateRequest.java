@@ -18,7 +18,7 @@ public record AnswerCreateRequest(
         @Size(max = 65535, message = "내용이 최대 사이즈를 초과하였습니다.")
         String content,
 
-        List<AnswerCodeCreateRequest> codes,
+        AnswerCodeCreateRequest code,
 
         List<ImageRequest> images
 ) {

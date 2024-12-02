@@ -66,7 +66,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .leftJoin(question.user, user).fetchJoin()
                 .innerJoin(question.stacks).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
-                .leftJoin(answer.codes, answerCode).fetchJoin()
+                .leftJoin(answer.code, answerCode).fetchJoin()
                 .leftJoin(question.codes, questionCode).fetchJoin()
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .where(question.id.eq(id))

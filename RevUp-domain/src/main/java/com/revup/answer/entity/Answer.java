@@ -48,8 +48,8 @@ public class Answer extends SoftDeleteEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToMany(mappedBy = "answer")
-    private Set<AnswerCode> codes = new HashSet<>();
+    @OneToOne(mappedBy = "answer")
+    private AnswerCode code;
 
     @Builder
     private Answer(
@@ -69,12 +69,12 @@ public class Answer extends SoftDeleteEntity {
         this.badCount = badCount;
     }
 
-    public void assignQuestion(Question question){
+    public void assignQuestion(Question question) {
         this.question = question;
     }
 
     public void addAnswerCode(AnswerCode answerCode) {
-        this.codes.add(answerCode);
+        this.code = answerCode;
     }
 
 
