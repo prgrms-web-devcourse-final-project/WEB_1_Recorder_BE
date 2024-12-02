@@ -35,8 +35,8 @@ aws:
       auto:${aws.region.stack.auto}
 
 refresh:
-  expiration_time: ${refresh.expiration_time}
-  key: ${refresh.key}
+  expiration_time: ${security.exp_time}
+  key: ${security.key}
 ---
 spring:
   config:
