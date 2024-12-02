@@ -91,8 +91,8 @@ jobs:
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/revup:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/revup:latest
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -102,6 +102,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }}
-            sudo docker-compose up -d                    
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:latest
+            sudo docker-compose -f ./docker-compose.yml up -d                    
             sudo docker-compose down
