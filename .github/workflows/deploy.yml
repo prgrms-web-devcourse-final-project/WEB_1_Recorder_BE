@@ -67,7 +67,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew clean build
+        run: ./gradlew :RevUp-api:bootJar
 
 #      - name: Generate YAML Configuration Files
 #        run: |
@@ -94,8 +94,9 @@ jobs:
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/revup:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/revup:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }}
+      
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -106,6 +107,10 @@ jobs:
           # 도커 작업
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:latest
+#            이전 컨테이너 중지 및 삭제
+            sudo docker-compose down
+      
+#            최신 이미지로 컨테이너 재시작
             sudo docker-compose up -d
 #            sudo docker image prune -f
 
