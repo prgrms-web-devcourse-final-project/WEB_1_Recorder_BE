@@ -41,7 +41,7 @@ public class AnswerService {
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2.0)
     )
-    public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images, List<AnswerCode> codes) {
+    public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images, AnswerCode code) {
 
         // 질문 조회
         Question question = questionRepository.findByIdWithOptimisticLock(questionId)
@@ -55,9 +55,7 @@ public class AnswerService {
         question.increaseAnswerCount();
 
         // 연관관계 매핑
-        for(AnswerCode code : codes){
-            answer.addAnswerCode(code);
-        }
+        answer.addAnswerCode(code);
 
         // 답변 저장
         answerRepository.save(answer);
@@ -66,7 +64,7 @@ public class AnswerService {
         answerImageRepository.saveAll(images);
 
         // 답변 코드 저장
-        answerCodeRepository.saveAll(codes);
+        answerCodeRepository.save(code);
 
         return answer.getId();
     }
