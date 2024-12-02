@@ -105,4 +105,3 @@ jobs:
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:latest
             sudo docker-compose -f ./docker-compose.yml up -d                    
-            sudo docker-compose down
