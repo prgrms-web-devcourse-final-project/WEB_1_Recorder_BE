@@ -26,10 +26,10 @@ spring:
 
     generate-ddl: true
 
-#  sql:
-#    init:
-#      data-locations: classpath:sql/data.sql
-#      mode: always
+  sql:
+    init:
+      data-locations: classpath:sql/data.sql
+      mode: always
 
 logging:
   level:
