@@ -11,10 +11,13 @@ services:
       - "3306:3306"
 
   spring-boot-app:
+    build:
+      context: . # Dockerfile이 있는 위치
+      dockerfile: Dockerfile
     image: eksrhk506/revup:latest
     container_name: spring-boot-container
     ports:
-      - "9090:9090"
+      - "8080:8080"
     depends_on:
       - mysql
       - redis_container
@@ -29,7 +32,7 @@ services:
     container_name: redis-container
     # 접근 포트 설정(컨테이너 외부:컨테이너 내부)
     ports:
-      - 7379:7379
+      - 6379:6379
     # 스토리지 마운트(볼륨) 설정
     volumes:
       - ./redis/data:/data
