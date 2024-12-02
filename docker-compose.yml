@@ -19,7 +19,7 @@ services:
       - mysql
       - redis_container
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/example
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/revup
       SPRING_DATASOURCE_USERNAME: docker_test
       SPRING_DATASOURCE_PASSWORD: 1234
 
