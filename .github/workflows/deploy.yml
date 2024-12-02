@@ -10,9 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.JUNHO_DB_PASSWORD }}
+      DATABASE_URL: ${{ secrets.JUNHO_DB_URL }}
+      DATABASE_USERNAME: ${{ secrets.JUNHO_DB_USERNAME }}
 
       GIT_HUB_PAGES_URL: ${{ secrets.GIT_HUB_PAGES_URL }}
 
