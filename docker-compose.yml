@@ -40,7 +40,6 @@ services:
           cpus: '0.5'   # 50% CPU 제한
         reservations:
           memory: 128M  # 최소 메모리 예약
-    entrypoint: [ "./wait-for-it.sh", "mysql:3306", "--", "java", "-Dspring.profiles.active=local", "-jar", "/app.jar" ]
 
   redis_container:
     image: redis:latest
