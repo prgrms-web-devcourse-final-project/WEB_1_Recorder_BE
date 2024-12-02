@@ -28,18 +28,6 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build Discovery Service with Gradle
-        working-directory: ./RevUp-api
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build -x test
-
-      - name: Build and Push Discovery Service
-        working-directory: ./RevUp-api
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/discovery-service .
-          docker push ${{ secrets.DOCKER_USERNAME }}/discovery-service
-
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
