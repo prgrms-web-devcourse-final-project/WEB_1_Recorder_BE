@@ -40,7 +40,7 @@ jobs:
           echo "${{ secrets.COMMON_VARIABLE_YML }}" > ./RevUp-common/src/main/resources/common-variable.yml
           
           mkdir -p ./RevUp-security/src/main/resources
-          echo "${{ secrets.SECURITY_VARIABLE_YML }}" > ./RevUp-security/src/main/resources/application-security.yml
+          echo "${{ secrets.SECURITY_VARIABLE_YML }}" > ./RevUp-security/src/main/resources/security-variable.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew bootJar
