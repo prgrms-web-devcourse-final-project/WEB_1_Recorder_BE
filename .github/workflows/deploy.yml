@@ -28,9 +28,6 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build with Gradle Wrapper
-        run: ./gradlew bootJar
-
       - name: Generate YAML Configuration Files
         run: |
           mkdir -p ./RevUp-api/src/main/resources
@@ -48,16 +45,18 @@ jobs:
           mkdir -p ./RevUp-security/src/main/resources
           echo "${{ secrets.APPLICATION_SECURITY_YML }}" > ./RevUp-security/src/main/resources/application-security.yml
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+      - name: Build with Gradle Wrapper
+        run: ./gradlew bootJar
 
       - name: Docker build
         run: |
           docker login -u ${{ secrets.MINU_DOCKERHUB_USERNAME }} -p ${{ secrets.MINU_DOCKERHUB_PASSWORD }}
           docker build -t ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest .
           docker push ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest
+
+      - name: Copy docker-compose.yml to EC2
+        run: |
+          scp -i ${{ secrets.MINU_EC2_PRIVATE_KEY }} -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.MINU_SSH_USER }}@${{ secrets.MINU_KNOWN_HOSTS }}:/home/ubuntu/
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -70,3 +69,8 @@ jobs:
             sudo docker pull ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest
             sudo docker-compose up -d
             sudo docker image prune -f
+
+      - name: Check docker-compose status
+        run: |
+          sudo docker-compose ps
+          sudo docker-compose logs
