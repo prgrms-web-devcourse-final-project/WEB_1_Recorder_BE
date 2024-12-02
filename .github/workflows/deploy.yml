@@ -31,16 +31,16 @@ jobs:
       - name: Generate YAML Configuration Files
         run: |
           mkdir -p ./RevUp-domain/src/main/resources
-          echo "${{ secrets.DOMAIN_VARIABLE_YML }}" > ./RevUp-domain/src/main/resources/domain-variable.yml
+          echo "${{ secrets.DOMAIN_VARIABLE_YML }}" > ./RevUp-domain/src/main/resources/domain-variable.yaml
           
           mkdir -p ./RevUp-infra/src/main/resources
-          echo "${{ secrets.INFRA_VARIABLE_YML }}" > ./RevUp-infra/src/main/resources/infra-variable.yml
+          echo "${{ secrets.INFRA_VARIABLE_YML }}" > ./RevUp-infra/src/main/resources/infra-variable.yaml
           
           mkdir -p ./RevUp-common/src/main/resources
-          echo "${{ secrets.COMMON_VARIABLE_YML }}" > ./RevUp-common/src/main/resources/common-variable.yml
+          echo "${{ secrets.COMMON_VARIABLE_YML }}" > ./RevUp-common/src/main/resources/common-variable.yaml
           
           mkdir -p ./RevUp-security/src/main/resources
-          echo "${{ secrets.SECURITY_VARIABLE_YML }}" > ./RevUp-security/src/main/resources/security-variable.yml
+          echo "${{ secrets.SECURITY_VARIABLE_YML }}" > ./RevUp-security/src/main/resources/security-variable.yaml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew bootJar
