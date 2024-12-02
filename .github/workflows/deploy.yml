@@ -13,6 +13,37 @@ jobs:
     steps:
       - name: Print environment variables
         run: |
+          echo "DATABASE_PASSWORD=${{ secrets.JUNHO_DB_PASSWORD }}"
+          echo "DATABASE_URL=${{ secrets.JUNHO_DB_URL }}"
+          echo "DATABASE_USERNAME=${{ secrets.JUNHO_DB_USERNAME }}"
+          echo "GIT_HUB_PAGES_URL=${{ secrets.GIT_HUB_PAGES_URL }}"
+          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}"
+          echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}"
+          echo "AWS_REGION_AUTO=${{ secrets.AWS_REGION_AUTO }}"
+          echo "AWS_REGION_STATIC=${{ secrets.AWS_REGION_STATIC }}"
+          echo "AWS_STACK_AUTO=${{ secrets.AWS_STACK_AUTO }}"
+          echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}"
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}"
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}"
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}"
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}"
+          echo "REFRESH_EXPIRATION_TIME=${{ secrets.REFRESH_EXPIRATION_TIME }}"
+          echo "REFRESH_KEY=${{ secrets.REFRESH_KEY }}"
+          echo "AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}"
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}"
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}"
+          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}"
+          echo "KAKAO_REDIRECT_URL=${{ secrets.KAKAO_REDIRECT_URL }}" 
+          echo "OAUTH_GITHUB_CLIENT_ID=${{ secrets.OAUTH_GITHUB_CLIENT_ID }}" 
+          echo "OAUTH_GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}" 
+          echo "OAUTH_GITHUB_REDIRECT_URI=${{ secrets.OAUTH_GITHUB_REDIRECT_URI }}" 
+          echo "JWT_KEY=${{ secrets.JWT_KEY }}"
+          echo "JWT_ACCESS_EXPIRATION_TIME=${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}" 
+          echo "JWT_REFRESH_EXPIRATION_TIME=${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}"
+
+      - name: Print environment variables
+        run: |
           echo "DATABASE_PASSWORD=${{ secrets.JUNHO_DB_PASSWORD }}" >> .env
           echo "DATABASE_URL=${{ secrets.JUNHO_DB_URL }}" >> .env
           echo "DATABASE_USERNAME=${{ secrets.JUNHO_DB_USERNAME }}" >> .env
