@@ -106,7 +106,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/revup:${{ github.sha }}
 #            이전 컨테이너 중지 및 삭제
             sudo docker-compose down
       
