@@ -47,7 +47,7 @@ jobs:
 
       - name: Verify JAR Contents
         run: |
-          JAR_FILE=$(find ./build/libs -name "*.jar" | head -n 1)
+          JAR_FILE=$(find ./RevUp-api/build/libs -name "*.jar" | head -n 1)
           echo "Inspecting JAR file: $JAR_FILE"
 
           # List all files in the JAR
@@ -56,8 +56,15 @@ jobs:
 
       - name: Docker build
         run: |
+          JAR_FILE=$(find ./RevUp-api/build/libs -name "*.jar" | head -n 1)
+          if [ -z "$JAR_FILE" ]; then
+            echo "JAR file not found! Ensure ./gradlew bootJar executed successfully."
+            exit 1
+          fi
+          echo "Using JAR file: $JAR_FILE"
+          
           docker login -u ${{ secrets.MINU_DOCKERHUB_USERNAME }} -p ${{ secrets.MINU_DOCKERHUB_PASSWORD }}
-          docker build -t ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest .
+          docker build --build-arg JAR_FILE=$JAR_FILE -t ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest .
           docker push ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest
 
       - name: Copy docker-compose.yml to EC2
