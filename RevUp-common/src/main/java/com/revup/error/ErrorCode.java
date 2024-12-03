@@ -28,6 +28,7 @@ public enum ErrorCode {
     INVALID_CERTIFICATION_NUMBER(BAD_REQUEST, "인증 번호가 유효하지 않습니다."),
     USER_PERMISSION(FORBIDDEN, "권한이 없는 사용자입니다"),
     USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 id : %s 가 존재하지 않습니다"),
+    EMAIL_DOMAIN_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 도메인이 존재하지 않습니다"),
 
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),
