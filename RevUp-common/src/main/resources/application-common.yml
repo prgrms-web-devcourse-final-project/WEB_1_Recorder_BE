@@ -9,8 +9,9 @@ github-pages:
 ---
 spring:
   config:
+    import: common-variable.yaml
     activate:
       on-profile: dev
 
 github-pages:
-  url: ${GIT_HUB_PAGES_URL}
+  url: ${github-pages.url}

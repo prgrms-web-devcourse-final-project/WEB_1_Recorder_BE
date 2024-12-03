@@ -6,6 +6,48 @@ spring:
 
   data:
     redis:
+      host: ${redis.localhost}
+      port: ${redis.port}
+      password: ${redis.password}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+aws:
+  s3:
+    bucket: ${aws.s3.bucket}
+  credentials:
+    access-key: ${aws.credentials.access-key}
+    secret-key: ${aws.credentials.secret-key}
+  region:
+    static: ${aws.region}
+    auto : ${aws.region.auto}
+    stack:
+      auto:${aws.region.stack.auto}
+
+refresh:
+  expiration_time: ${security.exp_time}
+  key: ${security.key}
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: infra-variable.yaml
+
+  data:
+    redis:
       host: ${redis.host}
       port: ${redis.port}
       password: ${redis.password}
@@ -32,47 +74,8 @@ aws:
     static: ${aws.region}
     auto : ${aws.region.auto}
     stack:
-     auto: ${aws.region.stack.auto}
+      auto:${aws.region.stack.auto}
 
 refresh:
-  expiration_time: ${refresh.expiration_time}
-  key: ${refresh.key}
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      password: ${REDIS_PASSWORD}
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-
-    properties:
-      mail:
-        smtp:
-          auth: true
-          timeout: 5000
-          starttls:
-            enable: true
-aws:
-  s3:
-    bucket: ${AWS_S3_BUCKET}
-  credentials:
-    access-key: ${AWS_ACCESS_KEY}
-    secret-key: ${AWS_SECRET_KEY}
-  region:
-    static: ${AWS_REGION_STATIC}
-    auto : ${AWS_REGION_AUTO}
-    stack:
-      auto: ${AWS_STACK_AUTO}
-
-refresh:
-  expiration_time: ${REFRESH_EXPIRATION_TIME}
-  key: ${refresh.key}
+  expiration_time: ${security.exp_time}
+  key: ${security.key}

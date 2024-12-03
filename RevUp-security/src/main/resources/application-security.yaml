@@ -1,7 +1,6 @@
----
 spring:
   config:
-    import: optional:classpath:security-variable.yaml
+    import: security-variable.yaml
     activate:
       on-profile: local
 
@@ -57,14 +56,15 @@ spring:
             user-info-authentication-method: header
 
 jwt:
-  secret-key: ${jwt.key}
-  access-expiration-time: ${jwt.access-expiration-time}
-  refresh-expiration-time: ${jwt.refresh-expiration-time}
-
+  secret-key: ${security.key}
+  access-expiration-time: ${security.access-expiration-time}
+  refresh-expiration-time: ${security.refresh-expiration-time}
 
 ---
+
 spring:
   config:
+    import: security-variable.yaml
     activate:
       on-profile: dev
 
@@ -120,9 +120,6 @@ spring:
             user-info-authentication-method: header
 
 jwt:
-  secret-key: ${jwt.key}
-  access-expiration-time: ${jwt.access-expiration-time}
-  refresh-expiration-time: ${jwt.refresh-expiration-time}
-
-
-
+  secret-key: ${security.key}
+  access-expiration-time: ${security.access-expiration-time}
+  refresh-expiration-time: ${security.refresh-expiration-time}
