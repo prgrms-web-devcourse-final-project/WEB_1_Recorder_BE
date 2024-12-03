@@ -40,6 +40,7 @@ public enum ErrorCode {
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "질문 id : %s 가 존재하지 않습니다"),
     QUESTION_INVALID_TYPE(HttpStatus.BAD_REQUEST, "잘못된 질문 타입 입니다"),
     QUESTION_INVALID_STATE(BAD_REQUEST,"잘못된 질문 상태입니다" ),
+    QUESTION_ALREADY_ACCEPT(CONFLICT, "이미 답변을 채택한 질문입니다"),
 
     // 기술스택
     SKILL_INVALID(BAD_REQUEST, "잘못된 기술스택입니다"),
@@ -57,7 +58,11 @@ public enum ErrorCode {
     S3_SERVICE(HttpStatus.BAD_REQUEST,"Amazon S3 서비스 오류: %s" ),
     S3_CLIENT(HttpStatus.BAD_REQUEST, "Amazon S3 클라이언트 오류: %s"),
 
-    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요"),;
+    ANSWER_CONCURRENCY(CONFLICT, "답변을 생성하는 동안 충돌이 발생했습니다 다시 시도해주세요"),
+    ANSWER_NOT_FOUND(NOT_FOUND, "답변 id : %s 가 존재하지 않습니다"),
+    ADOPTED_REVIEW_INVALID(BAD_REQUEST,"올바르지 않은 채택 리뷰입니다" ),
+    ANSWER_ALREADY_ADOPTED(CONFLICT, "이미 채택된 답변입니다"),
+    ANSWER_NOT_LINKED(BAD_REQUEST,"해당 답변은 이 질문에 속하지 않습니다" );
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;

@@ -25,21 +25,19 @@ public class CreateAnswerUseCase {
     private final AnswerCodeMapper codeMapper;
     private final AnswerImageMapper imageMapper;
 
-    private final UserUtil userUtil;
 
-    public AnswerIdResponse execute(AnswerCreateRequest request){
-        User user = userUtil.getCurrentUser();
+    public AnswerIdResponse execute(AnswerCreateRequest request, User currentUser) {
 
-        Answer answer = answerMapper.toEntity(request, user);
+        Answer answer = answerMapper.toEntity(request, currentUser);
 
-        List<AnswerCode> answerCodes = codeMapper.toEntities(request.codes(), answer);
+        AnswerCode answerCode = codeMapper.toEntity(request.code(), answer);
 
         List<AnswerImage> answerImages = imageMapper.toEntities(request.images(), answer);
 
 
-        Long answerId = answerService.createAnswer(request.questionId(), answer, answerImages, answerCodes);
+        Long answerId = answerService.createAnswer(request.questionId(), answer, answerImages, answerCode);
 
         return new AnswerIdResponse(answerId);
-        
+
     }
 }

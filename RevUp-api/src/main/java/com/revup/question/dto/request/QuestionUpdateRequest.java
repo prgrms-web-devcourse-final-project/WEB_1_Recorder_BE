@@ -7,7 +7,10 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record QuestionCreateRequest(
+public record QuestionUpdateRequest(
+
+        Long id,
+
         @NotBlank(message = "제목은 비어 있을 수 없습니다.")
         String title,
 

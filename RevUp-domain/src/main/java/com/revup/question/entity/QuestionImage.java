@@ -32,4 +32,8 @@ public class QuestionImage extends BaseTimeEntity {
         this.name = name;
         this.question = question;
     }
+
+    public void assignQuestion(Question question){
+        this.question = question;
+    }
 }

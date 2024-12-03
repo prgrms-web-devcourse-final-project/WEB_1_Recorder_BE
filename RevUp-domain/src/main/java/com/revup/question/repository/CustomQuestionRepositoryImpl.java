@@ -3,13 +3,15 @@ package com.revup.question.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.revup.common.SkillStack;
-import com.revup.question.criteria.QuestionSearchCriteria;
-import com.revup.question.entity.QQuestionCode;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionState;
-import com.revup.question.entity.QuestionType;
+import com.revup.question.enums.QuestionState;
+import com.revup.question.enums.QuestionType;
+import com.revup.user.entity.User;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,16 +66,15 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
                 .leftJoin(question.user, user).fetchJoin()
                 .innerJoin(question.stacks).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
+                .leftJoin(answer.code, answerCode).fetchJoin()
                 .leftJoin(question.codes, questionCode).fetchJoin()
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .where(question.id.eq(id))
                 .fetchOne());
     }
 
     private BooleanBuilder buildSearchConditions(QuestionSearchCriteria criteria) {
         BooleanBuilder builder = new BooleanBuilder();
-
-        // 기본 조건: 임시저장 제외
-        builder.and(question.state.ne(QuestionState.TEMPORARY));
 
         // 질문 유형
         if (criteria.type() != null) {
@@ -99,6 +100,91 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
         }
 
         return builder;
+    }
+
+    @Override
+    public List<Question> findQuestionsByReadCountAndAnswerCount(int limit, LocalDateTime from) {
+
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .where(question.createdAt.after(from))
+                .orderBy(question.readCount.desc(), question.answerCount.desc())
+                .limit(limit)
+                .fetch();
+
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
+                .where(
+                        question.id.in(questionIds)
+                )
+                .orderBy(question.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Question> findQuestionsByCreatedAt(int limit) {
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .orderBy(question.createdAt.desc())
+                .limit(limit)
+                .fetch();
+
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
+                .where(
+                        question.id.in(questionIds)
+                )
+                .orderBy(question.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Question> findQuestionsByUserAndLastId(User currentUser, Long lastId, int limit) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // 현재 사용자 조건 추가
+        builder.and(question.user.eq(currentUser));
+
+        // lastId 조건 동적 생성
+        if(lastId!=null){
+            builder.and(question.id.lt(lastId));
+        }
+
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .where(builder)
+                .orderBy(question.createdAt.desc())
+                .limit(limit)
+                .fetch();
+
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
+                .where(
+                        question.id.in(questionIds)
+                )
+                .orderBy(question.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Question> findQuestionsByStack(int limit, String stack) {
+        List<Long> questionIds = queryFactory.select(question.id)
+                .from(question)
+                .where(question.stacks.contains(SkillStack.of(stack)))
+                .orderBy(question.createdAt.desc())
+                .limit(limit)
+                .fetch();
+
+        return queryFactory.selectFrom(question)
+                .leftJoin(question.user, user).fetchJoin()
+                .innerJoin(question.stacks).fetchJoin()
+                .where(
+                        question.id.in(questionIds)
+                )
+                .fetch();
     }
 
 

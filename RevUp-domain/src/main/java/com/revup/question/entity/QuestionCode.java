@@ -31,6 +31,9 @@ public class QuestionCode extends BaseTimeEntity {
         this.question = question;
         this.name = name;
         this.content = content;
-        question.addQuestionCode(this);
+    }
+
+    public void assignQuestion(Question question) {
+        this.question = question;
     }
 }

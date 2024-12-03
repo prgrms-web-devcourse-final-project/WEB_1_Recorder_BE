@@ -4,6 +4,8 @@ import com.revup.answer.entity.Answer;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
 import com.revup.common.SoftDeleteEntity;
+import com.revup.question.enums.QuestionState;
+import com.revup.question.enums.QuestionType;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -98,7 +100,6 @@ public class Question extends SoftDeleteEntity {
     public void update(
             String title,
             QuestionType type,
-            QuestionState state,
             String content,
             String githubLink,
             BooleanStatus githubLinkReveal,
@@ -106,7 +107,6 @@ public class Question extends SoftDeleteEntity {
             Set<SkillStack> stacks) {
         this.title = title;
         this.type = type;
-        this.state = state;
         this.content = content;
         this.githubLink = githubLink;
         this.githubLinkReveal = githubLinkReveal;
@@ -129,4 +129,9 @@ public class Question extends SoftDeleteEntity {
     public void increaseReadCount() {
         this.readCount++;
     }
+
+    public void adoptAnswer() {
+        this.state = QuestionState.ADOPTED;
+    }
+
 }

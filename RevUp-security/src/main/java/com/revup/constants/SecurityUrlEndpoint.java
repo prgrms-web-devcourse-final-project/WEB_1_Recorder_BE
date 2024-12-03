@@ -7,6 +7,12 @@ import org.springframework.http.HttpMethod;
 @Getter
 @RequiredArgsConstructor
 public enum SecurityUrlEndpoint {
+    // Swagger
+    SWAGGER_UI(HttpMethod.GET, "/swagger-ui/**"),
+    SWAGGER_DOCS(HttpMethod.GET, "/v3/api-docs/**"),
+    SWAGGER_HTML(HttpMethod.GET, "/swagger-ui.html"),
+    SWAGGER_WEBJARS(HttpMethod.GET, "/webjars/**"),
+
 
     // All
     OAUTH_LOGIN(HttpMethod.GET, "/oauth2/authorization/**"),

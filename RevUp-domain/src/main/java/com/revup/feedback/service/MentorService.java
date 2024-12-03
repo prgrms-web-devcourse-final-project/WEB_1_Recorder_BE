@@ -2,9 +2,6 @@ package com.revup.feedback.service;
 
 import com.revup.feedback.entity.Mentor;
 import com.revup.feedback.repository.MentorRepository;
-import com.revup.feedback.service.response.MentorResponse;
-import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

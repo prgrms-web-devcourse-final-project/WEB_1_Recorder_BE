@@ -15,7 +15,7 @@ public class AnswerCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
@@ -30,6 +30,9 @@ public class AnswerCode {
         this.answer = answer;
         this.name = name;
         this.content = content;
-        answer.addAnswerCode(this);
+    }
+
+    public void assignAnswer(Answer answer) {
+        this.answer = answer;
     }
 }

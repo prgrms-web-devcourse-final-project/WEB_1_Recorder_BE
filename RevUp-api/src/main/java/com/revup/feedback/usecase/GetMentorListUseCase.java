@@ -5,13 +5,13 @@ import com.revup.feedback.request.MentorPageRequest;
 import com.revup.feedback.service.MentorService;
 import com.revup.feedback.service.response.MentorResponse;
 import com.revup.page.Page;
-import com.revup.question.util.PageUtil;
+import com.revup.page.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.revup.question.util.PageUtil.SIZE;
+import static com.revup.page.PageUtil.SIZE;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class GetMentorListUseCase {
                 .map(MentorResponse::from)
                 .toList();
 
-        return PageUtil.createPage(content, mentorPageRequest.getPage(), SIZE);
+        return PageUtil.createPage(content, mentorPageRequest.getPage(), totalMentorCount);
     }
 
 }

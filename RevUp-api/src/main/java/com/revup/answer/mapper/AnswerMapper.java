@@ -1,6 +1,8 @@
 package com.revup.answer.mapper;
 
+import com.revup.answer.dto.AnswerUpdateInfo;
 import com.revup.answer.dto.request.AnswerCreateRequest;
+import com.revup.answer.dto.request.AnswerUpdateRequest;
 import com.revup.answer.entity.Answer;
 import com.revup.common.BooleanStatus;
 import com.revup.image.dto.request.ImageRequest;
@@ -22,5 +24,11 @@ public class AnswerMapper {
                 .build();
     }
 
+    public AnswerUpdateInfo toUpdateInfo(AnswerUpdateRequest request){
+        return new AnswerUpdateInfo(
+                request.title(),
+                request.content()
+        );
+    }
 
 }

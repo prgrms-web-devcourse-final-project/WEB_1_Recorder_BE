@@ -1,5 +1,6 @@
 package com.revup.answer.entity;
 
+import com.revup.answer.enums.AdoptedReview;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SoftDeleteEntity;
 import com.revup.question.entity.Question;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -48,8 +48,8 @@ public class Answer extends SoftDeleteEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToMany(mappedBy = "answer")
-    private Set<AnswerCode> codes = new HashSet<>();
+    @OneToOne(mappedBy = "answer")
+    private AnswerCode code;
 
     @Builder
     private Answer(
@@ -69,12 +69,22 @@ public class Answer extends SoftDeleteEntity {
         this.badCount = badCount;
     }
 
-    public void assignQuestion(Question question){
+    public void assignQuestion(Question question) {
         this.question = question;
-        question.addAnswer(this);
     }
 
     public void addAnswerCode(AnswerCode answerCode) {
-        this.codes.add(answerCode);
+        this.code = answerCode;
+    }
+
+
+    public void adoptWithReview(AdoptedReview adoptedReview) {
+        this.isAccept = BooleanStatus.TRUE;
+        this.review = adoptedReview;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
