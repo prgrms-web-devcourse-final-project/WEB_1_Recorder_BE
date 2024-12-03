@@ -9,14 +9,8 @@ services:
       MYSQL_PASSWORD: 1234
     ports:
       - "3306:3306"
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M  # MySQL에 할당할 최대 메모리 (1GB에서 256MB 제한)
-#          cpus: '0.5'   # 50% CPU 제한
-#        reservations:
-#          memory: 128M  # 최소 메모리 예약 (필요할 때 자동으로 할당)
-
+    volumes:
+      - ./mysql_data:/var/lib/mysql
 
   spring-boot-app:
     build:
@@ -33,13 +27,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/revup?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: docker_test
       SPRING_DATASOURCE_PASSWORD: 1234
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 128M  # Spring Boot 애플리케이션에 할당할 최대 메모리
-#          cpus: '0.5'   # 50% CPU 제한
-#        reservations:
-#          memory: 64M  # 최소 메모리 예약
 
   redis_container:
     image: redis:latest
@@ -58,10 +45,3 @@ services:
     # 컨테이너 종료시 재시작 여부 설정
     restart: always
     command: redis-server /usr/local/conf/redis.conf
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 128M  # Redis에 할당할 최대 메모리
-#          cpus: '0.25'  # Redis는 CPU 자원을 적게 사용하도록 제한
-#        reservations:
-#          memory: 64M  # 최소 메모리 예약
