@@ -12,7 +12,6 @@ import com.revup.question.dto.response.QuestionDetailsResponse;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.usecase.*;
 import com.revup.user.entity.User;
-import com.revup.user.util.UserUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
