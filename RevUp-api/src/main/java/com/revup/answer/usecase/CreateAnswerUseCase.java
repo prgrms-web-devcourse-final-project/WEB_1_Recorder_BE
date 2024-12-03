@@ -4,14 +4,12 @@ import com.revup.answer.dto.request.AnswerCreateRequest;
 import com.revup.answer.dto.response.AnswerIdResponse;
 import com.revup.answer.entity.Answer;
 import com.revup.answer.entity.AnswerCode;
+import com.revup.answer.entity.AnswerImage;
 import com.revup.answer.mapper.AnswerCodeMapper;
 import com.revup.answer.mapper.AnswerImageMapper;
 import com.revup.answer.mapper.AnswerMapper;
 import com.revup.answer.service.AnswerService;
-import com.revup.answer.entity.AnswerImage;
-import com.revup.question.entity.QuestionCode;
 import com.revup.user.entity.User;
-import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

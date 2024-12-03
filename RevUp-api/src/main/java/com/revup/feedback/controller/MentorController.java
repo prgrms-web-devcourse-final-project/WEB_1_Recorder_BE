@@ -1,5 +1,6 @@
 package com.revup.feedback.controller;
 
+import com.revup.annotation.SecurityUser;
 import com.revup.feedback.request.MentorCreateRequest;
 import com.revup.feedback.request.MentorPageRequest;
 import com.revup.feedback.service.response.MentorResponse;
@@ -7,6 +8,7 @@ import com.revup.feedback.usecase.CreateMentorUseCase;
 import com.revup.feedback.usecase.GetMentorListUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +27,11 @@ public class MentorController {
      * @return 생성된 멘토 id
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createMentor(@RequestBody MentorCreateRequest mentorCreateRequest) {
+    public ResponseEntity<ApiResponse<Long>> createMentor(@RequestBody MentorCreateRequest mentorCreateRequest,
+                                                          @SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        createMentorUseCase.execute(mentorCreateRequest)
+                        createMentorUseCase.execute(mentorCreateRequest,currentUser)
                 )
         );
     }

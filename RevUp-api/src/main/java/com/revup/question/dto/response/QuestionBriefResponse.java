@@ -8,6 +8,7 @@ import java.util.List;
 public record QuestionBriefResponse(
         Long id,
         String writer,
+        String profileImage,
         String title,
         String content,
         String createdAt,
@@ -19,6 +20,7 @@ public record QuestionBriefResponse(
         return new QuestionBriefResponse(
                 question.getId(),
                 question.getIsAnonymous().equals(BooleanStatus.FALSE) ? question.getUser().getNickname() : "익명",
+                question.getUser().getProfileImage(),
                 question.getTitle(),
                 question.getContent(),
                 question.getCreatedAt().toString(),

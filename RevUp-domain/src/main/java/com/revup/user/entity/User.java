@@ -61,6 +61,18 @@ public class User extends SoftDeleteEntity {
         return this.profile.getNickname();
     }
 
+    public String getProfileImage(){
+        return this.profile.getProfileImage();
+    }
+
+    public int getTotalAnswerCount(){
+        return this.profile.getTotalAnswerCount();
+    }
+
+    public int getAdoptedAnswerCount(){
+        return this.profile.getAdoptedAnswerCount();
+    }
+
     public void updateAffiliation(Affiliation affiliation) {
         this.affiliation = affiliation;
     }

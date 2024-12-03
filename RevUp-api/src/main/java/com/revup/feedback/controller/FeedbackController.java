@@ -1,10 +1,12 @@
 package com.revup.feedback.controller;
 
+import com.revup.annotation.SecurityUser;
 import com.revup.feedback.request.FeedbackAcceptRequest;
 import com.revup.feedback.request.FeedbackCreateRequest;
 import com.revup.feedback.service.response.FeedbackResponse;
 import com.revup.feedback.usecase.*;
 import com.revup.global.dto.ApiResponse;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +30,11 @@ public class FeedbackController {
      * @return 생성된 피드백 id
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createFeedback(@RequestBody FeedbackCreateRequest feedbackCreateRequest) {
+    public ResponseEntity<ApiResponse<Long>> createFeedback(@RequestBody FeedbackCreateRequest feedbackCreateRequest,
+                                                            @SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        createFeedbackUseCase.execute(feedbackCreateRequest)
+                        createFeedbackUseCase.execute(feedbackCreateRequest, currentUser)
                 )
         );
     }
@@ -41,10 +44,10 @@ public class FeedbackController {
      * @return 해당 목록
      */
     @GetMapping("/submitted/waiting")
-    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedWaitingFeedbackList() {
+    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedWaitingFeedbackList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        getWaitingFeedbackListUseCase.execute()
+                        getWaitingFeedbackListUseCase.execute(currentUser)
                 )
         );
     }
@@ -54,10 +57,10 @@ public class FeedbackController {
      * @return 해당 목록
      */
     @GetMapping("/submitted")
-    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedFeedbackList() {
+    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedFeedbackList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        getSubmittedFeedbackListUseCase.execute()
+                        getSubmittedFeedbackListUseCase.execute(currentUser)
                 )
         );
     }
@@ -68,10 +71,11 @@ public class FeedbackController {
      * @return 승인된 피드백 id
      */
     @PostMapping("/submitted/accepted")
-    public ResponseEntity<ApiResponse<Long>> acceptFeedback(@RequestBody FeedbackAcceptRequest feedbackAcceptRequest) {
+    public ResponseEntity<ApiResponse<Long>> acceptFeedback(@RequestBody FeedbackAcceptRequest feedbackAcceptRequest,
+                                                            @SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        acceptFeedbackUseCase.execute(feedbackAcceptRequest)
+                        acceptFeedbackUseCase.execute(feedbackAcceptRequest,currentUser)
                 )
         );
     }
@@ -81,10 +85,10 @@ public class FeedbackController {
      * @return 해당 목록
      */
     @GetMapping("/submitted/accepted")
-    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedAcceptedFeedbackList() {
+    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedAcceptedFeedbackList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        getAcceptedFeedbackListUseCase.execute()
+                        getAcceptedFeedbackListUseCase.execute(currentUser)
                 )
         );
     }
