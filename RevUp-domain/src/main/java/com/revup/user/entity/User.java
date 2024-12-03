@@ -23,8 +23,7 @@ public class User extends SoftDeleteEntity {
 
     @Embedded private Profile profile;
 
-    @Column(length = 50)
-    private String businessEmail;
+    @Embedded private Affiliation affiliation;
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
@@ -62,7 +61,7 @@ public class User extends SoftDeleteEntity {
         return this.profile.getNickname();
     }
 
-    public void updateBusinessEmail(Email email) {
-        this.businessEmail = email.value();
+    public void updateAffiliation(Affiliation affiliation) {
+        this.affiliation = affiliation;
     }
 }

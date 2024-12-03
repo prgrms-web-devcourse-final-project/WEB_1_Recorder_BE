@@ -32,7 +32,7 @@ aws:
     static: ${aws.region}
     auto : ${aws.region.auto}
     stack:
-      auto:${aws.region.stack.auto}
+     auto: ${aws.region.stack.auto}
 
 refresh:
   expiration_time: ${refresh.expiration_time}
@@ -45,6 +45,34 @@ spring:
 
   data:
     redis:
-      host:
-      password:
-      port:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+aws:
+  s3:
+    bucket: ${AWS_S3_BUCKET}
+  credentials:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+  region:
+    static: ${AWS_REGION_STATIC}
+    auto : ${AWS_REGION_AUTO}
+    stack:
+      auto: ${AWS_STACK_AUTO}
+
+refresh:
+  expiration_time: ${REFRESH_EXPIRATION_TIME}
+  key: ${refresh.key}

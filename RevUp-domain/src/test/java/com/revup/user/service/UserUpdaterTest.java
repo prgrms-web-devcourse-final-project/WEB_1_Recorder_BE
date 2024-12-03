@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserUpdaterTest {
 
     @InjectMocks
-    private UserUpdater userUpdater;
+    private UserDomainService userService;
 
     @Test
     @DisplayName("유저 프로필 변경")
@@ -22,9 +22,9 @@ class UserUpdaterTest {
         User newUser = User.builder().build();
 
         Profile newProfile = Profile.builder().build();
-        User user = userUpdater.updateProfile(newUser, newProfile);
+        Profile updatedProfile = userService.updateProfile(newUser, newProfile);
 
-        assertThat(user.getProfile()).isNotNull();
+        assertThat(updatedProfile).isNotNull();
     }
 
 }

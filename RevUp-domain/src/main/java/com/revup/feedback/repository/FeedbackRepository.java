@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
+public interface FeedbackRepository extends JpaRepository<Feedback, Long>, CustomFeedBackRepository {
 
     List<Feedback> findByTeacherAndState(User user, FeedbackState state);
 

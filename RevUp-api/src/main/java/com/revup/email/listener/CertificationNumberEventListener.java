@@ -1,7 +1,7 @@
 package com.revup.email.listener;
 
-import com.revup.user.dto.EmailCertificationNumberInfo;
-import com.revup.user.service.EmailService;
+import com.revup.user.dto.EmailCertificationEventInfo;
+import com.revup.user.service.port.out.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -17,7 +17,7 @@ public class CertificationNumberEventListener {
     @Async
     @EventListener
     public void certificationNumberEventListener(
-            EmailCertificationNumberInfo info
+            EmailCertificationEventInfo info
     ) {
         emailService.sendMail(info);
     }

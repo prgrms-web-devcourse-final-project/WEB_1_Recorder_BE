@@ -1,16 +1,18 @@
 package com.revup.user.controller;
 
 
+import com.revup.annotation.SecurityUser;
 import com.revup.global.dto.ApiResponse;
+import com.revup.user.entity.User;
 import com.revup.user.model.request.UpdateEmailRequest;
 import com.revup.user.model.request.UpdateProfileRequest;
 import com.revup.user.model.request.ValidateEmailRequest;
-import com.revup.user.model.response.UpdateEmailResponse;
+import com.revup.user.model.response.UpdateAffiliationResponse;
 import com.revup.user.model.response.UpdateProfileResponse;
 import com.revup.user.model.response.ValidateEmailResponse;
-import com.revup.user.service.UpdateEmailUseCase;
-import com.revup.user.service.UpdateProfileUseCase;
+import com.revup.user.service.UpdateUserUseCase;
 import com.revup.user.service.ValidateEmailUseCase;
+import com.revup.user.util.UserDomainUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    private final UpdateProfileUseCase updateProfileUseCase;
-    private final UpdateEmailUseCase updateEmailUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
     private final ValidateEmailUseCase validateEmailUseCase;
+    private final UserDomainUtil userDomainUtil;
 
     /**
      *  프로필 사진, 닉네임 한줄 소개 변경
@@ -32,9 +34,10 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<ApiResponse<UpdateProfileResponse>> updateProfile(
-            @RequestBody UpdateProfileRequest request
+            @RequestBody UpdateProfileRequest request,
+            @SecurityUser User user
     ) {
-        UpdateProfileResponse response = updateProfileUseCase.execute(request);
+        UpdateProfileResponse response = updateUserUseCase.executeUpdateProfile(user, request);
         return ResponseEntity.ok().body(ApiResponse.success(response));
     }
 
@@ -53,10 +56,11 @@ public class UserController {
     }
 
     @PatchMapping("/email")
-    public ResponseEntity<ApiResponse<UpdateEmailResponse>> updateEmail(
-            @RequestBody UpdateEmailRequest request
+    public ResponseEntity<ApiResponse<UpdateAffiliationResponse>> updateEmail(
+            @RequestBody UpdateEmailRequest request,
+            @SecurityUser User user
     ) {
-        UpdateEmailResponse response = updateEmailUseCase.execute(request);
+        UpdateAffiliationResponse response = updateUserUseCase.executeUpdateEmail(user, request);
         return ResponseEntity.ok()
                 .body(ApiResponse.success(response));
     }

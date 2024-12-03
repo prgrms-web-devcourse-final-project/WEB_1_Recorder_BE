@@ -1,7 +1,7 @@
 ---
 spring:
   config:
-    import: security-variable.yaml
+    import: optional:classpath:security-variable.yaml
     activate:
       on-profile: local
 
@@ -65,7 +65,6 @@ jwt:
 ---
 spring:
   config:
-    import: security-variable.yaml
     activate:
       on-profile: dev
 

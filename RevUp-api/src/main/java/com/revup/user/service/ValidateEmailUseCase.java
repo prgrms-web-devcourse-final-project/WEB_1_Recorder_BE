@@ -3,7 +3,7 @@ package com.revup.user.service;
 import com.revup.annotation.UseCase;
 import com.revup.user.dto.CertificationKey;
 import com.revup.user.dto.CertificationNumber;
-import com.revup.user.dto.EmailCertificationNumberInfo;
+import com.revup.user.dto.EmailCertificationEventInfo;
 import com.revup.user.model.mapper.UserMapper;
 import com.revup.user.model.request.ValidateEmailRequest;
 import com.revup.user.model.response.ValidateEmailResponse;
@@ -26,7 +26,7 @@ public class ValidateEmailUseCase {
      */
     public ValidateEmailResponse execute(ValidateEmailRequest request) {
         CertificationNumber number = certificationService.createNumber();
-        EmailCertificationNumberInfo info = userMapper.toEmailCertificationNumberInfo(
+        EmailCertificationEventInfo info = userMapper.toEmailCertificationNumberInfo(
                 request.email(),
                 number
         );
