@@ -1,15 +1,12 @@
-package com.revup.archive.entity;
+package com.revup.achievement.entity;
 
 import com.revup.achieve.AchieveType;
 import com.revup.common.SoftDeleteEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Getter
+@Getter @ToString
 @Table(
         name = "achievements",
         uniqueConstraints = {

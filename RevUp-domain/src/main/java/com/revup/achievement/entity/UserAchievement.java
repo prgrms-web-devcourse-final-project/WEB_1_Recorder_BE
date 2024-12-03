@@ -1,16 +1,13 @@
-package com.revup.archive.entity;
+package com.revup.achievement.entity;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "user_achievements")
-@Getter
+@Getter @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAchievement extends BaseTimeEntity {
 
@@ -33,5 +30,12 @@ public class UserAchievement extends BaseTimeEntity {
     ) {
         this.user = user;
         this.achievement = achievement;
+    }
+
+    public static UserAchievement of(User user, Achievement achievement) {
+        return UserAchievement.builder()
+                .achievement(achievement)
+                .user(user)
+                .build();
     }
 }
