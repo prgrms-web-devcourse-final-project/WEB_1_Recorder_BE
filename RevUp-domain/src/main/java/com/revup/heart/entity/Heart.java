@@ -32,4 +32,18 @@ public class Heart extends SoftDeleteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     private Answer answer;
+
+    @Builder
+    private Heart(User user, HeartType type) {
+        this.user = user;
+        this.type = type;
+    }
+
+    public void assignAnswer(Answer answer){
+        this.answer = answer;
+    }
+
+    public boolean isGood(){
+        return this.type.isGoodType();
+    }
 }

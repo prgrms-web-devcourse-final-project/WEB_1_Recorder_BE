@@ -10,10 +10,6 @@ import com.revup.user.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import static com.revup.global.util.ResponseUtil.success;
@@ -27,6 +23,7 @@ public class HeartController {
     private final UserUtil userUtil;
 
     @PostMapping
+    public ResponseEntity<ApiResponse<HeartIdResponse>> create(@RequestBody HeartCreateRequest request) {
         User currentUser = userUtil.getCurrentUser();
         return success(HttpStatus.CREATED, createHeartUseCase.execute(request, currentUser));
     }
