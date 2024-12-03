@@ -1,5 +1,6 @@
 package com.revup.question.controller;
 
+import com.revup.annotation.SecurityUser;
 import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
 import com.revup.question.dto.request.QuestionAcceptAnswerRequest;
@@ -33,11 +34,10 @@ public class QuestionController {
     private final GetQuestionDetailsUseCase getQuestionDetailsUseCase;
     private final GetMyQuestionsUseCase getMyQuestionsUseCase;
     private final GetSpecificQuestionsUseCase getSpecificQuestionsUseCase;
-    private final UserUtil userUtil;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request) {
-        User currentUser = userUtil.getCurrentUser();
+    public ResponseEntity<ApiResponse<QuestionIdResponse>> create(@Valid @RequestBody QuestionCreateRequest request,
+                                                                  @SecurityUser User currentUser) {
         return success(HttpStatus.CREATED, createQuestionUseCase.execute(request, currentUser));
 
     }
@@ -72,26 +72,26 @@ public class QuestionController {
 
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getMyQuestionList(@RequestParam(required = false) Long lastId,
-                                                                                      @RequestParam int size) {
-        User currentUser = userUtil.getCurrentUser();
+                                                                                      @RequestParam int size,
+                                                                                      @SecurityUser User currentUser) {
         return success(getMyQuestionsUseCase.execute(lastId, size, currentUser));
     }
 
     @PatchMapping("/accept")
-    public ResponseEntity<ApiResponse<QuestionIdResponse>> acceptAnswer(@RequestBody QuestionAcceptAnswerRequest request){
-        User currentUser = userUtil.getCurrentUser();
+    public ResponseEntity<ApiResponse<QuestionIdResponse>> acceptAnswer(@RequestBody QuestionAcceptAnswerRequest request,
+                                                                        @SecurityUser User currentUser){
         return success(updateQuestionUseCase.acceptAnswer(request, currentUser));
     }
 
     @PutMapping
-    public ResponseEntity<ApiResponse<QuestionIdResponse>> update(@Valid @RequestBody QuestionUpdateRequest request){
-        User currentUser = userUtil.getCurrentUser();
+    public ResponseEntity<ApiResponse<QuestionIdResponse>> update(@Valid @RequestBody QuestionUpdateRequest request,
+                                                                  @SecurityUser User currentUser){
         return success((updateQuestionUseCase.updateQuestion(request, currentUser)));
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long id) {
-        User currentUser = userUtil.getCurrentUser();
+    public ResponseEntity<Void> delete(@RequestParam Long id,
+                                       @SecurityUser User currentUser) {
         deleteQuestionUseCase.execute(id, currentUser);
         return ResponseEntity.noContent().build();
     }
