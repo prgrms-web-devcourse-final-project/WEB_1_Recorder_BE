@@ -5,8 +5,10 @@ import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.repository.AnswerRepository;
 import com.revup.heart.entity.Heart;
 import com.revup.heart.exception.HeartExistException;
+import com.revup.heart.exception.HeartNotFoundException;
 import com.revup.heart.repository.HeartRepository;
 import com.revup.user.entity.User;
+import com.revup.user.exception.UserPermissionException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,4 +44,31 @@ public class HeartService {
 
     }
 
+    @Transactional
+    public void deleteHeart(Long id, User currentUser) {
+
+        // 반응 조회
+        Heart heart = heartRepository.findByIdWithUserAndAnswer(id)
+                .orElseThrow(() -> new HeartNotFoundException(id));
+
+        //권한 체크
+        checkPermission(currentUser, heart.getUser());
+
+        Answer answer = heart.getAnswer();
+
+        if (heart.isGood()) {
+            answer.decreaseGoodCount();
+        } else {
+            answer.decreaseBadCount();
+        }
+
+        heart.softDelete();
+
+    }
+
+    private void checkPermission(User currenUser, User writer) {
+        if (!currenUser.equals(writer)) {
+            throw new UserPermissionException();
+        }
+    }
 }
