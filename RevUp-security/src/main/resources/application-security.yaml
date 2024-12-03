@@ -1,7 +1,7 @@
 ---
 spring:
   config:
-    import: classpath:security-variable.yaml
+    import: optional:classpath:security-variable.yaml
     activate:
       on-profile: local
 
@@ -10,9 +10,9 @@ spring:
       client:
         registration:
           github:
-            client-id: ${OAUTH_GITHUB_CLIENT_ID}
-            client-secret: ${OAUTH_GITHUB_CLIENT_SECRET}
-            redirect-uri: ${OAUTH_GITHUB_REDIRECT_URI}
+            client-id: ${github.client-id}
+            client-secret: ${github.client-secret}
+            redirect-uri: ${github.redirect-uri}
             client-authentication-method: client_secret_post
             client-name: GitHub
             scope:
@@ -83,19 +83,19 @@ spring:
               - user:email
 
           google:
-            client-id: ${GOOGLE_CLIENT_ID} # 발급 받은 Client ID
-            client-secret: ${GOOGLE_CLIENT_SECRET} # 발급 받은 Client Secret
+            client-id: ${google.client-id} # 발급 받은 Client ID
+            client-secret: ${google.client-secret} # 발급 받은 Client Secret
             scope:
               - openid
               - profile
               - email
 
           kakao:
-            client-id: ${KAKAO_CLIENT_ID} # 발급 받은 Client ID
-            client-secret: ${KAKAO_CLIENT_SECRET} # 발급 받은 Client Secret
+            client-id: ${kakao.client-id} # 발급 받은 Client ID
+            client-secret: ${kakao.client-secret} # 발급 받은 Client Secret
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
-            redirect-uri: ${KAKAO_REDIRECT_URL}
+            redirect-uri: ${kakao.redirect-url}
             scope: # https://developers.kakao.com/docs/latest/ko/kakaologin/common#user-infoscope:
               - openid
               - name
@@ -120,9 +120,9 @@ spring:
             user-info-authentication-method: header
 
 jwt:
-  secret-key: ${JWT_KEY}
-  access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
-  refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}
+  secret-key: ${jwt.key}
+  access-expiration-time: ${jwt.access-expiration-time}
+  refresh-expiration-time: ${jwt.refresh-expiration-time}
 
 
 

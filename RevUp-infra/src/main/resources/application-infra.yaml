@@ -32,7 +32,7 @@ aws:
     static: ${aws.region}
     auto : ${aws.region.auto}
     stack:
-      auto:${aws.region.stack.auto}
+     auto: ${aws.region.stack.auto}
 
 refresh:
   expiration_time: ${refresh.expiration_time}
