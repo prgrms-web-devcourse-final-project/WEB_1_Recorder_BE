@@ -7,4 +7,4 @@ RUN curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dock
 
 ARG JAR_FILE=RevUp-api/build/libs/RevUp-api-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT [ "dockerize", "-wait", "tcp://mysql:3306", "-timeout", "30s", "java", "-Dspring.profiles.active=local", "-jar", "/app.jar" ]
+ENTRYPOINT [ "dockerize", "-wait", "tcp://mysql:3306", "-timeout", "30s", "java", "-Dspring.profiles.active=dev", "-jar", "/app.jar" ]

@@ -4,6 +4,34 @@ spring:
       on-profile: local
     import: domain-variable.yaml
   datasource:
+    url: ${database.url}
+    username: ${database.username}
+    password: ${database.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show-sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 1000
+    generate-ddl: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:sql/data.sql
+      mode: always
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: domain-variable.yaml
+  datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
@@ -14,7 +42,7 @@ spring:
       max-lifetime: 1800000
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show-sql: true
@@ -33,8 +61,3 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
     root: debug
----
-spring:
-  config:
-    activate:
-      on-profile: dev
