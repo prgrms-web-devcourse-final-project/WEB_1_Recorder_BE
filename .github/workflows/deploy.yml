@@ -74,9 +74,7 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.MINU_DOCKERHUB_USERNAME }}/revup:latest
             sudo docker compose up -d
-            sudo docker compose logs -f
-            echo "Waiting for Spring Boot to start..."
-            sleep 40  # Adjust this time if necessary depending on your app startup time
+            timeout 50s sudo docker compose logs -f
             sudo docker compose ps
             sudo docker image prune -f
 
