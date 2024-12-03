@@ -45,8 +45,8 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        show-sql: true
-        format_sql: true
+        show-sql: false
+        format_sql: false
         dialect: org.hibernate.dialect.MySQL8Dialect
         default_batch_fetch_size: 1000
     generate-ddl: true
@@ -58,6 +58,6 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: TRACE
-    root: debug
+    org.hibernate.SQL: info
+    org.hibernate.type.descriptor.sql: info
+    root: info
