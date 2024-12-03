@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 
+import static com.revup.constants.SecurityConstants.EXCEPTION;
 import static com.revup.error.ErrorCode.TOKEN_TIMEOUT;
 
 @Slf4j
@@ -29,8 +30,9 @@ public class RevUpAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException) {
+        log.error("authException.getCause = {}", authException.getCause());
         log.info("JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint");
-        if (isExceptionInSecurityFilter(request)) {
+        if (isExceptionInSecurityFilter(request, response)) {
             resolver.resolveException(
                     request, response, null, (Exception) request.getAttribute("exception"));
             return;
@@ -38,7 +40,8 @@ public class RevUpAuthenticationEntryPoint implements AuthenticationEntryPoint {
         resolver.resolveException(request, response, null, new AppException(TOKEN_TIMEOUT));
     }
 
-    private boolean isExceptionInSecurityFilter(HttpServletRequest request) {
-        return request.getAttribute("exception") != null;
+    private boolean isExceptionInSecurityFilter(HttpServletRequest request, HttpServletResponse response) {
+//        log.info("Response = {}", response);
+        return request.getAttribute(EXCEPTION) != null;
     }
 }

@@ -21,10 +21,16 @@ public class Profile {
     @Column(length = 500)
     private String introduction;
 
+    private int totalAnswerCount;
+
+    private int adoptedAnswerCount;
+
     @Builder
     private Profile(String nickname, String profileImage, String introduction) {
         this.nickname = nickname;
         this.profileImage = profileImage;
         this.introduction = introduction;
+        this.totalAnswerCount = 0;
+        this.adoptedAnswerCount = 0;
     }
 }

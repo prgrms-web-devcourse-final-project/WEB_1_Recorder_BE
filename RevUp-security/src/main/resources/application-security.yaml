@@ -123,6 +123,3 @@ jwt:
   secret-key: ${security.key}
   access-expiration-time: ${security.access-expiration-time}
   refresh-expiration-time: ${security.refresh-expiration-time}
-
-
-

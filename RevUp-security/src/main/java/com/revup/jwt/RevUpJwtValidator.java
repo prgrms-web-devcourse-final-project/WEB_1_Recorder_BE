@@ -1,7 +1,7 @@
 package com.revup.jwt;
 
 import com.revup.auth.dto.token.TokenInfo;
-import com.revup.auth.service.TokenValidator;
+import com.revup.auth.service.port.out.TokenValidator;
 import com.revup.constants.SecurityConstants;
 import com.revup.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;

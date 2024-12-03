@@ -1,7 +1,8 @@
 package com.revup.mail;
 
+import com.revup.mail.adaptor.EmailServiceAdaptor;
 import com.revup.user.dto.CertificationNumber;
-import com.revup.user.dto.EmailCertificationNumberInfo;
+import com.revup.user.dto.EmailCertificationEventInfo;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.*;
 class EmailServiceImplTest {
 
     @InjectMocks
-    private EmailServiceImpl emailService;
+    private EmailServiceAdaptor emailService;
 
     @Mock
     private JavaMailSender mailSender;
@@ -41,7 +42,7 @@ class EmailServiceImplTest {
         when(mockMessage.getContent()).thenReturn("<p>"+number+"</p>"); // 반환값 설정
 
         // Act
-        EmailCertificationNumberInfo info = EmailCertificationNumberInfo.of(
+        EmailCertificationEventInfo info = EmailCertificationEventInfo.of(
                 to,
                 new CertificationNumber(number),
                 subject);

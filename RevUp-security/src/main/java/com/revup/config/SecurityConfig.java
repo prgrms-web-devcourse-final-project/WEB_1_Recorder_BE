@@ -11,6 +11,7 @@ import com.revup.oauth.service.RevUpOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -96,12 +97,17 @@ public class SecurityConfig {
     }
 
     // 특정 URI 필터 제외
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web ->
-                web.ignoring()
-                        .requestMatchers("/favicon.ico");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web ->
+//                web.ignoring()
+//                        .requestMatchers("/favicon.ico")
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/question/list")
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/question")
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/question/popular")
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/question/recent");
+//
+//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

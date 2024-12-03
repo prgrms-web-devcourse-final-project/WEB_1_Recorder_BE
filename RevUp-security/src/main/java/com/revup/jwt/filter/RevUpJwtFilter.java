@@ -3,6 +3,8 @@ package com.revup.jwt.filter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revup.constants.SecurityConstants;
 import com.revup.error.AppException;
+import com.revup.error.SecurityException;
+import com.revup.exception.NotFoundTokenException;
 import com.revup.exception.UnsupportedTokenException;
 import com.revup.jwt.RevUpJwtProvider;
 import com.revup.auth.dto.token.TokenInfo;
@@ -22,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.revup.constants.SecurityConstants.EXCEPTION;
 import static com.revup.error.ErrorCode.*;
 
 @Slf4j
@@ -34,6 +37,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     private static final String REFRESH_URL = "/api/v1/auth/refresh";
     private static final String LOGOUT_URL = "/api/v1/auth/logout";
 
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -44,13 +48,15 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
 
         HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
 
-
-        switch (requestUrl) {
-            case REFRESH_URL -> handleRefreshUrl(request, requestMethod);
-            case LOGOUT_URL -> handleLogoutUrl(requestMethod);
-            default -> handleOthersUrl(request);
+        try {
+            switch (requestUrl) {
+                case REFRESH_URL -> handleRefreshUrl(request, requestMethod);
+                case LOGOUT_URL -> handleLogoutUrl(requestMethod);
+                default -> handleOthersUrl(request);
+            }
+        } catch (AppException e) {
+            request.setAttribute(EXCEPTION, e);
         }
-
         log.debug("다음으로 이동");
         filterChain.doFilter(request, response);
     }
@@ -64,14 +70,12 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
 
     private void handleRefreshUrl(HttpServletRequest request, HttpMethod requestMethod) throws JsonProcessingException {
         String tokenValue = extractToken(request, SecurityConstants.AUTHORIZATION_REFRESH_HEADER);
-        if(tokenValue == null) {
-            return;
-        }
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
 
         if(!tokenType.equals("REFRESH")) throw UnsupportedTokenException.EXCEPTION;
         if(!requestMethod.equals(HttpMethod.POST)) {
+
             throw new AppException(REQUEST_INVALID);
         }
 
@@ -80,9 +84,6 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
 
     private void handleOthersUrl(HttpServletRequest request) throws JsonProcessingException {
         String tokenValue = extractToken(request, SecurityConstants.AUTHORIZATION_HEADER);
-        if(tokenValue == null) {
-            return;
-        }
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
         if(!tokenType.equals("ACCESS")) throw UnsupportedTokenException.EXCEPTION;
@@ -112,7 +113,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
             return bearerToken.substring(SecurityConstants.BEARER.length());
         }
 
-        return null;
+        throw NotFoundTokenException.EXCEPTION;
     }
 
     private void setSecurityContextHolder(

@@ -1,5 +1,6 @@
 package com.revup.feedback.controller;
 
+import com.revup.annotation.SecurityUser;
 import com.revup.feedback.FeedbackWebSocketHandler;
 import com.revup.feedback.usecase.CreateFeedbackCodeUseCase;
 import com.revup.feedback.usecase.GetFeedbackCodeUseCase;
@@ -8,6 +9,7 @@ import com.revup.feedback.request.FeedbackCodeCreateRequest;
 import com.revup.feedback.request.FeedbackCodeUpdateRequest;
 import com.revup.feedback.service.response.FeedbackCodeResponse;
 import com.revup.global.dto.ApiResponse;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,10 +69,11 @@ public class FeedbackCodeController {
      * @return 추가된 피드백코드 id
      */
     @PostMapping
-    public ResponseEntity<ApiResponse<Long>> createFeedbackCode(@RequestBody FeedbackCodeCreateRequest feedbackCodeCreateRequest) {
+    public ResponseEntity<ApiResponse<Long>> createFeedbackCode(@RequestBody FeedbackCodeCreateRequest feedbackCodeCreateRequest,
+                                                                @SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        createFeedbackCodeUseCase.execute(feedbackCodeCreateRequest)
+                        createFeedbackCodeUseCase.execute(feedbackCodeCreateRequest, currentUser)
                 )
         );
     }

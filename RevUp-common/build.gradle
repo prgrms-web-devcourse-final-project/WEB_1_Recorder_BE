@@ -3,4 +3,5 @@ bootJar {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-aop:3.3.5")
 }
