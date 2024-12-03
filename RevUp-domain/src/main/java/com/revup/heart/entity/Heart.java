@@ -1,10 +1,12 @@
-package com.revup.heart;
+package com.revup.heart.entity;
 
 import com.revup.answer.entity.Answer;
 import com.revup.common.BaseTimeEntity;
+import com.revup.heart.enums.HeartType;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +29,18 @@ public class Heart extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     private Answer answer;
+
+    @Builder
+    private Heart(User user, HeartType type) {
+        this.user = user;
+        this.type = type;
+    }
+
+    public void assignAnswer(Answer answer){
+        this.answer = answer;
+    }
+
+    public boolean isGood(){
+        return this.type.isGood();
+    }
 }
