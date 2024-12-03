@@ -1,26 +1,46 @@
 package com.revup.auth.service;
 
+import com.revup.achieve.AchieveType;
+import com.revup.annotation.Achievable;
 import com.revup.annotation.UseCase;
 import com.revup.auth.adapter.RefreshTokenAdapter;
 import com.revup.auth.dto.token.RefreshToken;
 import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
+import com.revup.auth.model.dto.response.FirstLoginResponse;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
 import com.revup.auth.model.mapper.AuthMapper;
+import com.revup.auth.service.port.out.TokenGenerator;
+import com.revup.auth.service.port.out.TokenValidator;
 import com.revup.jwt.RevUpJwtProvider;
-import com.revup.user.util.UserUtil;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @UseCase
 @RequiredArgsConstructor
-public class RefreshTokenUseCase {
+public class AuthenticationUseCase {
 
-    private final UserUtil userUtil;
     private final TokenGenerator jwtGenerator;
     private final RevUpJwtProvider jwtProvider;
     private final TokenValidator jwtValidator;
     private final RefreshTokenAdapter refreshTokenAdapter;
     private final AuthMapper authMapper;
+
+    @Achievable(type = AchieveType.CONTINUOUS_ANSWER)
+    public FirstLoginResponse executeLogin(User user) {
+        log.info("user = {}", user);
+        return authMapper.toFirstLoginResponse(user.getProfile());
+    }
+
+    /**
+     * 프론트에서 accessToken, refreshToken 제거 작업 필요
+     * @param userId
+     */
+    public void executeLogout(Long userId) {
+        refreshTokenAdapter.remove(userId);
+    }
 
     /**
      * 1. 사용자 정보를 가져옴
@@ -37,9 +57,8 @@ public class RefreshTokenUseCase {
      * 로직이 맞는지 잘 모르겠네..
      * @return
      */
-    public RefreshTokenResponse execute(String clientToken) {
-        TokenInfo principal = userUtil.getPrincipal();
-        RefreshToken redisToken = refreshTokenAdapter.findById(principal.id());
+    public RefreshTokenResponse executeRefresh(TokenInfo info, String clientToken) {
+        RefreshToken redisToken = refreshTokenAdapter.findById(info.id());
 
         jwtValidator.validateSameToken(clientToken, redisToken.value());
         TokenInfo redisUserInfo = jwtProvider.getTokenUserPrincipal(redisToken.value());

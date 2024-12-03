@@ -1,26 +1,29 @@
 package com.revup.auth.controller;
 
 
+import com.revup.annotation.SecurityUser;
+import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.model.dto.response.FirstLoginResponse;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
-import com.revup.auth.service.LoginUseCase;
-import com.revup.auth.service.LogoutUseCase;
-import com.revup.auth.service.RefreshTokenUseCase;
+import com.revup.auth.service.AuthenticationUseCase;
 import com.revup.constants.SecurityConstants;
 import com.revup.global.dto.ApiResponse;
+import com.revup.user.entity.User;
+import com.revup.user.util.UserDomainUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final RefreshTokenUseCase refreshTokenUseCase;
-    private final LogoutUseCase logoutUseCase;
-    private final LoginUseCase loginUseCase;
+    private final AuthenticationUseCase authenticationUseCase;
+    private final UserDomainUtil userDomainUtil;
 
     /**
      * refreshToken으로 토큰 갱신
@@ -30,7 +33,8 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> refreshToken(
             @RequestHeader(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER) String refreshToken
     ) {
-        RefreshTokenResponse tokenResponse = refreshTokenUseCase.execute(refreshToken);
+        TokenInfo info = userDomainUtil.getPrincipal();
+        RefreshTokenResponse tokenResponse = authenticationUseCase.executeRefresh(info, refreshToken);
         return ResponseEntity.noContent()
                 .header(SecurityConstants.AUTHORIZATION_HEADER, tokenResponse.accessToken())
                 .header(SecurityConstants.AUTHORIZATION_REFRESH_HEADER, tokenResponse.refreshToken())
@@ -44,7 +48,8 @@ public class AuthController {
      */
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout() {
-        logoutUseCase.execute();
+        Long subject = userDomainUtil.getSubject();
+        authenticationUseCase.executeLogout(subject);
         return ResponseEntity.noContent().build();
     }
 
@@ -55,8 +60,11 @@ public class AuthController {
      * @return
      */
     @GetMapping("/first-login")
-    public ResponseEntity<ApiResponse<FirstLoginResponse>> checkFirstLogin() {
-        FirstLoginResponse response = loginUseCase.execute();
+    public ResponseEntity<ApiResponse<FirstLoginResponse>> checkFirstLogin(
+            @SecurityUser User currentUser
+    ) {
+        log.info("currentUser = {}", currentUser);
+        FirstLoginResponse response = authenticationUseCase.executeLogin(currentUser);
         return ResponseEntity.ok().body(ApiResponse.success(response));
     }
 }
