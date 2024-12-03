@@ -35,16 +35,47 @@ aws:
       auto:${aws.region.stack.auto}
 
 refresh:
-  expiration_time: ${refresh.expiration_time}
-  key: ${refresh.key}
+  expiration_time: ${security.exp_time}
+  key: ${security.key}
+
 ---
+
 spring:
   config:
     activate:
       on-profile: dev
+    import: infra-variable.yaml
 
   data:
     redis:
-      host:
-      password:
-      port:
+      host: ${redis.host}
+      port: ${redis.port}
+      password: ${redis.password}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+aws:
+  s3:
+    bucket: ${aws.s3.bucket}
+  credentials:
+    access-key: ${aws.credentials.access-key}
+    secret-key: ${aws.credentials.secret-key}
+  region:
+    static: ${aws.region}
+    auto : ${aws.region.auto}
+    stack:
+      auto:${aws.region.stack.auto}
+
+refresh:
+  expiration_time: ${security.exp_time}
+  key: ${security.key}
