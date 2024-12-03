@@ -22,7 +22,7 @@ public class AchievementChecker {
 
     private final AchievementAdaptor achievementAdaptor;
 
-
+    //채택 답변수
     public List<UserAchievement> handleAdoption(User user, List<Achievement> achievements) {
         List<AnswerDto> answers = achievementAdaptor.findAllAnswerByUser(user.getId());
         long acceptionCount = answers.stream()
@@ -32,6 +32,7 @@ public class AchievementChecker {
         return getNewUserAchievements(user, achievements, acceptionCount);
     }
 
+    //누적 좋아요
     public List<UserAchievement> handleLikes(User user, List<Achievement> achievements) {
         List<Integer> goodCounts = achievementAdaptor.findGoodCountsByUser(user.getId());
 
@@ -42,6 +43,7 @@ public class AchievementChecker {
         return getNewUserAchievements(user, achievements, totalGoodCount);
     }
 
+    //받은 피드백 요청 수
     public List<UserAchievement> handleFeedback(User user, List<Achievement> achievements) {
         List<Long> requestedFeedback = achievementAdaptor.findFeedbackByTeacher(user.getId());
         long total = requestedFeedback.size();
@@ -49,6 +51,7 @@ public class AchievementChecker {
         return getNewUserAchievements(user, achievements, total);
     }
 
+    //연속 답변일수
     public List<UserAchievement> handleAnswers(User user, List<Achievement> achievements) {
         List<LocalDate> createdDates = achievementAdaptor.findCreateDatesByUser(user.getId());
         if(createdDates.isEmpty()) return List.of();
@@ -69,6 +72,7 @@ public class AchievementChecker {
 
     }
 
+    //채택률
     public List<UserAchievement> handleRate(User user, List<Achievement> achievements) {
         List<AnswerDto> answers = achievementAdaptor.findAllAnswerByUser(user.getId());
 

@@ -27,6 +27,7 @@ public class AchieveAspect {
 
     @AfterReturning(
             value = "@annotation(com.revup.annotation.Achievable)"
+            //TODO: 대상 User pk를 받아야된다.
     )
     public void checkAchievements(JoinPoint joinPoint) {
         AchieveType type = extractType(joinPoint);
