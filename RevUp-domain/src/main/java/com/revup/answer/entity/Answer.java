@@ -3,6 +3,7 @@ package com.revup.answer.entity;
 import com.revup.answer.enums.AdoptedReview;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SoftDeleteEntity;
+import com.revup.heart.enums.HeartType;
 import com.revup.question.entity.Question;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
@@ -86,5 +87,21 @@ public class Answer extends SoftDeleteEntity {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void increaseGoodCount(){
+        this.goodCount++;
+    }
+
+    public void increaseBadCount(){
+        this.badCount++;
+    }
+
+    public void decreaseGoodCount(){
+        this.goodCount--;
+    }
+
+    public void decreaseBadCount(){
+        this.badCount--;
     }
 }
