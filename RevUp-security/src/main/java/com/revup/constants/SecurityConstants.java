@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 public class SecurityConstants {
 
     public static final String BEARER = "Bearer ";
-
+    public static final String EXCEPTION = "exception";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_REFRESH_HEADER = "Authorization-refresh";
 }

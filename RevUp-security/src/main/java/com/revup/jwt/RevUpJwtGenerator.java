@@ -4,7 +4,7 @@ import com.revup.auth.dto.token.AccessToken;
 import com.revup.auth.dto.token.RefreshToken;
 import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
-import com.revup.auth.service.TokenGenerator;
+import com.revup.auth.service.port.out.TokenGenerator;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;

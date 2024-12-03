@@ -1,4 +1,4 @@
-package com.revup.auth.service;
+package com.revup.auth.service.port.out;
 
 
 public interface TokenValidator {
