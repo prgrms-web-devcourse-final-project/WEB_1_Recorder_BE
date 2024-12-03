@@ -1,14 +1,14 @@
 package com.revup.user.dto;
 
-public record EmailCertificationNumberInfo(
+public record EmailCertificationEventInfo(
         Email setTo,
         CertificationNumber number,
         String subject
 ) {
-    public static EmailCertificationNumberInfo of(
+    public static EmailCertificationEventInfo of(
             String setTo, CertificationNumber number, String subject
     ) {
-        return new EmailCertificationNumberInfo(
+        return new EmailCertificationEventInfo(
                 new Email(setTo),
                 number,
                 subject

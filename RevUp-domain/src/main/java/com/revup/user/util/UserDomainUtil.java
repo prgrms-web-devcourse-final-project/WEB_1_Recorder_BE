@@ -1,15 +1,10 @@
 package com.revup.user.util;
 
 import com.revup.auth.dto.token.TokenInfo;
+import com.revup.user.UserUtil;
 import com.revup.user.entity.User;
 
-public interface UserUtil {
+public interface UserDomainUtil extends UserUtil {
 
     TokenInfo getPrincipal();
-
-    Long getSubject();
-
-    User getCurrentUser();
-
-    void checkPermission(User user);
 }

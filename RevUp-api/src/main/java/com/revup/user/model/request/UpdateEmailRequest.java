@@ -1,5 +1,6 @@
 package com.revup.user.model.request;
 
+import com.revup.user.dto.Certification;
 import com.revup.user.dto.CertificationKey;
 import com.revup.user.dto.CertificationNumber;
 import jakarta.validation.constraints.Email;
@@ -16,12 +17,19 @@ public record UpdateEmailRequest(
         @Email(message = "유효한 이메일 형식이 아닙니다.")
         String email
 ) {
-        public CertificationKey toCertificationKey() {
+        private CertificationKey toCertificationKey() {
                 return new CertificationKey(certificationKey);
         }
 
-        public CertificationNumber toCertificationNumber() {
+        private CertificationNumber toCertificationNumber() {
                 return new CertificationNumber(inputNumber);
+        }
+
+        public Certification toCertification() {
+                return new Certification(
+                        toCertificationKey(),
+                        toCertificationNumber()
+                );
         }
         public com.revup.user.dto.Email toEmail() {
                 return new com.revup.user.dto.Email(email);

@@ -20,7 +20,6 @@ public class UserReader {
      * @param tokenInfo
      * @return
      */
-
     public User findByTokenInfo(TokenInfo tokenInfo) {
         return userAdaptor.findByTokenClaim(
                 tokenInfo.socialId(),
