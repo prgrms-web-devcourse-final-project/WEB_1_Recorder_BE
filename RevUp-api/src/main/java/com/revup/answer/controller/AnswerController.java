@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.revup.global.util.ResponseUtil.success;
 
 @RestController
@@ -40,10 +42,16 @@ public class AnswerController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<AnswerDetailsResponse>> getByQuestionId(@RequestParam Long questionId){
+    public ResponseEntity<ApiResponse<List<AnswerDetailsResponse>>> getByQuestionId(@RequestParam Long questionId){
         return success(getAnswerListUseCase.execute(questionId));
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<ApiResponse<List<AnswerDetailsResponse>>> getMyAnswers(@SecurityUser User currentUser,
+                                                                                 @RequestParam(required = false) Long lastId,
+                                                                                 @RequestParam int size){
+        return success(getMyAnswersUseCase.execute(currentUser, lastId, size));
+    }
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam Long id,
                                        @SecurityUser User currentUser){

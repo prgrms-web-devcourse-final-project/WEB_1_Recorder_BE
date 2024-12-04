@@ -28,7 +28,8 @@ public class AnswerMapper {
     public AnswerUpdateInfo toUpdateInfo(AnswerUpdateRequest request){
         return new AnswerUpdateInfo(
                 request.title(),
-                request.content()
+                request.content(),
+                request.code()
         );
     }
 

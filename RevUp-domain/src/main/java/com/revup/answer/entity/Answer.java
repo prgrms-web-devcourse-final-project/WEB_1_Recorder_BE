@@ -83,9 +83,10 @@ public class Answer extends SoftDeleteEntity {
         this.review = adoptedReview;
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content,String code) {
         this.title = title;
         this.content = content;
+        this.code = code;
     }
 
     public void updateGoodCount(int count) {

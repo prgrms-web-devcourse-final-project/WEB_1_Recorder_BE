@@ -20,16 +20,14 @@ public class UpdateAnswerUseCase {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
     private final AnswerImageMapper imageMapper;
-    private final AnswerCodeMapper codeMapper;
 
     public AnswerIdResponse execute(@Valid AnswerUpdateRequest request, User currentUser) {
         AnswerUpdateInfo updateInfo = answerMapper.toUpdateInfo(request);
 
         List<AnswerImage> images = imageMapper.toUpdateEntity(request.images());
 
-        List<AnswerCode> codes = codeMapper.toUpdateEntity(request.codes());
 
-        Long id = answerService.updateAnswer(request.answerId(), updateInfo, images, codes, currentUser);
+        Long id = answerService.updateAnswer(request.answerId(), updateInfo, images, currentUser);
 
         return new AnswerIdResponse(id);
     }
