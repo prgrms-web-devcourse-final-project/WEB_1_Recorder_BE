@@ -25,7 +25,7 @@ public class UserAchievementListener implements AchievementListener {
     public void execute(AchievementEventInfo info) {
         List<UserAchievement> userAchievements = achievementService.checkAndUpdateAchievement(info);
 
-        if(userAchievements.isEmpty()) {
+        if(!userAchievements.isEmpty()) {
             //알림 전송
         }
 
