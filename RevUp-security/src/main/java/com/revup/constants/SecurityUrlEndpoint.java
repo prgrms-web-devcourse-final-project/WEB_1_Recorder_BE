@@ -28,7 +28,11 @@ public enum SecurityUrlEndpoint {
     FEEDBACK_CODE_GET(HttpMethod.GET, "/api/v1/feedback-code/*"),
     FEEDBACK_CODE_UPDATE(HttpMethod.PATCH, "/api/v1/feedback-code/auto/*"),
     FEEDBACK_CODE_CREATE(HttpMethod.POST, "/api/v1/feedback-code"),
-    MENTOR_LIST(HttpMethod.GET, "/api/v1/mentor**")
+    MENTOR_LIST(HttpMethod.GET, "/api/v1/mentor**"),
+
+    //CHAT
+    CHAT_WEBSOCKET(HttpMethod.GET, "/ws/chat/**"),
+    CHAT(HttpMethod.GET, "/app/**")
     ;
 
     private HttpMethod method;

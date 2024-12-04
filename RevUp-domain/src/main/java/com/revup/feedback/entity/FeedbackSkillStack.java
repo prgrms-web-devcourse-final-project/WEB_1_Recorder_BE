@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// TODO: 이거 없애고 ElementCollection 사용으로 리팩토링하기
 @Entity
 @Getter
 @Table(name = "feedback_skill_stack")
