@@ -23,11 +23,12 @@ public enum SecurityUrlEndpoint {
 
 
     //FEEDBACK
-    FEEDBACK_CREATE(HttpMethod.POST, "/api/v1/feedback"),
+    FEEDBACK_WEBSOCKET_CONNECT(HttpMethod.GET, "/ws/feedback/**"),
     FEEDBACK_SESSIONS(HttpMethod.GET, "/api/v1/feedback-code/sessions/*"),
     FEEDBACK_CODE_GET(HttpMethod.GET, "/api/v1/feedback-code/*"),
     FEEDBACK_CODE_UPDATE(HttpMethod.PATCH, "/api/v1/feedback-code/auto/*"),
-    FEEDBACK_CODE_CREATE(HttpMethod.POST, "/api/v1/feedback-code")
+    FEEDBACK_CODE_CREATE(HttpMethod.POST, "/api/v1/feedback-code"),
+    MENTOR_LIST(HttpMethod.GET, "/api/v1/mentor**")
     ;
 
     private HttpMethod method;
