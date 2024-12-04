@@ -1,4 +1,4 @@
-package com.revup.feedback;
+package com.revup.redis.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
