@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserDomainService implements UserService {
+public class UserDomainImpl implements UserService {
 
     private final UserAdaptor userAdaptor;
     private final EmailDomainAdaptor emailDomainAdaptor;

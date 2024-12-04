@@ -17,5 +17,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Achievable {
 
-    AchieveType type();
+    AchieveType[] type();
+
+    //특정 필드가 존재하는지 검증
+    //기본 필드명: userAchieveId
+    String userField() default "userAchieveId";
 }

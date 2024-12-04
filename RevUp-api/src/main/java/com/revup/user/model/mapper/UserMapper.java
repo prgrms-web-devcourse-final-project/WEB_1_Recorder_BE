@@ -9,10 +9,15 @@ import com.revup.user.entity.Profile;
 import com.revup.user.entity.User;
 import com.revup.user.model.response.UpdateAffiliationResponse;
 import com.revup.user.model.response.UpdateProfileResponse;
+import com.revup.user.model.response.UserProfileResponse;
 import com.revup.user.model.response.ValidateEmailResponse;
 
 @Mapper
 public class UserMapper {
+
+    public UserProfileResponse toUserProfileResponse(User user) {
+        return UserProfileResponse.of(user);
+    }
 
     public UpdateProfileResponse toUpdateProfileResponse(Profile profile) {
         return UpdateProfileResponse.of(profile);

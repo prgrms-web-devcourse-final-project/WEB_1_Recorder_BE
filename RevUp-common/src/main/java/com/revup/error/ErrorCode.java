@@ -30,6 +30,11 @@ public enum ErrorCode {
     USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 id : %s 가 존재하지 않습니다"),
     EMAIL_DOMAIN_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 도메인이 존재하지 않습니다"),
 
+    //user skill stack
+    NOT_MY_SKILL_STACK(BAD_REQUEST, "자신의 기술스택만 삭제 가능합니다"),
+    DUPLICATED_USER_SKILL_STACK(BAD_REQUEST,"이미 등록된 기술 스택입니다"),
+    USER_SKILL_STACK_NOT_FOUND(NOT_FOUND,"이미 삭제되었거나 없는 기술스택입니다"),
+
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),
     OTHER_SERVER_UNAUTHORIZED(UNAUTHORIZED, "외부 api 401에러"),

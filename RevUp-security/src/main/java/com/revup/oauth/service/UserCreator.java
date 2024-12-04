@@ -22,8 +22,8 @@ import static com.revup.error.ErrorCode.LOGIN_ERROR;
 @RequiredArgsConstructor
 public class UserCreator {
 
-    private final String KAKAO_ISSUER = "https://kauth.kakao.com";
-    private final String GOOGLE_ISSUER = "https://accounts.google.com";
+    private static final String KAKAO_ISSUER = "https://kauth.kakao.com";
+    private static final String GOOGLE_ISSUER = "https://accounts.google.com";
     private final OAuthService oAuthService;
 
     public User create(Authentication authentication) {
@@ -59,9 +59,9 @@ public class UserCreator {
         Map<String, Object> attributes = Map.of(
                 "id", oidcUser.getName(),
                 "email", oidcAttributes.get("email"),
-                "name", oidcAttributes.get("name"),
-                "given_name", oidcAttributes.get("given_name"),
-                "family_name", oidcAttributes.get("family_name"),
+                "name", oidcAttributes.get("name") == null ? "익명" : oidcAttributes.get("name") ,
+                "given_name", oidcAttributes.get("given_name") == null ? "" : oidcAttributes.get("given_name"),
+                "family_name", oidcAttributes.get("family_name")== null ? "" : oidcAttributes.get("family_name"),
                 "picture", oidcAttributes.get("picture")
         );
 
