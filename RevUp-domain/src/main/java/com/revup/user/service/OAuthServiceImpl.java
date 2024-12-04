@@ -4,10 +4,9 @@ import com.revup.error.AppException;
 import com.revup.user.adaptor.UserAdaptor;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OAuthServiceImpl implements OAuthService {
@@ -15,6 +14,7 @@ public class OAuthServiceImpl implements OAuthService {
     private final UserAdaptor userAdaptor;
 
     @Override
+    @Transactional
     public User loginOrSignup(User user) {
         User loginUser;
         try {
