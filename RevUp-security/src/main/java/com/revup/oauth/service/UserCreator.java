@@ -62,7 +62,7 @@ public class UserCreator {
                 "name", oidcAttributes.get("name") == null ? "익명" : oidcAttributes.get("name") ,
                 "given_name", oidcAttributes.get("given_name") == null ? "" : oidcAttributes.get("given_name"),
                 "family_name", oidcAttributes.get("family_name")== null ? "" : oidcAttributes.get("family_name"),
-                "picture", oidcAttributes.get("picture")
+                "picture", oidcAttributes.get("picture") == null ? "" : oidcAttributes.get("picture")
         );
 
         //accessToken 생성(type, oidcUser.getName())으로 생성해야지
