@@ -7,6 +7,17 @@ import org.springframework.http.HttpMethod;
 @Getter
 @RequiredArgsConstructor
 public enum SecurityUrlEndpoint {
+
+    //Answer
+    ANSWER_DETAILS(HttpMethod.GET,"/api/v1/answer"),
+
+    // Question
+    QUESTION_LIST(HttpMethod.GET, "/api/v1/question/list"),
+    QUESTION_STACK(HttpMethod.GET, "/api/v1/question/stack"),
+    QUESTION_POPULAR(HttpMethod.GET, "/api/v1/question/popular"),
+    QUESTION_RECENT(HttpMethod.GET, "/api/v1/question/recent"),
+    QUESTION_DETAILS(HttpMethod.GET, "/api/v1/question"),
+
     // Swagger
     SWAGGER_UI(HttpMethod.GET, "/swagger-ui/**"),
     SWAGGER_DOCS(HttpMethod.GET, "/v3/api-docs/**"),

@@ -19,6 +19,7 @@ public class AnswerMapper {
         return Answer.builder()
                 .title(request.title())
                 .content(request.content())
+                .code(request.code())
                 .isAccept(BooleanStatus.FALSE)
                 .user(user)
                 .build();
@@ -27,7 +28,8 @@ public class AnswerMapper {
     public AnswerUpdateInfo toUpdateInfo(AnswerUpdateRequest request){
         return new AnswerUpdateInfo(
                 request.title(),
-                request.content()
+                request.content(),
+                request.code()
         );
     }
 
