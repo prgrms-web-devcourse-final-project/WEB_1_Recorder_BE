@@ -3,6 +3,7 @@ package com.revup.answer.entity;
 import com.revup.answer.enums.AdoptedReview;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SoftDeleteEntity;
+import com.revup.heart.enums.HeartType;
 import com.revup.question.entity.Question;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
@@ -30,6 +31,9 @@ public class Answer extends SoftDeleteEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "TEXT")
+    private String code;
+
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAccept;
 
@@ -48,14 +52,13 @@ public class Answer extends SoftDeleteEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToOne(mappedBy = "answer")
-    private AnswerCode code;
 
     @Builder
     private Answer(
             User user,
             String title,
             String content,
+            String code,
             BooleanStatus isAccept,
             AdoptedReview review,
             int goodCount,
@@ -63,6 +66,7 @@ public class Answer extends SoftDeleteEntity {
         this.user = user;
         this.title = title;
         this.content = content;
+        this.code = code;
         this.isAccept = isAccept;
         this.review = review;
         this.goodCount = goodCount;
@@ -73,18 +77,25 @@ public class Answer extends SoftDeleteEntity {
         this.question = question;
     }
 
-    public void addAnswerCode(AnswerCode answerCode) {
-        this.code = answerCode;
-    }
-
 
     public void adoptWithReview(AdoptedReview adoptedReview) {
         this.isAccept = BooleanStatus.TRUE;
         this.review = adoptedReview;
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content,String code) {
         this.title = title;
         this.content = content;
+        this.code = code;
     }
+
+    public void updateGoodCount(int count) {
+        this.goodCount += count;
+    }
+
+    public void updateBadCount(int count) {
+
+        this.badCount += count;
+    }
+
 }

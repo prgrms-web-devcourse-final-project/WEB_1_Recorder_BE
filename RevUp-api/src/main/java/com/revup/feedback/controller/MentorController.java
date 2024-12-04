@@ -38,14 +38,14 @@ public class MentorController {
 
     /**
      * 멘토 목록 페이지 조회
-     * @param mentorPageRequest 조회할 페이지 번호
+     * @param page 조회할 페이지 번호
      * @return 해당 페이지에 나타날 멘토 목록
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<MentorResponse>>> getMentorList(@RequestBody MentorPageRequest mentorPageRequest) {
+    public ResponseEntity<ApiResponse<Page<MentorResponse>>> getMentorList(@RequestParam int page) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        getMentorListUseCase.execute(mentorPageRequest)
+                        getMentorListUseCase.execute(page)
                 )
         );
     }

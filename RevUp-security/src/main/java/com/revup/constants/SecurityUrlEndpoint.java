@@ -7,6 +7,17 @@ import org.springframework.http.HttpMethod;
 @Getter
 @RequiredArgsConstructor
 public enum SecurityUrlEndpoint {
+
+    //Answer
+    ANSWER_DETAILS(HttpMethod.GET,"/api/v1/answer"),
+
+    // Question
+    QUESTION_LIST(HttpMethod.GET, "/api/v1/question/list"),
+    QUESTION_STACK(HttpMethod.GET, "/api/v1/question/stack"),
+    QUESTION_POPULAR(HttpMethod.GET, "/api/v1/question/popular"),
+    QUESTION_RECENT(HttpMethod.GET, "/api/v1/question/recent"),
+    QUESTION_DETAILS(HttpMethod.GET, "/api/v1/question"),
+
     // Swagger
     SWAGGER_UI(HttpMethod.GET, "/swagger-ui/**"),
     SWAGGER_DOCS(HttpMethod.GET, "/v3/api-docs/**"),
@@ -17,17 +28,20 @@ public enum SecurityUrlEndpoint {
     // All
     OAUTH_LOGIN(HttpMethod.GET, "/oauth2/authorization/**"),
     REFRESH_TOKEN(HttpMethod.POST, "/api/v1/auth/refresh"),
+    SKILLSTACKS(HttpMethod.GET, "/api/v1/tech"),
+
 
 
     //USER
 
 
     //FEEDBACK
-    FEEDBACK_CREATE(HttpMethod.POST, "/api/v1/feedback"),
+    FEEDBACK_WEBSOCKET_CONNECT(HttpMethod.GET, "/ws/feedback/**"),
     FEEDBACK_SESSIONS(HttpMethod.GET, "/api/v1/feedback-code/sessions/*"),
     FEEDBACK_CODE_GET(HttpMethod.GET, "/api/v1/feedback-code/*"),
     FEEDBACK_CODE_UPDATE(HttpMethod.PATCH, "/api/v1/feedback-code/auto/*"),
-    FEEDBACK_CODE_CREATE(HttpMethod.POST, "/api/v1/feedback-code")
+    FEEDBACK_CODE_CREATE(HttpMethod.POST, "/api/v1/feedback-code"),
+    MENTOR_LIST(HttpMethod.GET, "/api/v1/mentor**")
     ;
 
     private HttpMethod method;

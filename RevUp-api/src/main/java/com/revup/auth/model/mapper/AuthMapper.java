@@ -23,6 +23,6 @@ public class AuthMapper {
     }
 
     public FirstLoginResponse toFirstLoginResponse(Profile profile) {
-        return new FirstLoginResponse(Objects.isNull(profile));
+        return new FirstLoginResponse(Objects.isNull(profile.getNickname()));
     }
 }

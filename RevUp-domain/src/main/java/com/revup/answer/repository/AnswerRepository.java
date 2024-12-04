@@ -15,9 +15,9 @@ public interface AnswerRepository extends JpaRepository<Answer, Long>, CustomAns
     @OrderBy()
     List<Answer> findByUser(User user);
 
-    @Query("select a from Answer a join fetch Question q where a.id = :answerId")
+    @Query("select a from Answer a join fetch a.question q where a.id = :answerId")
     Optional<Answer> findByIdWithQuestion(Long answerId);
 
-    @Query("select a from Answer a join fetch User u where a.id = :answerId")
+    @Query("select a from Answer a join fetch a.user u where a.id = :answerId")
     Optional<Answer> findByIdWithUser(Long answerId);
 }

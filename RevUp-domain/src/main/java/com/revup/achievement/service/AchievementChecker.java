@@ -1,10 +1,8 @@
 package com.revup.achievement.service;
 
 import com.revup.achievement.adaptor.AchievementAdaptor;
-import com.revup.answer.dto.AnswerDto;
 import com.revup.achievement.entity.Achievement;
 import com.revup.achievement.entity.UserAchievement;
-import com.revup.common.BooleanStatus;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +22,7 @@ public class AchievementChecker {
 
     //채택 답변수
     public List<UserAchievement> handleAdoption(User user, List<Achievement> achievements) {
-        List<AnswerDto> answers = achievementAdaptor.findAllAnswerByUser(user.getId());
-        long acceptionCount = answers.stream()
-                .filter(answer -> answer.isAccept().equals(BooleanStatus.TRUE))
-                .count();
-
+        long acceptionCount = user.getAdoptedAnswerCount();
         return getNewUserAchievements(user, achievements, acceptionCount);
     }
 
@@ -74,17 +68,13 @@ public class AchievementChecker {
 
     //채택률
     public List<UserAchievement> handleRate(User user, List<Achievement> achievements) {
-        List<AnswerDto> answers = achievementAdaptor.findAllAnswerByUser(user.getId());
-
-        //비율 계산
-        long total = answers.size();
-        long acceptionCount = answers.stream()
-                .filter(answer -> answer.isAccept().equals(BooleanStatus.TRUE))
-                .count();
+        long adopted = user.getAdoptedAnswerCount();
+        long total = user.getTotalAnswerCount();
 
         if(total == 0) return List.of();
 
-        BigDecimal numerator = new BigDecimal(acceptionCount);
+        //비율 계산
+        BigDecimal numerator = new BigDecimal(adopted);
         BigDecimal denominator = new BigDecimal(total);
 
         //%로 변환

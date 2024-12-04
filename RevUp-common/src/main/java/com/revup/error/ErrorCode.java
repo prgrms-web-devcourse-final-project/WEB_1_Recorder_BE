@@ -30,6 +30,11 @@ public enum ErrorCode {
     USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자 id : %s 가 존재하지 않습니다"),
     EMAIL_DOMAIN_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 도메인이 존재하지 않습니다"),
 
+    //user skill stack
+    NOT_MY_SKILL_STACK(BAD_REQUEST, "자신의 기술스택만 삭제 가능합니다"),
+    DUPLICATED_USER_SKILL_STACK(BAD_REQUEST,"이미 등록된 기술 스택입니다"),
+    USER_SKILL_STACK_NOT_FOUND(NOT_FOUND,"이미 삭제되었거나 없는 기술스택입니다"),
+
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),
     OTHER_SERVER_UNAUTHORIZED(UNAUTHORIZED, "외부 api 401에러"),
@@ -62,7 +67,11 @@ public enum ErrorCode {
     ANSWER_NOT_FOUND(NOT_FOUND, "답변 id : %s 가 존재하지 않습니다"),
     ADOPTED_REVIEW_INVALID(BAD_REQUEST,"올바르지 않은 채택 리뷰입니다" ),
     ANSWER_ALREADY_ADOPTED(CONFLICT, "이미 채택된 답변입니다"),
-    ANSWER_NOT_LINKED(BAD_REQUEST,"해당 답변은 이 질문에 속하지 않습니다" );
+    ANSWER_NOT_LINKED(BAD_REQUEST,"해당 답변은 이 질문에 속하지 않습니다" ),
+
+    HEART_TYPE_INVALID(BAD_REQUEST, "잘못된 반응 타입입니다"),
+    HEART_ALREADY_EXIST(CONFLICT, "이미 해당 답변에 좋아요/싫어요가 존재합니다"),
+    HEART_NOT_FOUND(NOT_FOUND, "해당 좋아요/싫어요가 존재하지 않습니다"),;
 
     private final HttpStatus httpStatus;
     private final String messageTemplate;

@@ -13,6 +13,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     Optional<User> findBySocialIdAndLoginType(String socialId, LoginType loginType);
 
-    @Override
-    Optional<User> findById(Long id);
 }

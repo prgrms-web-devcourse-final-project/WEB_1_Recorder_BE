@@ -105,8 +105,8 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/api/v1/question/list")
 //                        .requestMatchers(HttpMethod.GET, "/api/v1/question")
 //                        .requestMatchers(HttpMethod.GET, "/api/v1/question/popular")
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/tech")
 //                        .requestMatchers(HttpMethod.GET, "/api/v1/question/recent");
-//
 //    }
 
     @Bean
