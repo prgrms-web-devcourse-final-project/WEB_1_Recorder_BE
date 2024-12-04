@@ -11,7 +11,7 @@ public class HeartBatchScheduler {
     private final HeartService heartService;
 
     @Scheduled(cron = "0 */1 * * * *")
-    public void updateHeartsCount(){
-        heartService.updateHeartsCount();
+    public void syncHeartsCount(){
+        heartService.syncHeartsCount();
     }
 }

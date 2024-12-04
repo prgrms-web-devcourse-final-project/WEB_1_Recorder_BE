@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class DeleteHeartUseCase {
     private final HeartService heartService;
 
-    public void execute(Long id, User currentUser){
-        heartService.deleteHeart(id, currentUser);
+    public void execute(Long answerId, User currentUser,boolean isGood){
+        heartService.cancelHeart(answerId, currentUser, isGood);
     }
 }

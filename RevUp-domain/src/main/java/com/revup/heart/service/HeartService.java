@@ -25,26 +25,19 @@ public class HeartService {
     private final HeartPort heartPort;
 
     @Transactional
-    public Long createHeart(Long answerId, Heart heart, User currentUser) {
-        // 답변 조회
-        Answer answer = answerRepository.findById(answerId)
-                .orElseThrow(() -> new AnswerNotFoundException(answerId));
+    public Long processHeart(Long answerId, Heart heart, User currentUser) {
+
+        boolean isGood = heart.isGood();
 
         // 중복 체크
-        if (heartRepository.existsHeartByAnswerAndUser(answer, currentUser)) {
+        if (!heartPort.processLike(answerId,currentUser.getId(),isGood)) {
             throw new HeartExistException();
         }
 
-        // 엔티티 저장
-        heart.assignAnswer(answer);
-        heartRepository.save(heart);
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new AnswerNotFoundException(answerId));
 
-        // Redis에 반영
-        if (heart.isGood()) {
-            heartPort.incrementGoodHeart(answerId, currentUser.getId());
-        } else {
-            heartPort.incrementBadHeart(answerId, currentUser.getId());
-        }
+        heart.assignAnswer(answer);
 
 
         return heartRepository.save(heart).getId();
@@ -52,29 +45,22 @@ public class HeartService {
     }
 
     @Transactional
-    public void deleteHeart(Long id, User currentUser) {
-
-        // 반응 조회
-        Heart heart = heartRepository.findByIdWithUserAndAnswer(id)
-                .orElseThrow(() -> new HeartNotFoundException(id));
-
-        //권한 체크
-        checkPermission(currentUser, heart.getUser());
-
-        Answer answer = heart.getAnswer();
-
-        if (heart.isGood()) {
-            heartPort.decrementGoodHeart(answer.getId(),currentUser.getId());
-        } else {
-            heartPort.decrementBadHeart(answer.getId(), currentUser.getId());
+    public void cancelHeart(Long answerId, User currentUser, boolean isGood) {
+        // Redis 에서 삭제 처리
+        if (!heartPort.cancelLike(answerId, currentUser.getId(), isGood)) {
+            throw new HeartNotFoundException();
         }
 
-        heart.softDelete();
+        // DB에서 Soft Delete
+        heartRepository.findByAnswerIdAndUserId(answerId, currentUser.getId())
+                .ifPresent(Heart::softDelete);
 
     }
 
+
+
     @Transactional
-    public void updateHeartsCount() {
+    public void syncHeartsCount() {
         // Redis에서 추천/비추천 데이터 조회
         Map<Long, Map<String, Integer>> heartCounts = heartPort.getHeartCounts();
 
@@ -91,13 +77,7 @@ public class HeartService {
             answer.updateBadCount(badCount);
         });
 
-        // Redis 데이터 초기화
-        heartPort.clearHearts();
+        heartPort.clearHeartCounts();
     }
 
-    private void checkPermission(User currenUser, User writer) {
-        if (!currenUser.equals(writer)) {
-            throw new UserPermissionException();
-        }
-    }
 }

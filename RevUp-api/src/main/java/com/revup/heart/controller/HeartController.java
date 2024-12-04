@@ -28,9 +28,10 @@ public class HeartController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long id,
+    public ResponseEntity<Void> delete(@RequestParam Long answerId,
+                                       @RequestParam boolean isGood,
                                        @SecurityUser User currentUser) {
-        deleteHeartUseCase.execute(id, currentUser);
+        deleteHeartUseCase.execute(answerId, currentUser, isGood);
         return ResponseEntity.noContent().build();
     }
 }

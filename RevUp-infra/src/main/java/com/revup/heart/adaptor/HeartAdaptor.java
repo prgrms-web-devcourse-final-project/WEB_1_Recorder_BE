@@ -7,57 +7,56 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class HeartAdaptor implements HeartPort {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private static final String HEART_KEY = "heart_counts";
+    // 좋아요/싫어요 카운트
+    private static final String HEART_COUNTS_KEY = "heart_counts";
+    // 중복 방지를 위한 유저-답변 키 저장
     private static final String USER_HEART_KEY = "user_hearts";
 
+
     @Override
-    public void incrementGoodHeart(Long answerId, Long userId) {
-        String field = generateField(answerId, userId);
-        if (!isDuplicate(field)) { // 중복 체크
-            redisTemplate.opsForHash().increment(HEART_KEY, generateAnswerField(answerId, true), 1);
-            redisTemplate.opsForSet().add(USER_HEART_KEY, field);
+    public boolean processLike(Long answerId, Long userId, boolean isGood) {
+        String userAnswerKey = userId + ":" + answerId;
+        String key = USER_HEART_KEY + answerId;
+
+        // 중복확인 이미 좋아요/싫어요를 누른 경우 false
+        if (existInSet(key, userAnswerKey)) {
+            return false;
         }
+
+        redisTemplate.opsForSet().add(key, userAnswerKey);
+
+        redisTemplate.opsForHash().increment(HEART_COUNTS_KEY, answerId + ":" + (isGood ? "good" : "bad"), 1);
+
+        return true;
+
     }
 
     @Override
-    public void incrementBadHeart(Long answerId, Long userId) {
-        String field = generateField(answerId, userId);
-        if (!isDuplicate(field)) { // 중복 체크
-            redisTemplate.opsForHash().increment(HEART_KEY, generateAnswerField(answerId, false), 1);
-            redisTemplate.opsForSet().add(USER_HEART_KEY, field);
-        }
-    }
+    public boolean cancelLike(Long answerId, Long userId, boolean isGood) {
+        String userAnswerKey = userId + ":" + answerId;
+        String key = USER_HEART_KEY + answerId;
 
-    @Override
-    public void decrementGoodHeart(Long answerId, Long userId) {
-        String field = generateField(answerId, userId);
-        if (isDuplicate(field)) { // 필드가 존재하면 삭제
-            redisTemplate.opsForHash().increment(HEART_KEY, generateAnswerField(answerId, true), -1);
-            redisTemplate.opsForSet().remove(USER_HEART_KEY, field);
+        // 존재하지 않으면 false 삭제 할 것 없음
+        if (!existInSet(key, userAnswerKey)) {
+            return false;
         }
-    }
 
-    @Override
-    public void decrementBadHeart(Long answerId, Long userId) {
-        String field = generateField(answerId, userId);
-        if (isDuplicate(field)) { // 필드가 존재하면 삭제
-            redisTemplate.opsForHash().increment(HEART_KEY, generateAnswerField(answerId, false), -1);
-            redisTemplate.opsForSet().remove(USER_HEART_KEY, field);
-        }
+        redisTemplate.opsForSet().remove(key, userAnswerKey);
+        redisTemplate.opsForHash().increment(HEART_COUNTS_KEY, answerId + ":" + (isGood ? "good" : "bad"), -1);
+        return true;
     }
 
 
     @Override
     public Map<Long, Map<String, Integer>> getHeartCounts() {
         // entries: "answerId:type" -> count 형태의 키-값 쌍
-        Map<Object, Object> entries = redisTemplate.opsForHash().entries(HEART_KEY);
+        Map<Object, Object> entries = redisTemplate.opsForHash().entries(HEART_COUNTS_KEY);
 
         // 결과 저장할 map
         // key: answerId(Long), value: { "good": count, "bad": count } 형태의 Map
@@ -81,23 +80,13 @@ public class HeartAdaptor implements HeartPort {
     }
 
     @Override
-    public void clearHearts() {
-        redisTemplate.delete(HEART_KEY);
-        redisTemplate.delete(USER_HEART_KEY); // 중복 방지 데이터 초기화
+    public void clearHeartCounts() {
+        redisTemplate.delete(HEART_COUNTS_KEY);
+    }
+
+    private boolean existInSet(String setKey, String value) {
+        return Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(setKey, value));
     }
 
 
-    private boolean isDuplicate(String field) {
-        return Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(USER_HEART_KEY, field));
-    }
-
-
-    private String generateField(Long answerId, Long userId) {
-        return answerId + ":" + userId;
-    }
-
-
-    private String generateAnswerField(Long answerId, boolean isGood) {
-        return answerId + ":" + (isGood ? "good" : "bad");
-    }
 }

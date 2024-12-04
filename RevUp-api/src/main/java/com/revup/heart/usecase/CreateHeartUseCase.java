@@ -17,7 +17,7 @@ public class CreateHeartUseCase {
     public HeartIdResponse execute(HeartCreateRequest request, User currentUser) {
         Heart heart = heartMapper.toEntity(request, currentUser);
 
-        Long id = heartService.createHeart(request.answerId(), heart, currentUser);
+        Long id = heartService.processHeart(request.answerId(), heart, currentUser);
 
         return new HeartIdResponse(id);
     }
