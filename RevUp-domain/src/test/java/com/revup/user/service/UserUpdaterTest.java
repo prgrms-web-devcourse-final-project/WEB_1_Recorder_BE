@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserUpdaterTest {
 
     @InjectMocks
-    private UserDomainService userService;
+    private UserDomainImpl userService;
 
     @Test
     @DisplayName("유저 프로필 변경")
