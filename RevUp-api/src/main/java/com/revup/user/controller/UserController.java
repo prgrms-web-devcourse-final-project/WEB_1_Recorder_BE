@@ -25,6 +25,15 @@ public class UserController {
     private final ValidateEmailUseCase validateEmailUseCase;
     private final GetMyInfoUseCase getMyInfoUseCase;
 
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<UserProfileResponse>> getProfile(
+            @SecurityUser User user
+    ) {
+        UserProfileResponse response = getMyInfoUseCase.executeGetMyProfile(user);
+        return success(response);
+    }
+
     /**
      *  프로필 사진, 닉네임 한줄 소개 변경
      * @param request

@@ -33,4 +33,8 @@ public class Profile {
         this.totalAnswerCount = 0;
         this.adoptedAnswerCount = 0;
     }
+
+    public boolean isEmptyIntroduction() {
+        return this.introduction == null || this.introduction.isEmpty();
+    }
 }
