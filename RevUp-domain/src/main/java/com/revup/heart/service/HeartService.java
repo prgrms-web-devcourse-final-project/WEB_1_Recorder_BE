@@ -6,6 +6,7 @@ import com.revup.answer.repository.AnswerRepository;
 import com.revup.heart.entity.Heart;
 import com.revup.heart.exception.HeartExistException;
 import com.revup.heart.exception.HeartNotFoundException;
+import com.revup.heart.port.HeartPort;
 import com.revup.heart.repository.HeartRepository;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserPermissionException;
@@ -13,12 +14,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class HeartService {
     private final HeartRepository heartRepository;
     private final AnswerRepository answerRepository;
+    private final HeartPort heartPort;
 
     @Transactional
     public Long createHeart(Long answerId, Heart heart, User currentUser) {
@@ -26,17 +30,20 @@ public class HeartService {
         Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AnswerNotFoundException(answerId));
 
-        // 이미 해당 답변과 유저에 대한 반응이 존재하면 에러 반환
+        // 중복 체크
         if (heartRepository.existsHeartByAnswerAndUser(answer, currentUser)) {
             throw new HeartExistException();
         }
 
+        // 엔티티 저장
         heart.assignAnswer(answer);
+        heartRepository.save(heart);
 
+        // Redis에 반영
         if (heart.isGood()) {
-            answer.increaseGoodCount();
+            heartPort.incrementGoodHeart(answerId, currentUser.getId());
         } else {
-            answer.increaseBadCount();
+            heartPort.incrementBadHeart(answerId, currentUser.getId());
         }
 
 
@@ -57,13 +64,35 @@ public class HeartService {
         Answer answer = heart.getAnswer();
 
         if (heart.isGood()) {
-            answer.decreaseGoodCount();
+            heartPort.decrementGoodHeart(answer.getId(),currentUser.getId());
         } else {
-            answer.decreaseBadCount();
+            heartPort.decrementBadHeart(answer.getId(), currentUser.getId());
         }
 
         heart.softDelete();
 
+    }
+
+    @Transactional
+    public void updateHeartsCount() {
+        // Redis에서 추천/비추천 데이터 조회
+        Map<Long, Map<String, Integer>> heartCounts = heartPort.getHeartCounts();
+
+        // Redis 데이터를 순회하며 DB에 반영
+        heartCounts.forEach((answerId, counts) -> {
+            Answer answer = answerRepository.findById(answerId)
+                    .orElseThrow(() -> new AnswerNotFoundException(answerId));
+
+            // 추천과 비추천 수를 각각 증가
+            Integer goodCount = counts.getOrDefault("good", 0);
+            Integer badCount = counts.getOrDefault("bad",0);
+
+            answer.updateGoodCount(goodCount);
+            answer.updateBadCount(badCount);
+        });
+
+        // Redis 데이터 초기화
+        heartPort.clearHearts();
     }
 
     private void checkPermission(User currenUser, User writer) {

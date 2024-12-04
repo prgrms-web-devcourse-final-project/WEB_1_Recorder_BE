@@ -89,19 +89,13 @@ public class Answer extends SoftDeleteEntity {
         this.content = content;
     }
 
-    public void increaseGoodCount(){
-        this.goodCount++;
+    public void updateGoodCount(int count) {
+        this.goodCount += count;
     }
 
-    public void increaseBadCount(){
-        this.badCount++;
+    public void updateBadCount(int count) {
+
+        this.badCount += count;
     }
 
-    public void decreaseGoodCount(){
-        this.goodCount--;
-    }
-
-    public void decreaseBadCount(){
-        this.badCount--;
-    }
 }
