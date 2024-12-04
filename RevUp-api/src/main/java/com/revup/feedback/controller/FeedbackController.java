@@ -66,7 +66,7 @@ public class FeedbackController {
     }
 
     /**
-     * 자기한테 신청 피드백 승인하기
+     * 자기한테 신청된 피드백 승인하기
      * @param feedbackAcceptRequest 승인할 피드백 id
      * @return 승인된 피드백 id
      */

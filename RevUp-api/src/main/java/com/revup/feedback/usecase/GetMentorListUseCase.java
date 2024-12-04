@@ -19,12 +19,12 @@ public class GetMentorListUseCase {
 
     private final MentorService mentorService;
 
-    public Page<MentorResponse> execute(MentorPageRequest mentorPageRequest) {
+    public Page<MentorResponse> execute(int page) {
         long totalMentorCount = mentorService.getTotalMentorCount();
 
 
         List<Mentor> mentors = mentorService.getMentorsByPage(
-                (long) mentorPageRequest.getPage() * SIZE,
+                (long) page * SIZE,
                 SIZE
         );
 
@@ -32,7 +32,7 @@ public class GetMentorListUseCase {
                 .map(MentorResponse::from)
                 .toList();
 
-        return PageUtil.createPage(content, mentorPageRequest.getPage(), totalMentorCount);
+        return PageUtil.createPage(content, page, totalMentorCount);
     }
 
 }
