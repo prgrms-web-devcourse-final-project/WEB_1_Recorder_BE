@@ -16,8 +16,7 @@ public record QuestionDetailsResponse(
         int readCount,
         String githubLink,
         List<String> stacks,
-        List<QuestionCodeResponse> codes,
-        List<AnswerDetailsResponse> answers
+        List<QuestionCodeResponse> codes
 ) {
     public static QuestionDetailsResponse of(Question question) {
         return new QuestionDetailsResponse(
@@ -37,10 +36,6 @@ public record QuestionDetailsResponse(
                 question.getCodes()
                         .stream()
                         .map(QuestionCodeResponse::of)
-                        .toList(),
-                question.getAnswers()
-                        .stream()
-                        .map(AnswerDetailsResponse::of)
                         .toList()
         );
     }

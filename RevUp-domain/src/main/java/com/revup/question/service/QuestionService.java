@@ -63,7 +63,7 @@ public class QuestionService {
 
     @Transactional
     public Question getQuestionDetailsWithIncrement(Long id) {
-        Question question = questionRepository.findByIdWithStacksAndAnswersAndCodes(id)
+        Question question = questionRepository.findByIdWithStacksAndCodes(id)
                 .orElseThrow(() -> new QuestionNotFoundException(id));
         question.increaseReadCount();
 
