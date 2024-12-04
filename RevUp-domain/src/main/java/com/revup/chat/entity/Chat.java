@@ -6,6 +6,7 @@ import com.revup.question.entity.Question;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,7 @@ public class Chat extends BaseTimeEntity {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    private BooleanStatus isRead;
+    private BooleanStatus isRead = BooleanStatus.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
@@ -32,5 +33,12 @@ public class Chat extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private User receiver;
+
+    @Builder
+    private Chat(String content, User sender, User receiver) {
+        this.content = content;
+        this.sender = sender;
+        this.receiver = receiver;
+    }
 
 }

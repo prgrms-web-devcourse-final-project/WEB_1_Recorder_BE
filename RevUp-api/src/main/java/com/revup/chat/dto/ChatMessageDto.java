@@ -3,7 +3,7 @@ package com.revup.chat.dto;
 import lombok.Data;
 
 @Data
-public class ChatMessage {
+public class ChatMessageDto {
 
     private String content;
     private Long senderId;
