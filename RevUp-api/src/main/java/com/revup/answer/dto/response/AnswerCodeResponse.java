@@ -1,7 +1,5 @@
 package com.revup.answer.dto.response;
 
-import com.revup.answer.entity.AnswerCode;
-
 public record AnswerCodeResponse(
         String name,
         String content

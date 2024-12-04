@@ -31,6 +31,9 @@ public class Answer extends SoftDeleteEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "TEXT")
+    private String code;
+
     @Enumerated(EnumType.STRING)
     private BooleanStatus isAccept;
 
@@ -49,14 +52,13 @@ public class Answer extends SoftDeleteEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToOne(mappedBy = "answer")
-    private AnswerCode code;
 
     @Builder
     private Answer(
             User user,
             String title,
             String content,
+            String code,
             BooleanStatus isAccept,
             AdoptedReview review,
             int goodCount,
@@ -64,6 +66,7 @@ public class Answer extends SoftDeleteEntity {
         this.user = user;
         this.title = title;
         this.content = content;
+        this.code = code;
         this.isAccept = isAccept;
         this.review = review;
         this.goodCount = goodCount;
@@ -72,10 +75,6 @@ public class Answer extends SoftDeleteEntity {
 
     public void assignQuestion(Question question) {
         this.question = question;
-    }
-
-    public void addAnswerCode(AnswerCode answerCode) {
-        this.code = answerCode;
     }
 
 

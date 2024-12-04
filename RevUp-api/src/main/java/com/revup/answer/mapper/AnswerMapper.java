@@ -19,6 +19,7 @@ public class AnswerMapper {
         return Answer.builder()
                 .title(request.title())
                 .content(request.content())
+                .code(request.code())
                 .isAccept(BooleanStatus.FALSE)
                 .user(user)
                 .build();

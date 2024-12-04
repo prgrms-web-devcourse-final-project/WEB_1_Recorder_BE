@@ -3,11 +3,9 @@ package com.revup.answer.controller;
 import com.revup.annotation.SecurityUser;
 import com.revup.answer.dto.request.AnswerCreateRequest;
 import com.revup.answer.dto.request.AnswerUpdateRequest;
+import com.revup.answer.dto.response.AnswerDetailsResponse;
 import com.revup.answer.dto.response.AnswerIdResponse;
-import com.revup.answer.usecase.CreateAnswerUseCase;
-import com.revup.answer.usecase.DeleteAnswerUseCase;
-import com.revup.answer.usecase.GetMyAnswersUseCase;
-import com.revup.answer.usecase.UpdateAnswerUseCase;
+import com.revup.answer.usecase.*;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
 import jakarta.validation.Valid;
@@ -23,6 +21,7 @@ import static com.revup.global.util.ResponseUtil.success;
 @RequiredArgsConstructor
 public class AnswerController {
     private final CreateAnswerUseCase createAnswerUseCase;
+    private final GetAnswerListUseCase getAnswerListUseCase;
     private final GetMyAnswersUseCase getMyAnswersUseCase;
     private final UpdateAnswerUseCase updateAnswerUseCase;
     private final DeleteAnswerUseCase deleteAnswerUseCase;
@@ -38,6 +37,11 @@ public class AnswerController {
                                                                 @SecurityUser User currentUser
     ){
         return success(updateAnswerUseCase.execute(request, currentUser));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<AnswerDetailsResponse>> getByQuestionId(@RequestParam Long questionId){
+        return success(getAnswerListUseCase.execute(questionId));
     }
 
     @DeleteMapping
