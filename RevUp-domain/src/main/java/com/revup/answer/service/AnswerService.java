@@ -7,6 +7,7 @@ import com.revup.answer.exception.AnswerCreationConcurrencyException;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.repository.AnswerImageRepository;
 import com.revup.answer.repository.AnswerRepository;
+import com.revup.error.AppException;
 import com.revup.question.entity.Question;
 import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionRepository;
@@ -30,39 +31,41 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final AnswerImageRepository answerImageRepository;
 
-    @Transactional
     @Retryable(
             retryFor = {OptimisticLockingFailureException.class},
-            maxAttempts = 5,
+            noRetryFor = {QuestionNotFoundException.class},
+            maxAttempts= 5,
             backoff = @Backoff(delay = 500, multiplier = 2.0)
     )
+    @Transactional
     public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images) {
 
-        // 질문 조회
-        Question question = questionRepository.findByIdWithOptimisticLock(questionId)
-                .orElseThrow(() -> new QuestionNotFoundException(questionId));
+        try {
+            // 질문 조회
+            Question question = questionRepository.findByIdWithOptimisticLock(questionId)
+                    .orElseThrow(() -> new QuestionNotFoundException(questionId));
 
-        // 연관관계 매핑
-        answer.assignQuestion(question);
+            // 연관관계 매핑
+            answer.assignQuestion(question);
 
-        // 답변 수 증가
-        question.increaseAnswerCount();
-        answer.getUser().increaseTotalAnswerCount();
+            // 답변 수 증가
+            question.increaseAnswerCount();
+            answer.getUser().increaseTotalAnswerCount();
 
-        // 답변 저장
-        answerRepository.save(answer);
+            // 답변 저장
+            answerRepository.save(answer);
 
-        // 답변 이미지 저장
-        answerImageRepository.saveAll(images);
+            // 답변 이미지 저장
+            answerImageRepository.saveAll(images);
 
 
-        return answer.getId();
+            return answer.getId();
+        }
+        catch (OptimisticLockingFailureException e){
+            throw new AnswerCreationConcurrencyException();
+        }
     }
 
-    @Recover
-    public Long recover(OptimisticLockingFailureException e) {
-        throw new AnswerCreationConcurrencyException();
-    }
 
     @Transactional
     public Long updateAnswer(Long id, AnswerUpdateInfo updateInfo, List<AnswerImage> images, User currentUser) {
