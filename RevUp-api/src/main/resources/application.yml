@@ -15,3 +15,7 @@ spring:
   config:
     activate:
       on-profile: dev
+
+server:
+  tomcat:
+    keep-alive-timeout: 70
