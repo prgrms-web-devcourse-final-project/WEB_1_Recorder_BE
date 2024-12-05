@@ -24,4 +24,8 @@ public interface AnswerRepository extends JpaRepository<Answer, Long>, CustomAns
 
     @Query("select a from Answer a join fetch a.user u join fetch a.question q where a.id = :answerId")
     Optional<Answer> findByIdWithUserAndQuestion(Long answerId);
+
+    @Modifying
+    @Query("update Answer a set a.isDeleted = 'TRUE' where a.question.id = :questionId")
+    void softDeleteAnswersByQuestionId(Long questionId);
 }

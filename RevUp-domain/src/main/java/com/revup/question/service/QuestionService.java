@@ -19,6 +19,7 @@ import com.revup.question.repository.QuestionCodeRepository;
 import com.revup.question.repository.QuestionRepository;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserPermissionException;
+import com.revup.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ public class QuestionService {
     private final QuestionImageRepository questionImageRepository;
     private final QuestionCodeRepository questionCodeRepository;
     private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long createQuestion(Question question, List<QuestionImage> images, List<QuestionCode> codes) {
@@ -201,6 +203,13 @@ public class QuestionService {
         // 자식 엔티티 삭제
         questionImageRepository.softDeleteByQuestionId(id);
         questionCodeRepository.softDeleteByQuestionId(id);
+
+        // 유저 통계 update
+        userRepository.decrementTotalAnswersByQuestionId(id);
+        userRepository.decrementAcceptedAnswersByQuestionId(id);
+
+        // 답변들 삭제
+        answerRepository.softDeleteAnswersByQuestionId(id);
 
     }
 
