@@ -4,7 +4,6 @@ import com.revup.answer.entity.Answer;
 
 public record AnswerDetailsResponse(
         Long id,
-        String title,
         String content,
         String code,
         String writer,
@@ -19,7 +18,6 @@ public record AnswerDetailsResponse(
     public static AnswerDetailsResponse of(Answer answer){
         return new AnswerDetailsResponse(
                 answer.getId(),
-                answer.getTitle(),
                 answer.getContent(),
                 answer.getCode(),
                 answer.getUser().getNickname(),

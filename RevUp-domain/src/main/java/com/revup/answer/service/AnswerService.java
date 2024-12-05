@@ -77,7 +77,6 @@ public class AnswerService {
 
         // 질문 업데이트
         existAnswer.update(
-                updateInfo.title(),
                 updateInfo.content(),
                 updateInfo.code()
         );
