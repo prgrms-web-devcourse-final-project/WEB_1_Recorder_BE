@@ -35,6 +35,9 @@ public enum ErrorCode {
     DUPLICATED_USER_SKILL_STACK(BAD_REQUEST,"이미 등록된 기술 스택입니다"),
     USER_SKILL_STACK_NOT_FOUND(NOT_FOUND,"이미 삭제되었거나 없는 기술스택입니다"),
 
+    //achievement
+    ACHIEVEMENT_STACK_NOT_FOUND(NOT_FOUND,"달성하지 않은 업적입니다"),
+
     //Infra Exception
     OTHER_SERVER_BAD_REQUEST(BAD_REQUEST, "외부 api 400에러"),
     OTHER_SERVER_UNAUTHORIZED(UNAUTHORIZED, "외부 api 401에러"),

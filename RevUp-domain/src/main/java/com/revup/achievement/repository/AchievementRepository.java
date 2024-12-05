@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AchievementRepository extends CrudRepository<Achievement, Long> {
+public interface AchievementRepository
+        extends CrudRepository<Achievement, Long>, CustomAchievementRepository {
 
     List<Achievement> findByType(AchieveType type);
 
