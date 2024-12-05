@@ -28,7 +28,7 @@ public class AuthenticationUseCase {
     private final RefreshTokenAdapter refreshTokenAdapter;
     private final AuthMapper authMapper;
 
-    @Achievable(type = AchieveType.CONTINUOUS_ANSWER)
+
     public FirstLoginResponse executeLogin(User user) {
         log.info("user = {}", user);
         return authMapper.toFirstLoginResponse(user.getProfile());
