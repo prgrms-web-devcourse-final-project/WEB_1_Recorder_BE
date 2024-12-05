@@ -3,6 +3,7 @@ package com.revup.chat.controller;
 import com.revup.annotation.SecurityUser;
 import com.revup.chat.dto.ChatMessageDto;
 import com.revup.chat.dto.ChatRoomGetRequest;
+import com.revup.chat.service.response.ChatMessageResponse;
 import com.revup.chat.service.response.ChatRoomListResponse;
 import com.revup.chat.usecase.CreateChatUseCase;
 import com.revup.chat.usecase.GetChatMessagesUseCase;
@@ -70,8 +71,15 @@ public class ChatController {
         );
     }
 
+    /**
+     * 채팅 내역 조회 api
+     * @param chatRoomId 조회할 채팅방 id
+     * @param lastMessageTimestamp 무한스크롤 지원을 위해 기준점이 될 타임스탬프
+     * @param size 한 번에 최대로 로드할 채팅 내역 개수. 기본 10
+     * @return 최대 size 개의 채팅 내역
+     */
     @GetMapping("/api/v1/chat/{chatRoomId}/messages")
-    public ResponseEntity<?> getChatMessages(
+    public ResponseEntity<ApiResponse<List<ChatMessageResponse>>> getChatMessages(
             @PathVariable Long chatRoomId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime lastMessageTimestamp,
             @RequestParam(defaultValue = "10") int size) {

@@ -20,7 +20,7 @@ public class FeedbackCodeService {
     public FeedbackCodeResponse feedbackCodeGet(Long feedbackCodeId) {
         return FeedbackCodeResponse.from(
                 feedbackCodeRepository.findById(feedbackCodeId)
-                        .orElseThrow(() -> new RuntimeException("코드 못찾음"))
+                        .orElseThrow(() -> new AppException(ErrorCode.FEEDBACK_CODE_NOT_FOUND, feedbackCodeId))
         );
     }
 
