@@ -11,6 +11,9 @@ import lombok.*;
         name = "achievements",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"type", "standard"})
+        },
+        indexes = {
+                @Index(name = "idx_achievement_type", columnList = "type")
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -9,8 +9,6 @@ import java.util.List;
 
 public record AnswerUpdateRequest(
         Long answerId,
-        @NotBlank(message = "제목은 비어 있을 수 없습니다.")
-        String title,
 
         @NotBlank
         @BlockedContent

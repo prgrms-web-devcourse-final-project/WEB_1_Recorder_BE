@@ -17,7 +17,7 @@ public class RedissonConfig {
     private int redisPort;
 
     @Value("${spring.data.redis.password}")
-    private String password = null;
+    private String password;
 
     @Bean
     public RedissonClient redissonClient() {

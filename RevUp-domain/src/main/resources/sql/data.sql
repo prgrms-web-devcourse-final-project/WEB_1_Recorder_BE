@@ -1,10 +1,10 @@
 -- 리뷰 요청 업적
 INSERT IGNORE INTO achievements (created_at, updated_at, is_deleted, description, standard, type)
-VALUES ('2024-11-27 00:00:00', '2024-11-27 00:00:00', 'FALSE', '', 10, 'REQUESTED_REVIEW');
+VALUES ('2024-11-27 00:00:00', '2024-11-27 00:00:00', 'FALSE', '', 10, 'REQUESTED_FEEDBACK');
 INSERT IGNORE INTO achievements (created_at, updated_at, is_deleted, description, standard, type)
-VALUES ('2024-11-27 00:00:00', '2024-11-27 00:00:00', 'FALSE', '', 20, 'REQUESTED_REVIEW');
+VALUES ('2024-11-27 00:00:00', '2024-11-27 00:00:00', 'FALSE', '', 20, 'REQUESTED_FEEDBACK');
 INSERT IGNORE INTO achievements (created_at, updated_at, is_deleted, description, standard, type)
-VALUES ('2024-11-27 00:00:00', '2024-11-27 00:00:00', 'FALSE', '', 30, 'REQUESTED_REVIEW');
+VALUES ('2024-11-27 00:00:00', '2024-11-27 00:00:00', 'FALSE', '', 30, 'REQUESTED_FEEDBACK');
 
 -- 누적 추천 수 업적
 INSERT IGNORE INTO achievements (created_at, updated_at, is_deleted, description, standard, type)

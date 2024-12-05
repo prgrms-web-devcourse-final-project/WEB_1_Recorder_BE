@@ -1,6 +1,7 @@
 package com.revup.question.entity;
 
 import com.revup.common.BaseTimeEntity;
+import com.revup.common.SoftDeleteEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "question_image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionImage extends BaseTimeEntity {
+public class QuestionImage extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 @Aspect
 @Component
@@ -51,27 +50,7 @@ public class AchieveAspect {
             return (Long) field.get(result);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             log.error("Error extracting field '{}': {}", fieldName, e.getMessage());
-            return 1L;
+            return 0L;
         }
-    }
-
-    private Method getMethodFromJoinPoint(JoinPoint joinPoint) {
-        // 호출된 메서드 정보 가져오기
-        String methodName = joinPoint.getSignature().getName();
-        Class<?> targetClass = joinPoint.getTarget().getClass();
-        Object[] args = joinPoint.getArgs();
-
-        try {
-            // 메서드 매개변수를 활용해 정확한 메서드 가져오기
-            for (Method method : targetClass.getDeclaredMethods()) {
-                if (method.getName().equals(methodName) &&
-                        method.getParameterCount() == args.length) {
-                    return method;
-                }
-            }
-        } catch (Exception e) {
-            log.error("메서드 정보를 가져오는 중 오류 발생: {}", e.getMessage());
-        }
-        throw new IllegalStateException("메서드를 찾을 수 없습니다.");
     }
 }

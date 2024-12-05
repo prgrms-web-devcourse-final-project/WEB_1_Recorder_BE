@@ -2,6 +2,7 @@ package com.revup.answer.controller;
 
 import com.revup.annotation.SecurityUser;
 import com.revup.answer.dto.request.AnswerCreateRequest;
+import com.revup.answer.dto.request.AnswerDeleteRequest;
 import com.revup.answer.dto.request.AnswerUpdateRequest;
 import com.revup.answer.dto.response.AnswerDetailsResponse;
 import com.revup.answer.dto.response.AnswerIdResponse;
@@ -52,10 +53,12 @@ public class AnswerController {
                                                                                  @RequestParam int size){
         return success(getMyAnswersUseCase.execute(currentUser, lastId, size));
     }
+
     @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long id,
-                                       @SecurityUser User currentUser){
-        deleteAnswerUseCase.execute(id, currentUser);
+    public ResponseEntity<Void> delete(@RequestBody AnswerDeleteRequest request,
+                                       @SecurityUser User currentUser) {
+
+        deleteAnswerUseCase.execute(request.id(), currentUser);
         return ResponseEntity.noContent().build();
     }
 }

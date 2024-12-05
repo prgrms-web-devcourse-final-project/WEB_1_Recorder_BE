@@ -5,6 +5,6 @@ import com.revup.error.ErrorCode;
 
 public class UserIdNotFoundException extends AppException {
     public UserIdNotFoundException(Long id) {
-        super(ErrorCode.USER_ID_NOT_FOUND);
+        super(ErrorCode.USER_ID_NOT_FOUND,id);
     }
 }

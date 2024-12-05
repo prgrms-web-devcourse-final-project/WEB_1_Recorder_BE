@@ -4,11 +4,12 @@ import com.revup.answer.entity.Answer;
 
 public record AnswerDetailsResponse(
         Long id,
-        String title,
         String content,
         String code,
         String writer,
         String profileImage,
+        int  totalAnswerCount,
+        int adoptedRate,
         String createdAt,
         boolean isAccept,
         int goodCount,
@@ -17,11 +18,12 @@ public record AnswerDetailsResponse(
     public static AnswerDetailsResponse of(Answer answer){
         return new AnswerDetailsResponse(
                 answer.getId(),
-                answer.getTitle(),
                 answer.getContent(),
                 answer.getCode(),
                 answer.getUser().getNickname(),
-                answer.getUser().getProfile().getProfileImage(),
+                answer.getUser().getProfileImage(),
+                answer.getUser().getTotalAnswerCount(),
+                answer.getUser().getAdoptedRate(),
                 answer.getCreatedAt().toString(),
                 answer.getIsAccept().toBoolean(),
                 answer.getGoodCount(),

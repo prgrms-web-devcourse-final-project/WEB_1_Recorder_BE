@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserAchievementRepository extends CrudRepository<UserAchievement, Long> {
+public interface UserAchievementRepository extends
+        CrudRepository<UserAchievement, Long>, CustomUserAchievementRepository {
 
     List<UserAchievement> findAllByUserAndAchievement_Type(User user, AchieveType type);
 
