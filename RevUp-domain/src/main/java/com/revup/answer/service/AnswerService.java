@@ -14,7 +14,9 @@ import com.revup.question.repository.QuestionRepository;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserPermissionException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -32,38 +34,34 @@ public class AnswerService {
     private final AnswerImageRepository answerImageRepository;
 
     @Retryable(
-            retryFor = {OptimisticLockingFailureException.class},
+            retryFor = {ObjectOptimisticLockingFailureException.class, DeadlockLoserDataAccessException.class},
             noRetryFor = {QuestionNotFoundException.class},
-            maxAttempts= 5,
+            maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2.0)
     )
     @Transactional
     public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images) {
 
-        try {
-            // 질문 조회
-            Question question = questionRepository.findByIdWithOptimisticLock(questionId)
-                    .orElseThrow(() -> new QuestionNotFoundException(questionId));
+        // 질문 조회
+        Question question = questionRepository.findByIdWithOptimisticLock(questionId)
+                .orElseThrow(() -> new QuestionNotFoundException(questionId));
 
-            // 연관관계 매핑
-            answer.assignQuestion(question);
+        // 연관관계 매핑
+        answer.assignQuestion(question);
 
-            // 답변 수 증가
-            question.increaseAnswerCount();
-            answer.getUser().increaseTotalAnswerCount();
+        // 답변 수 증가
+        question.increaseAnswerCount();
+        answer.getUser().increaseTotalAnswerCount();
 
-            // 답변 저장
-            answerRepository.save(answer);
+        // 답변 저장
+        answerRepository.save(answer);
 
-            // 답변 이미지 저장
-            answerImageRepository.saveAll(images);
+        // 답변 이미지 저장
+        answerImageRepository.saveAll(images);
 
 
-            return answer.getId();
-        }
-        catch (OptimisticLockingFailureException e){
-            throw new AnswerCreationConcurrencyException();
-        }
+        return answer.getId();
+
     }
 
 
