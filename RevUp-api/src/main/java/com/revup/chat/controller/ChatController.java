@@ -3,6 +3,7 @@ package com.revup.chat.controller;
 import com.revup.annotation.SecurityUser;
 import com.revup.chat.dto.ChatMessageDto;
 import com.revup.chat.dto.ChatRoomGetRequest;
+import com.revup.chat.service.response.ChatRoomListResponse;
 import com.revup.chat.usecase.CreateChatUseCase;
 import com.revup.chat.usecase.GetChatRoomUseCase;
 import com.revup.chat.usecase.GetMyChatRoomListUseCase;
@@ -30,12 +31,24 @@ public class ChatController {
     private final GetMyChatRoomListUseCase getMyChatRoomListUseCase;
     private final GetChatRoomUseCase getChatRoomUseCase;
 
+    /**
+     * 채팅방 생성 api
+     * @param chatRoomGetRequest 채팅상대 id
+     * @param currentUser 요청한 사람
+     * @return 둘 사이의 채팅방이 이미 있으면 그거 id 반환, 없으면 만들어서 반환
+     */
     @PostMapping("/api/v1/chat/room")
     public Long GetChatRoom(@RequestBody ChatRoomGetRequest chatRoomGetRequest, @SecurityUser User currentUser) {
         return getChatRoomUseCase.execute(chatRoomGetRequest, currentUser);
     }
 
-    @MessageMapping("/chat.sendMessage/{chatRoomId}") // 클라이언트가 메시지 전송
+    /**
+     * 채팅 메시지 전송 처리
+     * @param chatRoomId 메시지를 받게 되는 채팅방 id
+     * @param chatMessageDto 메시지 전송 dto
+     * 구독한 클라이언트들에 전송하고, DB에 채팅을 저장함
+     */
+    @MessageMapping("/chat.sendMessage/{chatRoomId}")
     public void sendMessage(@DestinationVariable Long chatRoomId,
                             @Payload ChatMessageDto chatMessageDto
     ) {
@@ -50,7 +63,7 @@ public class ChatController {
      * @return 각자의 마지막 채팅 목록
      */
     @GetMapping("/api/v1/chat/room")
-    public ResponseEntity<ApiResponse<List<?>>> myChatRoomList(@SecurityUser User currentUser) {
+    public ResponseEntity<ApiResponse<List<ChatRoomListResponse>>> myChatRoomList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(getMyChatRoomListUseCase.execute(currentUser))
         );

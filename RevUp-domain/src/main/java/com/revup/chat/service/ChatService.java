@@ -1,22 +1,18 @@
 package com.revup.chat.service;
 
 import com.revup.chat.entity.ChatMessage;
-import com.revup.chat.entity.ChatMessageRead;
 import com.revup.chat.entity.ChatRoom;
 import com.revup.chat.entity.ChatRoomBelong;
-import com.revup.chat.repository.ChatMessageReadRepository;
 import com.revup.chat.repository.ChatMessageRepository;
 import com.revup.chat.repository.ChatRoomBelongRepository;
 import com.revup.chat.repository.ChatRoomRepository;
-import com.revup.chat.service.response.ChatResponse;
+import com.revup.chat.service.response.ChatRoomListResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,12 +47,20 @@ public class ChatService {
         return chatRoom.getId();
     }
 
-    public List<ChatResponse> myChatRoomList(User currentUser) {
+    public List<ChatRoomListResponse> myChatRoomList(User currentUser) {
+        List<ChatRoomListResponse> responseList = new ArrayList<>();
+
         List<ChatRoom> chatRooms = chatRoomBelongRepository.findByUser(currentUser)
                 .stream()
                 .map(ChatRoomBelong::getChatRoom).toList();
 
-        return List.of();
+        for (ChatRoom chatRoom : chatRooms) {
+            ChatMessage latestMessage = chatRoomBelongRepository.findLatestMessageByChatRoom(chatRoom);
+            User anotherUser = chatRoomBelongRepository.findOtherMemberInChatRoom(chatRoom, currentUser);
+            responseList.add(ChatRoomListResponse.from(latestMessage, anotherUser));
+        }
+
+        return responseList;
     }
 
 }
