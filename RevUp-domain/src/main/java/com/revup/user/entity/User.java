@@ -76,4 +76,8 @@ public class User extends SoftDeleteEntity {
     public void updateAffiliation(Affiliation affiliation) {
         this.affiliation = affiliation;
     }
+
+    public void increaseTotalAnswerCount() {
+        this.profile.increaseTotalAnswerCount();
+    }
 }

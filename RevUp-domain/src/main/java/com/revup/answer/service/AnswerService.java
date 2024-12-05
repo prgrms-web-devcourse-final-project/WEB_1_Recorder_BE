@@ -48,7 +48,7 @@ public class AnswerService {
 
         // 답변 수 증가
         question.increaseAnswerCount();
-
+        answer.getUser().increaseTotalAnswerCount();
 
         // 답변 저장
         answerRepository.save(answer);
@@ -61,7 +61,7 @@ public class AnswerService {
     }
 
     @Recover
-    public Long recover() {
+    public Long recover(OptimisticLockingFailureException e) {
         throw new AnswerCreationConcurrencyException();
     }
 

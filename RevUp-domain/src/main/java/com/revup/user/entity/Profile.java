@@ -37,4 +37,8 @@ public class Profile {
     public boolean isEmptyIntroduction() {
         return this.introduction == null || this.introduction.isEmpty();
     }
+
+    public void increaseTotalAnswerCount() {
+        this.totalAnswerCount++;
+    }
 }
