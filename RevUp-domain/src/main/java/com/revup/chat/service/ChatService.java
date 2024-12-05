@@ -6,12 +6,16 @@ import com.revup.chat.entity.ChatRoomBelong;
 import com.revup.chat.repository.ChatMessageRepository;
 import com.revup.chat.repository.ChatRoomBelongRepository;
 import com.revup.chat.repository.ChatRoomRepository;
+import com.revup.chat.service.response.ChatMessageResponse;
 import com.revup.chat.service.response.ChatRoomListResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -61,6 +65,12 @@ public class ChatService {
         }
 
         return responseList;
+    }
+
+    public List<ChatMessageResponse> getChatMessagesBefore(Long chatRoomId, LocalDateTime timestamp, int size) {
+        Pageable pageable = PageRequest.of(0, size);
+        return chatMessageRepository.findMessagesBeforeTimeStamp(chatRoomId, timestamp, pageable).stream()
+                .map(ChatMessageResponse::from).toList();
     }
 
 }

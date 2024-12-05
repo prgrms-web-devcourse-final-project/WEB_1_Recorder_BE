@@ -5,21 +5,21 @@ import com.revup.chat.dto.ChatMessageDto;
 import com.revup.chat.dto.ChatRoomGetRequest;
 import com.revup.chat.service.response.ChatRoomListResponse;
 import com.revup.chat.usecase.CreateChatUseCase;
+import com.revup.chat.usecase.GetChatMessagesUseCase;
 import com.revup.chat.usecase.GetChatRoomUseCase;
 import com.revup.chat.usecase.GetMyChatRoomListUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,6 +30,7 @@ public class ChatController {
     private final CreateChatUseCase createChatUseCase;
     private final GetMyChatRoomListUseCase getMyChatRoomListUseCase;
     private final GetChatRoomUseCase getChatRoomUseCase;
+    private final GetChatMessagesUseCase getChatMessagesUseCase;
 
     /**
      * 채팅방 생성 api
@@ -66,6 +67,18 @@ public class ChatController {
     public ResponseEntity<ApiResponse<List<ChatRoomListResponse>>> myChatRoomList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(getMyChatRoomListUseCase.execute(currentUser))
+        );
+    }
+
+    @GetMapping("/api/v1/chat/{chatRoomId}/messages")
+    public ResponseEntity<?> getChatMessages(
+            @PathVariable Long chatRoomId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime lastMessageTimestamp,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        getChatMessagesUseCase.execute(chatRoomId, lastMessageTimestamp, size)
+                )
         );
     }
 
