@@ -7,7 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Getter @ToString
+@Getter
+@ToString
 @Table(
         name = "users",
         uniqueConstraints = {
@@ -21,9 +22,11 @@ public class User extends SoftDeleteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded private Profile profile;
+    @Embedded
+    private Profile profile;
 
-    @Embedded private Affiliation affiliation;
+    @Embedded
+    private Affiliation affiliation;
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
@@ -36,9 +39,9 @@ public class User extends SoftDeleteEntity {
 
     @Builder
     private User(
-                LoginType loginType,
-                String socialEmail,
-                String socialId) {
+            LoginType loginType,
+            String socialEmail,
+            String socialId) {
         this.profile = createNewProfile();
         this.loginType = loginType;
         this.socialEmail = socialEmail;
@@ -61,15 +64,21 @@ public class User extends SoftDeleteEntity {
         return this.profile.getNickname();
     }
 
-    public String getProfileImage(){
+    public String getProfileImage() {
         return this.profile.getProfileImage();
     }
 
-    public int getTotalAnswerCount(){
+    public int getTotalAnswerCount() {
         return this.profile.getTotalAnswerCount();
     }
 
-    public int getAdoptedAnswerCount(){
+    public int getAdoptedRate() {
+        if (getTotalAnswerCount() == 0)
+            return 0;
+        return (int) (getAdoptedAnswerCount() / (double) getTotalAnswerCount()) * 100;
+    }
+
+    public int getAdoptedAnswerCount() {
         return this.profile.getAdoptedAnswerCount();
     }
 
