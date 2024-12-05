@@ -19,7 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AchievementServiceImpl implements AchievementService {
 
-    private final AchievementChecker achievementChecker;
+    private final AchievementCreator achievementCreator;
     private final AchievementUpdater achievementUpdater;
     private final AchievementReader achievementReader;
     private final UserAdaptor userAdaptor;
@@ -37,11 +37,11 @@ public class AchievementServiceImpl implements AchievementService {
         List<Achievement> achievements = achievementReader.findByType(type);
 
         List<UserAchievement> newLogs = switch (type) {
-            case ADOPTION_COUNT -> achievementChecker.handleAdoption(user, achievements);
-            case CUMULATIVE_LIKES -> achievementChecker.handleLikes(user, achievements);
-            case REQUESTED_FEEDBACK -> achievementChecker.handleFeedback(user, achievements);
-            case CONTINUOUS_ANSWER -> achievementChecker.handleAnswers(user, achievements);
-            case ADOPTION_RATE -> achievementChecker.handleRate(user, achievements);
+            case ADOPTION_COUNT -> achievementCreator.handleAdoption(user, achievements);
+            case CUMULATIVE_LIKES -> achievementCreator.handleLikes(user, achievements);
+            case REQUESTED_FEEDBACK -> achievementCreator.handleFeedback(user, achievements);
+            case CONTINUOUS_ANSWER -> achievementCreator.handleAnswers(user, achievements);
+            case ADOPTION_RATE -> achievementCreator.handleRate(user, achievements);
         };
 
         // 기존에 존재하는 업적을 제외하고 새로운 등록하려는 업적만 필터링

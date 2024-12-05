@@ -1,6 +1,7 @@
 package com.revup.achievement.entity;
 
 import com.revup.common.BaseTimeEntity;
+import com.revup.common.BooleanStatus;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,9 @@ public class UserAchievement extends BaseTimeEntity {
     @JoinColumn(name = "achievement_id")
     private Achievement achievement;
 
+    @Enumerated(EnumType.STRING)
+    private BooleanStatus isVisible;
+
     @Builder
     private UserAchievement(
             User user,
@@ -30,6 +34,7 @@ public class UserAchievement extends BaseTimeEntity {
     ) {
         this.user = user;
         this.achievement = achievement;
+        this.isVisible = BooleanStatus.FALSE;
     }
 
     public static UserAchievement of(User user, Achievement achievement) {
@@ -37,5 +42,9 @@ public class UserAchievement extends BaseTimeEntity {
                 .achievement(achievement)
                 .user(user)
                 .build();
+    }
+
+    public void updateVisibility(BooleanStatus status) {
+        this.isVisible = status;
     }
 }
