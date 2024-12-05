@@ -7,7 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface QuestionImageRepository extends JpaRepository<QuestionImage, Long> {
     @Modifying
-    @Query("delete from QuestionImage qi where qi.question.id = :id")
-    void deleteByQuestionId(Long id);
+    @Query("delete from QuestionImage qi where qi.question.id = :questionId")
+    void deleteByQuestionId(Long questionId);
+
+    @Modifying
+    @Query("update QuestionImage qi set qi.isDeleted = 'TRUE' where qi.question.id = :questionId")
+    void softDeleteByQuestionId(Long questionId);
 
 }

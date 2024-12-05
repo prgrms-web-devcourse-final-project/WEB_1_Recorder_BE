@@ -197,6 +197,12 @@ public class QuestionService {
 
         // 질문 삭제
         question.softDelete();
+
+        // 자식 엔티티 삭제
+        answerRepository.softDeleteByQuestionId(id);
+        questionImageRepository.softDeleteByQuestionId(id);
+        questionCodeRepository.softDeleteByQuestionId(id);
+
     }
 
     private void checkPermission(User currenUser, User writer) {
