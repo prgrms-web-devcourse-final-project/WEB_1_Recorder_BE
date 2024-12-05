@@ -44,7 +44,6 @@ public class AnswerService {
 
         // 연관관계 매핑
         answer.assignQuestion(question);
-        question.addAnswer(answer);
 
         // 답변 수 증가
         question.increaseAnswerCount();
