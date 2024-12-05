@@ -15,7 +15,8 @@ public class GetChatListUseCase {
     private final ChatService chatService;
 
     public List<ChatResponse> execute(User currentUser) {
-        return chatService.myChatList(currentUser);
+        return List.of();
+//        return chatService.myChatList(currentUser);
     }
 
 }

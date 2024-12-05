@@ -2,9 +2,11 @@ package com.revup.chat.controller;
 
 import com.revup.annotation.SecurityUser;
 import com.revup.chat.dto.ChatMessageDto;
+import com.revup.chat.dto.ChatRoomGetRequest;
 import com.revup.chat.service.response.ChatResponse;
 import com.revup.chat.usecase.CreateChatUseCase;
 import com.revup.chat.usecase.GetChatListUseCase;
+import com.revup.chat.usecase.GetChatRoomUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,15 +29,19 @@ public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final CreateChatUseCase createChatUseCase;
     private final GetChatListUseCase getChatListUseCase;
+    private final GetChatRoomUseCase getChatRoomUseCase;
 
-    @MessageMapping("/chat.sendMessage/{sender}/{receiver}") // 클라이언트가 메시지 전송
-    public void sendMessage(@DestinationVariable Long sender,
-                            @DestinationVariable Long receiver,
-                            @Payload ChatMessageDto chatMessageDto
+    @PostMapping("/api/v1/chat/room")
+    public Long GetChatRoom(@RequestBody ChatRoomGetRequest chatRoomGetRequest, @SecurityUser User currentUser) {
+        return getChatRoomUseCase.execute(chatRoomGetRequest, currentUser);
+    }
+
+    @MessageMapping("/chat.sendMessage/{chatRoomId}") // 클라이언트가 메시지 전송
+    public void sendMessage(@DestinationVariable Long chatRoomId,
+                            @Payload ChatMessageDto chatMessageDto,
+                            @SecurityUser User currentUser
     ) {
-        messagingTemplate.convertAndSend("/topic/chat/" + sender + "/" + receiver, chatMessageDto);
-        messagingTemplate.convertAndSend("/topic/chat/" + receiver + "/" + sender, chatMessageDto);
-
+        messagingTemplate.convertAndSend("/topic/chat/" + chatRoomId, chatMessageDto);
         createChatUseCase.execute(chatMessageDto);
     }
 

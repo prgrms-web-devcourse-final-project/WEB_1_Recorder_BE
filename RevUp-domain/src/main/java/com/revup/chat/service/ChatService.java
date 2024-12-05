@@ -1,31 +1,64 @@
 package com.revup.chat.service;
 
-import com.revup.chat.entity.Chat;
-import com.revup.chat.repository.ChatRepository;
+import com.revup.chat.entity.ChatMessage;
+import com.revup.chat.entity.ChatRoom;
+import com.revup.chat.entity.ChatRoomBelong;
+import com.revup.chat.repository.ChatMessageRepository;
+import com.revup.chat.repository.ChatRoomBelongRepository;
+import com.revup.chat.repository.ChatRoomRepository;
 import com.revup.chat.service.response.ChatResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ChatService {
 
-    private final ChatRepository chatRepository;
+    private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomBelongRepository chatRoomBelongRepository;
 
     @Transactional
-    public void chatCreate(Chat chat) {
-        chatRepository.save(chat);
+    public void chatCreate(User sender, User receiver, ChatMessage chatMessage) {
+        chatMessageRepository.save(chatMessage);
     }
 
-    public List<ChatResponse> myChatList(User currentUser) {
-        return chatRepository.findRecentChats(currentUser)
+    @Transactional
+    public Long chatRoomGetOrCreate(User user1, User user2) {
+        Optional<ChatRoom> chatRoomOptional = chatRoomBelongRepository.findChatRoomByTwoUsers(user1, user2);
+        if (!chatRoomOptional.isEmpty()) return chatRoomOptional.get().getId();
+
+        ChatRoom chatRoom = chatRoomRepository.save(ChatRoom.builder().build());
+        ChatRoomBelong chatRoomBelong1 = ChatRoomBelong.builder()
+                .chatRoom(chatRoom)
+                .user(user1)
+                .build();
+        ChatRoomBelong chatRoomBelong2 = ChatRoomBelong.builder()
+                .chatRoom(chatRoom)
+                .user(user2)
+                .build();
+
+        chatRoomBelongRepository.saveAll(List.of(chatRoomBelong1, chatRoomBelong2));
+        return chatRoom.getId();
+    }
+
+    public List<ChatResponse> myChatRoomList(User currentUser) {
+        List<ChatRoom> chatRooms = chatRoomBelongRepository.findByUser(currentUser)
                 .stream()
-                .map(ChatResponse::from).toList();
+                .map(ChatRoomBelong::getChatRoom).toList();
+
+        return List.of();
+
+//        return chatMessageRepository.findRecentChats(currentUser)
+//                .stream()
+//                .map(ChatResponse::from).toList();
     }
 
 }

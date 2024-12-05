@@ -1,6 +1,7 @@
 package com.revup.chat.usecase;
 
 import com.revup.chat.dto.ChatMessageDto;
+import com.revup.chat.entity.ChatMessage;
 import com.revup.chat.mapper.ChatMapper;
 import com.revup.chat.service.ChatService;
 import com.revup.user.adaptor.UserAdaptor;
@@ -18,9 +19,11 @@ public class CreateChatUseCase {
     private final UserAdaptor userAdaptor;
 
     public void execute(ChatMessageDto chatMessageDto) {
-        User sender = userAdaptor.findById(chatMessageDto.getSenderId());
-        User receiver = userAdaptor.findById(chatMessageDto.getReceiverId());
-        chatService.chatCreate(chatMapper.toEntity(chatMessageDto.getContent(), sender, receiver));
+//        User sender = userAdaptor.findById(chatMessageDto.getSenderId());
+//        User receiver = userAdaptor.findById(chatMessageDto.getReceiverId());
+//
+//        ChatMessage chatMessage = chatMapper.toEntity(chatMessageDto.getContent());
+//        chatService.chatCreate(sender, receiver, chatMessage);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.revup.chat.service.response;
 
-import com.revup.chat.entity.Chat;
+import com.revup.chat.entity.ChatMessage;
 import com.revup.common.BooleanStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,14 +21,14 @@ public class ChatResponse {
 
     private LocalDateTime createdAt;
 
-    public static ChatResponse from(Chat chat) {
-        return ChatResponse.builder()
-                .senderName(chat.getSender().getSocialId())
-                .receiverName(chat.getReceiver().getSocialId())
-                .content(chat.getContent())
-                .isRead(chat.getIsRead())
-                .createdAt(chat.getCreatedAt())
-                .build();
-    }
+//    public static ChatResponse from(ChatMessage chatMessage) {
+//        return ChatResponse.builder()
+//                .senderName(chatMessage.getSender().getSocialId())
+//                .receiverName(chatMessage.getReceiver().getSocialId())
+//                .content(chatMessage.getContent())
+//                .isRead(chatMessage.getIsRead())
+//                .createdAt(chatMessage.getCreatedAt())
+//                .build();
+//    }
 
 }
