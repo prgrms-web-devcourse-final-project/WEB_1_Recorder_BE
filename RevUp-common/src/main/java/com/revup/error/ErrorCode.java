@@ -50,12 +50,13 @@ public enum ErrorCode {
     // 기술스택
     SKILL_INVALID(BAD_REQUEST, "잘못된 기술스택입니다"),
 
-
+    // 피드백
     FEEDBACK_NOT_FOUND(HttpStatus.NOT_FOUND, "피드백 id : %s 가 존재하지 않습니다"),
     FEEDBACK_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "피드백코드 id : %s 가 존재하지 않습니다"),
     INTERRUPTED(HttpStatus.SERVICE_UNAVAILABLE, "처리가 강제로 중단되었습니다. 잠시 후 다시 시도해주세요."),
 
-
+    // 채팅
+    CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방 id : %s 가 존재하지 않습니다"),
 
     FILE_INVALID_NAME(HttpStatus.BAD_REQUEST, "파일 이름이 유효하지 않습니다"),
     FILE_EXCEED_SIZE(HttpStatus.PAYLOAD_TOO_LARGE, "파일 크기가 허용된 최대 크기를 초과했습니다"),
