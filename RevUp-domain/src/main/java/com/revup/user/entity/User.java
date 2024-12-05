@@ -80,4 +80,8 @@ public class User extends SoftDeleteEntity {
     public void increaseTotalAnswerCount() {
         this.profile.increaseTotalAnswerCount();
     }
+
+    public void increaseAdoptedAnswerCount() {
+        this.profile.increaseAdoptedAnswerCount();
+    }
 }

@@ -41,4 +41,8 @@ public class Profile {
     public void increaseTotalAnswerCount() {
         this.totalAnswerCount++;
     }
+
+    public void increaseAdoptedAnswerCount() {
+        this.adoptedAnswerCount++;
+    }
 }

@@ -146,6 +146,9 @@ public class QuestionService {
         // 답변 채택 여부 및 리뷰 업데이트
         answer.adoptWithReview(AdoptedReview.from(review));
 
+        // 채택 답변 수 증가
+        answer.getUser().increaseAdoptedAnswerCount();
+
         return question.getId();
     }
 
