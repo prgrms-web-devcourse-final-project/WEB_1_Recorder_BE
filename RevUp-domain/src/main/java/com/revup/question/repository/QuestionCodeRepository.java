@@ -7,6 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface QuestionCodeRepository extends JpaRepository<QuestionCode, Long> {
     @Modifying
-    @Query("delete from QuestionCode  qc where qc.question.id = :id")
-    void deleteByQuestionId(Long id);
+    @Query("delete from QuestionCode qc where qc.question.id = :questionId")
+    void deleteByQuestionId(Long questionId);
+
+    @Modifying
+    @Query("update QuestionCode qc set qc.isDeleted = 'TRUE' where qc.question.id = :questionId")
+    void softDeleteByQuestionId(Long questionId);
+
 }

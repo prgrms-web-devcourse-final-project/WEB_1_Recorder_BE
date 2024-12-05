@@ -26,7 +26,6 @@ public class Answer extends SoftDeleteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -56,7 +55,6 @@ public class Answer extends SoftDeleteEntity {
     @Builder
     private Answer(
             User user,
-            String title,
             String content,
             String code,
             BooleanStatus isAccept,
@@ -64,7 +62,6 @@ public class Answer extends SoftDeleteEntity {
             int goodCount,
             int badCount) {
         this.user = user;
-        this.title = title;
         this.content = content;
         this.code = code;
         this.isAccept = isAccept;
@@ -83,8 +80,7 @@ public class Answer extends SoftDeleteEntity {
         this.review = adoptedReview;
     }
 
-    public void update(String title, String content,String code) {
-        this.title = title;
+    public void update( String content,String code) {
         this.content = content;
         this.code = code;
     }

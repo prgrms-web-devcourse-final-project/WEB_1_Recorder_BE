@@ -67,9 +67,6 @@ public class Question extends SoftDeleteEntity {
 
 
     @OneToMany(mappedBy = "question")
-    private List<Answer> answers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "question")
     private Set<QuestionCode> codes = new HashSet<>();
 
     @Builder
@@ -114,9 +111,6 @@ public class Question extends SoftDeleteEntity {
         this.stacks = stacks;
     }
 
-    public void addAnswer(Answer answer) {
-        this.answers.add(answer);
-    }
 
     public void addQuestionCode(QuestionCode code){
         this.codes.add(code);
@@ -124,6 +118,10 @@ public class Question extends SoftDeleteEntity {
 
     public void increaseAnswerCount() {
         this.answerCount++;
+    }
+
+    public void decreaseAnswerCount(){
+        this.answerCount--;
     }
 
     public void increaseReadCount() {

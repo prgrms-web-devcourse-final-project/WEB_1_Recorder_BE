@@ -7,13 +7,16 @@ import com.revup.answer.exception.AnswerCreationConcurrencyException;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.repository.AnswerImageRepository;
 import com.revup.answer.repository.AnswerRepository;
+import com.revup.error.AppException;
 import com.revup.question.entity.Question;
 import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionRepository;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserPermissionException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -30,12 +33,13 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final AnswerImageRepository answerImageRepository;
 
-    @Transactional
     @Retryable(
-            retryFor = {OptimisticLockingFailureException.class},
+            retryFor = {ObjectOptimisticLockingFailureException.class, DeadlockLoserDataAccessException.class},
+            noRetryFor = {QuestionNotFoundException.class},
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2.0)
     )
+    @Transactional
     public Long createAnswer(Long questionId, Answer answer, List<AnswerImage> images) {
 
         // 질문 조회
@@ -44,11 +48,10 @@ public class AnswerService {
 
         // 연관관계 매핑
         answer.assignQuestion(question);
-        question.addAnswer(answer);
 
         // 답변 수 증가
         question.increaseAnswerCount();
-
+        answer.getUser().increaseTotalAnswerCount();
 
         // 답변 저장
         answerRepository.save(answer);
@@ -58,12 +61,9 @@ public class AnswerService {
 
 
         return answer.getId();
+
     }
 
-    @Recover
-    public Long recover() {
-        throw new AnswerCreationConcurrencyException();
-    }
 
     @Transactional
     public Long updateAnswer(Long id, AnswerUpdateInfo updateInfo, List<AnswerImage> images, User currentUser) {
@@ -77,7 +77,6 @@ public class AnswerService {
 
         // 질문 업데이트
         existAnswer.update(
-                updateInfo.title(),
                 updateInfo.content(),
                 updateInfo.code()
         );
@@ -99,12 +98,18 @@ public class AnswerService {
     @Transactional
     public void delete(Long id, User currentUser) {
         // 답변 조회
-        Answer answer = answerRepository.findByIdWithUser(id)
+        Answer answer = answerRepository.findByIdWithUserAndQuestion(id)
                 .orElseThrow(() -> new AnswerNotFoundException(id));
 
         // 권한 검증
         checkPermission(currentUser, answer.getUser());
 
+        if (answer.getIsAccept().toBoolean()) {
+            answer.getUser().decreaseAdoptedAnswerCount();
+        }
+
+        answer.getUser().decreaseTotalAnswerCount();
+        answer.getQuestion().decreaseAnswerCount();
         answer.softDelete();
     }
 
@@ -121,7 +126,7 @@ public class AnswerService {
     }
 
     public List<Answer> getMyAnswers(User currentUser, Long lastId, int size) {
-      return   answerRepository.findByUserAndLimit(currentUser, lastId, size);
+        return answerRepository.findByUserAndLimit(currentUser, lastId, size);
     }
 
 }

@@ -17,7 +17,6 @@ import java.util.List;
 public class AnswerMapper {
     public Answer toEntity(AnswerCreateRequest request, User user) {
         return Answer.builder()
-                .title(request.title())
                 .content(request.content())
                 .code(request.code())
                 .isAccept(BooleanStatus.FALSE)
@@ -27,7 +26,6 @@ public class AnswerMapper {
 
     public AnswerUpdateInfo toUpdateInfo(AnswerUpdateRequest request){
         return new AnswerUpdateInfo(
-                request.title(),
                 request.content(),
                 request.code()
         );

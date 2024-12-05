@@ -3,10 +3,7 @@ package com.revup.question.controller;
 import com.revup.annotation.SecurityUser;
 import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
-import com.revup.question.dto.request.QuestionAcceptAnswerRequest;
-import com.revup.question.dto.request.QuestionCreateRequest;
-import com.revup.question.dto.request.QuestionPageRequest;
-import com.revup.question.dto.request.QuestionUpdateRequest;
+import com.revup.question.dto.request.*;
 import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionDetailsResponse;
 import com.revup.question.dto.response.QuestionIdResponse;
@@ -89,9 +86,9 @@ public class QuestionController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long id,
+    public ResponseEntity<Void> delete(@RequestBody QuestionDeleteRequest request,
                                        @SecurityUser User currentUser) {
-        deleteQuestionUseCase.execute(id, currentUser);
+        deleteQuestionUseCase.execute(request.id(), currentUser);
         return ResponseEntity.noContent().build();
     }
 
