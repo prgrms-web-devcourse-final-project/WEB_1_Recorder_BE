@@ -21,5 +21,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long>, CustomAns
 
     @Query("select a from Answer a join fetch a.user u where a.id = :answerId")
     Optional<Answer> findByIdWithUser(Long answerId);
-    
+
+    @Query("select a from Answer a join fetch a.user u join fetch a.question q where a.id = :answerId")
+    Optional<Answer> findByIdWithUserAndQuestion(Long id);
 }

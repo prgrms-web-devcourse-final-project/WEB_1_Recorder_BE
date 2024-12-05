@@ -98,12 +98,18 @@ public class AnswerService {
     @Transactional
     public void delete(Long id, User currentUser) {
         // 답변 조회
-        Answer answer = answerRepository.findByIdWithUser(id)
+        Answer answer = answerRepository.findByIdWithUserAndQuestion(id)
                 .orElseThrow(() -> new AnswerNotFoundException(id));
 
         // 권한 검증
         checkPermission(currentUser, answer.getUser());
 
+        if (answer.getIsAccept().toBoolean()) {
+            answer.getUser().decreaseAdoptedAnswerCount();
+        }
+
+        answer.getUser().decreaseTotalAnswerCount();
+        answer.getQuestion().decreaseAnswerCount();
         answer.softDelete();
     }
 
@@ -120,7 +126,7 @@ public class AnswerService {
     }
 
     public List<Answer> getMyAnswers(User currentUser, Long lastId, int size) {
-      return   answerRepository.findByUserAndLimit(currentUser, lastId, size);
+        return answerRepository.findByUserAndLimit(currentUser, lastId, size);
     }
 
 }

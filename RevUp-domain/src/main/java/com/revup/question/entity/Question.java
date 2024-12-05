@@ -120,6 +120,10 @@ public class Question extends SoftDeleteEntity {
         this.answerCount++;
     }
 
+    public void decreaseAnswerCount(){
+        this.answerCount--;
+    }
+
     public void increaseReadCount() {
         this.readCount++;
     }

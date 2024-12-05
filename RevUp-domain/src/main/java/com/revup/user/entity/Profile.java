@@ -45,4 +45,10 @@ public class Profile {
     public void increaseAdoptedAnswerCount() {
         this.adoptedAnswerCount++;
     }
+
+    public void decreaseTotalAnswerCount() {this.totalAnswerCount--;}
+    public void decreaseAdoptedAnswerCount() {
+        this.adoptedAnswerCount--;
+    }
+
 }
