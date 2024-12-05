@@ -199,7 +199,6 @@ public class QuestionService {
         question.softDelete();
 
         // 자식 엔티티 삭제
-        answerRepository.softDeleteByQuestionId(id);
         questionImageRepository.softDeleteByQuestionId(id);
         questionCodeRepository.softDeleteByQuestionId(id);
 
