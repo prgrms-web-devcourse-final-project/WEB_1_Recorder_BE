@@ -1,8 +1,10 @@
 package com.revup.chat.service;
 
 import com.revup.chat.entity.ChatMessage;
+import com.revup.chat.entity.ChatMessageRead;
 import com.revup.chat.entity.ChatRoom;
 import com.revup.chat.entity.ChatRoomBelong;
+import com.revup.chat.repository.ChatMessageReadRepository;
 import com.revup.chat.repository.ChatMessageRepository;
 import com.revup.chat.repository.ChatRoomBelongRepository;
 import com.revup.chat.repository.ChatRoomRepository;
@@ -26,7 +28,7 @@ public class ChatService {
     private final ChatRoomBelongRepository chatRoomBelongRepository;
 
     @Transactional
-    public void chatCreate(User sender, User receiver, ChatMessage chatMessage) {
+    public void chatCreate(ChatMessage chatMessage) {
         chatMessageRepository.save(chatMessage);
     }
 
@@ -55,10 +57,6 @@ public class ChatService {
                 .map(ChatRoomBelong::getChatRoom).toList();
 
         return List.of();
-
-//        return chatMessageRepository.findRecentChats(currentUser)
-//                .stream()
-//                .map(ChatResponse::from).toList();
     }
 
 }

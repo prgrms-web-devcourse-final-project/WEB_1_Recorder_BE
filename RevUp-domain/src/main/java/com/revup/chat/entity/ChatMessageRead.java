@@ -4,6 +4,7 @@ import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,5 +28,11 @@ public class ChatMessageRead extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private BooleanStatus isRead = BooleanStatus.FALSE;
+
+    @Builder
+    private ChatMessageRead(ChatMessage chatMessage, ChatRoomBelong chatRoomBelong) {
+        this.chatMessage = chatMessage;
+        this.chatRoomBelong = chatRoomBelong;
+    }
 
 }

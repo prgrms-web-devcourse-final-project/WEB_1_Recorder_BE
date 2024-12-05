@@ -3,10 +3,9 @@ package com.revup.chat.controller;
 import com.revup.annotation.SecurityUser;
 import com.revup.chat.dto.ChatMessageDto;
 import com.revup.chat.dto.ChatRoomGetRequest;
-import com.revup.chat.service.response.ChatResponse;
 import com.revup.chat.usecase.CreateChatUseCase;
-import com.revup.chat.usecase.GetChatListUseCase;
 import com.revup.chat.usecase.GetChatRoomUseCase;
+import com.revup.chat.usecase.GetMyChatRoomListUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final CreateChatUseCase createChatUseCase;
-    private final GetChatListUseCase getChatListUseCase;
+    private final GetMyChatRoomListUseCase getMyChatRoomListUseCase;
     private final GetChatRoomUseCase getChatRoomUseCase;
 
     @PostMapping("/api/v1/chat/room")
@@ -38,11 +37,10 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage/{chatRoomId}") // 클라이언트가 메시지 전송
     public void sendMessage(@DestinationVariable Long chatRoomId,
-                            @Payload ChatMessageDto chatMessageDto,
-                            @SecurityUser User currentUser
+                            @Payload ChatMessageDto chatMessageDto
     ) {
         messagingTemplate.convertAndSend("/topic/chat/" + chatRoomId, chatMessageDto);
-        createChatUseCase.execute(chatMessageDto);
+        createChatUseCase.execute(chatMessageDto, chatRoomId);
     }
 
     /**
@@ -51,10 +49,10 @@ public class ChatController {
      * @param currentUser 인증 헤더를 통해 자동으로 현재 로그인 사용자 주입됨
      * @return 각자의 마지막 채팅 목록
      */
-    @GetMapping("/api/v1/chat/opponents")
-    public ResponseEntity<ApiResponse<List<ChatResponse>>> myChatList(@SecurityUser User currentUser) {
+    @GetMapping("/api/v1/chat/room")
+    public ResponseEntity<ApiResponse<List<?>>> myChatRoomList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
-                ApiResponse.success(getChatListUseCase.execute(currentUser))
+                ApiResponse.success(getMyChatRoomListUseCase.execute(currentUser))
         );
     }
 

@@ -12,6 +12,10 @@ public interface ChatRoomBelongRepository extends JpaRepository<ChatRoomBelong, 
 
     List<ChatRoomBelong> findByUser(User user);
 
+    Optional<ChatRoomBelong> findByUserAndChatRoom(User user, ChatRoom chatRoom);
+
+    Optional<ChatRoomBelong> findByChatRoom(ChatRoom chatRoom);
+
     default Optional<ChatRoom> findChatRoomByTwoUsers(User user1, User user2) {
         List<ChatRoomBelong> user1Belongs = findByUser(user1);
         List<ChatRoomBelong> user2Belongs = findByUser(user2);

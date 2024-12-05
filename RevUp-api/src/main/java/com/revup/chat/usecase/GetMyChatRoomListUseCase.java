@@ -10,13 +10,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetChatListUseCase {
+public class GetMyChatRoomListUseCase {
 
     private final ChatService chatService;
 
-    public List<ChatResponse> execute(User currentUser) {
+    public List<?> execute(User currentUser) {
+//        chatService.myChatRoomList(currentUser);
         return List.of();
-//        return chatService.myChatList(currentUser);
     }
 
 }
