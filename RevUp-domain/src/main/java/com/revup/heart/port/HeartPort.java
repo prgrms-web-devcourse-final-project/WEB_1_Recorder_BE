@@ -1,13 +1,21 @@
 package com.revup.heart.port;
 
-import java.util.Map;
+import java.util.Set;
 
 public interface HeartPort {
-    Map<Long, Map<String, Integer>> getHeartCounts();
 
-    boolean processLike(Long answerId, Long id, boolean isGood);
 
-    boolean cancelLike(Long answerId, Long userId, boolean isGood);
+    void addHeart(Long answerId, Long userId, boolean isGood);
 
-    void clearHeartCounts();
+    void removeHeart(Long answerId, Long userId, boolean isGood);
+
+    String getHeartType(Long answerId, Long userId);
+
+    Set<String> getGoods(Long answerId);
+
+    Set<String> getBads(Long answerId);
+
+    Set<Long> getAllAnswerIds();
+
+
 }

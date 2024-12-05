@@ -1,21 +1,17 @@
 package com.revup.heart.enums;
 
-import com.revup.heart.exception.InvalidHeartTypeException;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+@Getter
 public enum HeartType {
-    GOOD,BAD;
+    GOOD("good"),
+    BAD("bad");
 
-    public static HeartType of(String type){
-        try {
-            return HeartType.valueOf(type.toUpperCase());
-        }
-        catch (IllegalArgumentException e){
-            throw new InvalidHeartTypeException();
-        }
+    private final String value;
+
+    public static HeartType from(boolean isGood){
+        return isGood ? GOOD : BAD;
     }
-
-    public boolean isGoodType(){
-        return HeartType.GOOD == this;
-    }
-
 }

@@ -24,7 +24,7 @@ public class CustomAnswerRepositoryImpl implements CustomAnswerRepository {
 
     @Override
     public List<Integer> findGoodCountsByUserId(Long userId) {
-        return queryFactory.select(answer.goodCount)
+        return queryFactory.select(answer.goodUsers.size())
                 .from(answer)
                 .where(answer.user.id.eq(userId))
                 .where(answer.isDeleted.eq(BooleanStatus.FALSE))

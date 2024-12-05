@@ -11,9 +11,7 @@ public record AnswerDetailsResponse(
         int  totalAnswerCount,
         int adoptedRate,
         String createdAt,
-        boolean isAccept,
-        int goodCount,
-        int badCount
+        boolean isAccept
 ) {
     public static AnswerDetailsResponse of(Answer answer){
         return new AnswerDetailsResponse(
@@ -25,9 +23,7 @@ public record AnswerDetailsResponse(
                 answer.getUser().getTotalAnswerCount(),
                 answer.getUser().getAdoptedRate(),
                 answer.getCreatedAt().toString(),
-                answer.getIsAccept().toBoolean(),
-                answer.getGoodCount(),
-                answer.getBadCount()
+                answer.getIsAccept().toBoolean()
         );
     }
 

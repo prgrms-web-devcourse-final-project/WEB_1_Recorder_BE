@@ -11,6 +11,9 @@ public enum SecurityUrlEndpoint {
     //Answer
     ANSWER_DETAILS(HttpMethod.GET,"/api/v1/answer"),
 
+    HEART_COUNT(HttpMethod.GET, "/api/v1/answers/{answerId}/heart/count"),
+
+
     // Question
     QUESTION_LIST(HttpMethod.GET, "/api/v1/question/list"),
     QUESTION_STACK(HttpMethod.GET, "/api/v1/question/stack"),
