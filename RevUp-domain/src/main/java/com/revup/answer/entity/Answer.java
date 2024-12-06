@@ -39,9 +39,6 @@ public class Answer extends SoftDeleteEntity {
     @Enumerated(EnumType.STRING)
     private AdoptedReview review;
 
-    private int goodCount;
-
-    private int badCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
@@ -51,6 +48,14 @@ public class Answer extends SoftDeleteEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    // 좋아요를 누른 사용자 목록
+    @ElementCollection
+    private Set<String> goodUsers = new HashSet<>();
+
+    //싫어요를 누른 사용자 목록
+    @ElementCollection
+    private Set<String> badUsers = new HashSet<>();
+
 
     @Builder
     private Answer(
@@ -58,16 +63,12 @@ public class Answer extends SoftDeleteEntity {
             String content,
             String code,
             BooleanStatus isAccept,
-            AdoptedReview review,
-            int goodCount,
-            int badCount) {
+            AdoptedReview review) {
         this.user = user;
         this.content = content;
         this.code = code;
         this.isAccept = isAccept;
         this.review = review;
-        this.goodCount = goodCount;
-        this.badCount = badCount;
     }
 
     public void assignQuestion(Question question) {
@@ -85,13 +86,12 @@ public class Answer extends SoftDeleteEntity {
         this.code = code;
     }
 
-    public void updateGoodCount(int count) {
-        this.goodCount += count;
+
+    public void updateGoodUsers(Set<String> goods) {
+        this.goodUsers = goods;
     }
 
-    public void updateBadCount(int count) {
-
-        this.badCount += count;
+    public void updateBadUsers(Set<String> bads) {
+        this.badUsers = bads;
     }
-
 }

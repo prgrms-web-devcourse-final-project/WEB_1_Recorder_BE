@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class HeartBatchScheduler {
     private final HeartService heartService;
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public void syncHeartsCount(){
-        heartService.syncHeartsCount();
+        heartService.syncHeartToAnswer();
     }
 }
