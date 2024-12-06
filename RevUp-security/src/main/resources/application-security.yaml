@@ -116,7 +116,7 @@ spring:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             jwk-set-uri: https://kauth.kakao.com/.well-known/jwks.json
-            issuer-uri: https://kauth.kakao.com
+#            issuer-uri: https://kauth.kakao.com
             user-info-authentication-method: header
 
 jwt:
