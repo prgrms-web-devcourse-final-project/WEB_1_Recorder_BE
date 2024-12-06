@@ -19,5 +19,3 @@ spring:
 server:
   tomcat:
     keep-alive-timeout: 70
-  ssl:
-    enabled: true
