@@ -26,6 +26,6 @@ server:
     key-store-password: ${key.password}
     key-alias: tomcat-localhost
     key-store-type: JKS
-  port: 443
+  port: 8080
 #    key-password: ${key.password}
 #    key-store-provider: SUN
