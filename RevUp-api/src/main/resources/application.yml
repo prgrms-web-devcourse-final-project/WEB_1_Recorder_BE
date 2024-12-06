@@ -23,8 +23,8 @@ server:
   ssl:
     enabled: true
     key-store: classpath:keystore.jks
-    key-store-password: ${key.password}
-    key-alias: tomcat-localhost
+    key-store-password: alsdn1
+    key-alias: tomcat
     key-store-type: JKS
   port: 8080
 #    key-password: ${key.password}
