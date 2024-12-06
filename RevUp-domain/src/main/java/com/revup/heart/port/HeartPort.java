@@ -1,5 +1,7 @@
 package com.revup.heart.port;
 
+import com.revup.heart.enums.HeartType;
+
 import java.util.Set;
 
 public interface HeartPort {
@@ -9,7 +11,7 @@ public interface HeartPort {
 
     void removeHeart(Long answerId, Long userId, boolean isGood);
 
-    String getHeartType(Long answerId, Long userId);
+    HeartType getHeartType(Long answerId, Long userId);
 
     Set<String> getGoods(Long answerId);
 

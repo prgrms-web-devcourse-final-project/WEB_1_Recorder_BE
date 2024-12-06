@@ -17,9 +17,9 @@ public class HeartUseCase {
 
     public void process(Long answerId, HeartRequest request, Long userId) {
         // 현재 좋아요가 눌렸는지 싫어요가 눌렸는지 아무것도 아닌지
-        String currentState = heartService.getState(answerId, userId);
+        HeartType currentState = heartService.getState(answerId, userId);
 
-        String newState = HeartType.from(request.isGood()).getValue();
+        HeartType newState = HeartType.from(request.isGood());
 
         // 현재 상태와 새로운 요청이 동일한 타입이면 삭제
         if (newState.equals(currentState)) {
@@ -39,8 +39,8 @@ public class HeartUseCase {
     }
 
     public HeartStateResponse getState(Long answerId, User currentUser) {
-        String state = heartService.getState(answerId, currentUser.getId());
-        return new HeartStateResponse(state);
+        HeartType state = heartService.getState(answerId, currentUser.getId());
+        return new HeartStateResponse(state.getValue());
     }
 
     public HeartCountResponse getCount(Long answerId) {

@@ -3,6 +3,7 @@ package com.revup.heart.service;
 import com.revup.answer.entity.Answer;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.repository.AnswerRepository;
+import com.revup.heart.enums.HeartType;
 import com.revup.heart.port.HeartPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class HeartService {
         heartPort.removeHeart(answerId, userId, isGood);
     }
 
-    public String getState(Long answerId, Long id) {
+    public HeartType getState(Long answerId, Long id) {
         return heartPort.getHeartType(answerId, id);
     }
 

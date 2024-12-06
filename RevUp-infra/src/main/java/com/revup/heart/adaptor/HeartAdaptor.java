@@ -29,18 +29,18 @@ public class HeartAdaptor implements HeartPort {
     }
 
     @Override
-    public String getHeartType(Long answerId, Long userId) {
+    public HeartType getHeartType(Long answerId, Long userId) {
         String goodKey = generateKey(answerId, HeartType.GOOD);
         String badKey = generateKey(answerId, HeartType.BAD);
 
         // 좋아요 존재하면 good 반환
-        if (Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(goodKey, userId.toString()))) {
-            return HeartType.GOOD.getValue();
+        if (redisTemplate.opsForSet().isMember(goodKey, userId.toString())) {
+            return HeartType.GOOD;
         }
 
         // 싫어요 존재하면 bad 반환
-        if (Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(badKey, userId.toString()))) {
-            return HeartType.BAD.getValue();
+        if (redisTemplate.opsForSet().isMember(badKey, userId.toString())) {
+            return HeartType.BAD;
         }
 
         // 아무것도 없으면 null
