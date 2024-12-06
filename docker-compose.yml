@@ -20,6 +20,7 @@ services:
     container_name: spring-boot-container
     ports:
       - "8080:8080"
+      - "443:443"
     depends_on:
       - mysql
       - redis_container
