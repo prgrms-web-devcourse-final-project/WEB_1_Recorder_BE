@@ -37,6 +37,7 @@ out/
 ### VS Code ###
 .vscode/
 
+/RevUp-api/src/main/resources/api-variable.yaml
 /RevUp-security/src/main/resources/security-variable.yaml
 /RevUp-common/src/main/resources/common-variable.yaml
 /RevUp-domain/src/main/resources/domain-variable.yaml

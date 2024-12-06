@@ -28,6 +28,9 @@ jobs:
 
       - name: Generate YAML Configuration Files
         run: |
+          mkdir -p ./RevUp-api/src/main/resources
+          echo "${{ secrets.API_VARIABLE_YML }}" > ./RevUp-api/src/main/resources/api-variable.yaml
+          
           mkdir -p ./RevUp-domain/src/main/resources
           echo "${{ secrets.DOMAIN_VARIABLE_YML }}" > ./RevUp-domain/src/main/resources/domain-variable.yaml
           
