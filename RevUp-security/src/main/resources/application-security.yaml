@@ -75,7 +75,7 @@ spring:
           github:
             client-id: ${github.client-id}
             client-secret: ${github.client-secret}
-            redirect-uri: ${github.redirect-uri}
+            redirect-uri: https://api.pgrs-revup.com/login/oauth2/code/github
             client-authentication-method: client_secret_post
             client-name: GitHub
             scope:
@@ -95,7 +95,7 @@ spring:
             client-secret: ${kakao.client-secret} # 발급 받은 Client Secret
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
-            redirect-uri: ${kakao.redirect-url}
+            redirect-uri: https://api.pgrs-revup.com/login/oauth2/code/kakao
             scope: # https://developers.kakao.com/docs/latest/ko/kakaologin/common#user-infoscope:
               - openid
               - name
