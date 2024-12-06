@@ -19,7 +19,7 @@ services:
     image: mw0677/revup:latest
     container_name: spring-boot-container
     ports:
-      - "8080:443"
+      - "443:443"
     depends_on:
       - mysql
       - redis_container
