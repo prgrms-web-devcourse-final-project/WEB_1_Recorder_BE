@@ -26,10 +26,10 @@ public class RedissonConfig {
                 .setAddress("redis://" + redisHost + ":" + redisPort)
                 .setTimeout(3000);
 
-//        if(password != null) {
-//            config.useSingleServer()
-//                    .setPassword(password);
-//        }
+        if(password != null) {
+            config.useSingleServer()
+                    .setPassword(password);
+        }
 
         return Redisson.create(config);
     }
