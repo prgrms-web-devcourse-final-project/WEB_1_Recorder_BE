@@ -24,6 +24,7 @@ server:
     enabled: true
     key-store: classpath:keystore.jks
     key-store-password: ${key.password}
+  port: 443
 #    key-password: ${key.password}
 #    key-alias: tomcat-localhost
 #    key-store-type: PKCS12
