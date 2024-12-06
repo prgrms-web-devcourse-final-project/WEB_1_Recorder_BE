@@ -85,6 +85,7 @@ spring:
           google:
             client-id: ${google.client-id} # 발급 받은 Client ID
             client-secret: ${google.client-secret} # 발급 받은 Client Secret
+            redirect-uri: ${google.redirect-uri}
             scope:
               - openid
               - profile
