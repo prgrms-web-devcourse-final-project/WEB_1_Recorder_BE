@@ -20,12 +20,12 @@ spring:
 server:
   tomcat:
     keep-alive-timeout: 70
-  ssl:
-    enabled: true
-    key-store: classpath:keystore.jks
-    key-store-password: alsdn1
-    key-alias: tomcat
-    key-store-type: JKS
-  port: 8080
+#  ssl:
+#    enabled: true
+#    key-store: classpath:keystore.jks
+#    key-store-password: alsdn1
+#    key-alias: tomcat
+#    key-store-type: JKS
+#  port: 8080
 #    key-password: ${key.password}
 #    key-store-provider: SUN
