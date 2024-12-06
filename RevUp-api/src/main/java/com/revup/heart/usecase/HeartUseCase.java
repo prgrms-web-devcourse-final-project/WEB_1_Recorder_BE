@@ -5,7 +5,6 @@ import com.revup.heart.dto.response.HeartCountResponse;
 import com.revup.heart.dto.response.HeartStateResponse;
 import com.revup.heart.enums.HeartType;
 import com.revup.heart.port.HeartPort;
-import com.revup.heart.service.HeartService;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

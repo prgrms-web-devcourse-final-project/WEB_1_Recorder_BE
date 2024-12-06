@@ -18,20 +18,28 @@ public class HeartAdaptor implements HeartPort {
 
     @Override
     public void addHeart(Long answerId, Long userId, boolean isGood) {
-        String key = generateKey(answerId, HeartType.from(isGood));
-        redisTemplate.opsForSet().add(key, userId.toString());
+        HeartType heartType = HeartType.from(isGood);
+        String userKey = generateUserKey(answerId, heartType);
+        String typeKey = generateTypeKey(heartType);
+        redisTemplate.opsForSet().add(userKey, userId.toString());
+        redisTemplate.opsForSet().add(typeKey, answerId.toString());
     }
 
     @Override
     public void removeHeart(Long answerId, Long userId, boolean isGood) {
-        String key = generateKey(answerId, HeartType.from(isGood));
-        redisTemplate.opsForSet().remove(key, userId.toString());
+        HeartType heartType = HeartType.from(isGood);
+        String userKey = generateUserKey(answerId, heartType);
+        String typeKey = generateTypeKey(heartType);
+
+        redisTemplate.opsForSet().remove(userKey, userId.toString());
+        redisTemplate.opsForSet().remove(typeKey, answerId.toString());
+
     }
 
     @Override
     public HeartType getHeartType(Long answerId, Long userId) {
-        String goodKey = generateKey(answerId, HeartType.GOOD);
-        String badKey = generateKey(answerId, HeartType.BAD);
+        String goodKey = generateUserKey(answerId, HeartType.GOOD);
+        String badKey = generateUserKey(answerId, HeartType.BAD);
 
         // 좋아요 존재하면 good 반환
         if (redisTemplate.opsForSet().isMember(goodKey, userId.toString())) {
@@ -48,40 +56,43 @@ public class HeartAdaptor implements HeartPort {
 
     @Override
     public Set<Long> getAllAnswerIds() {
-        Set<String> allKeys = new HashSet<>();
-        Set<String> goodKeys = redisTemplate.keys("*:good");
-        Set<String> badKeys = redisTemplate.keys("*:bad");
+        Set<String> answerIds = new HashSet<>();
 
-        if (goodKeys != null) {
-            allKeys.addAll(goodKeys);
+        Set<String> goodIds = redisTemplate.opsForSet().members(generateTypeKey(HeartType.GOOD));
+        Set<String> badIds = redisTemplate.opsForSet().members(generateTypeKey(HeartType.BAD));
+
+        if (goodIds != null) {
+            answerIds.addAll(goodIds);
         }
 
-        if (badKeys != null) {
-            allKeys.addAll(badKeys);
+        if (badIds != null) {
+            answerIds.addAll(badIds);
         }
 
-        return allKeys.stream()
-                .map(key -> Long.parseLong(key.split(":")[0]))
+        return answerIds.stream()
+                .map(Long::parseLong)
                 .collect(Collectors.toSet());
     }
 
 
     @Override
     public Set<String> getGoods(Long answerId) {
-        String key = generateKey(answerId, HeartType.GOOD);
+        String key = generateUserKey(answerId, HeartType.GOOD);
         return redisTemplate.opsForSet().members(key);
     }
 
     @Override
     public Set<String> getBads(Long answerId) {
-        String key = generateKey(answerId, HeartType.BAD);
+        String key = generateUserKey(answerId, HeartType.BAD);
         return redisTemplate.opsForSet().members(key);
     }
 
 
-
-
-    private String generateKey(Long answerId, HeartType heartType) {
+    private String generateUserKey(Long answerId, HeartType heartType) {
         return answerId.toString() + ":" + heartType.getValue();
+    }
+
+    private String generateTypeKey(HeartType heartType) {
+        return heartType.getValue();
     }
 }
