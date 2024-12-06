@@ -1,6 +1,5 @@
 package com.revup.question.entity;
 
-import com.revup.answer.entity.Answer;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
 import com.revup.common.SoftDeleteEntity;
@@ -14,9 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

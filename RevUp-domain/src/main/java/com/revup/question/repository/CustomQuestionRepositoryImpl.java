@@ -28,7 +28,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
     public List<Question> findQuestionsByCriteria(QuestionSearchCriteria criteria, long offset, int size) {
         BooleanBuilder builder = buildSearchConditions(criteria);
 
-        List<Long> questionIds = queryFactory.select(question.id)
+                List<Long> questionIds = queryFactory.select(question.id)
                 .from(question)
                 .where(builder)
                 .orderBy(question.id.desc())
@@ -38,7 +38,7 @@ public class CustomQuestionRepositoryImpl implements CustomQuestionRepository {
 
         return queryFactory.selectFrom(question)
                 .leftJoin(question.user, user).fetchJoin()
-                .innerJoin(question.stacks).fetchJoin()
+                .leftJoin(question.stacks).fetchJoin()
                 .where(
                         question.id.in(questionIds) // 페이징된 ID에 대해서만 조인
                 )

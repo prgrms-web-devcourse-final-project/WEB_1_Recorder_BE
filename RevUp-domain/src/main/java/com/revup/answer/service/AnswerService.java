@@ -34,7 +34,7 @@ public class AnswerService {
     private final AnswerImageRepository answerImageRepository;
 
     @Retryable(
-            retryFor = {ObjectOptimisticLockingFailureException.class, DeadlockLoserDataAccessException.class},
+            retryFor = {ObjectOptimisticLockingFailureException.class},
             noRetryFor = {QuestionNotFoundException.class},
             maxAttempts = 5,
             backoff = @Backoff(delay = 500, multiplier = 2.0)
