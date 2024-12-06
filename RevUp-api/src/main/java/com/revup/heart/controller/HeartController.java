@@ -20,13 +20,12 @@ public class HeartController {
     private final HeartUseCase heartUseCase;
 
     @PostMapping
-    public ResponseEntity<Void> process(@PathVariable Long answerId,
+    public ResponseEntity<ApiResponse<HeartStateResponse>> process(@PathVariable Long answerId,
                                         @RequestBody HeartRequest request,
                                         @SecurityUser User currentUser) {
 
-        heartUseCase.process(answerId, request, currentUser.getId());
+        return success(heartUseCase.process(answerId, request, currentUser.getId()));
 
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping

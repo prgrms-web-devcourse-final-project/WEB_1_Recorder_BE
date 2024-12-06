@@ -15,7 +15,7 @@ public class HeartUseCase {
 
     private final HeartPort heartPort;
 
-    public void process(Long answerId, HeartRequest request, Long userId) {
+    public HeartStateResponse process(Long answerId, HeartRequest request, Long userId) {
         // 현재 좋아요가 눌렸는지 싫어요가 눌렸는지 아무것도 아닌지
         HeartType currentType = heartPort.getHeartType(answerId, userId);
 
@@ -33,11 +33,13 @@ public class HeartUseCase {
             heartPort.removeHeart(answerId, userId, request.isGood());
         }
 
+        return HeartStateResponse.of(heartPort.getHeartType(answerId, userId));
+
     }
 
     public HeartStateResponse getState(Long answerId, User currentUser) {
         HeartType state = heartPort.getHeartType(answerId, currentUser.getId());
-        return new HeartStateResponse(state.getValue());
+        return HeartStateResponse.of(state);
     }
 
     public HeartCountResponse getCount(Long answerId) {
