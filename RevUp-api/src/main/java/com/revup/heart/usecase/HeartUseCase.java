@@ -4,6 +4,7 @@ import com.revup.heart.dto.request.HeartRequest;
 import com.revup.heart.dto.response.HeartCountResponse;
 import com.revup.heart.dto.response.HeartStateResponse;
 import com.revup.heart.enums.HeartType;
+import com.revup.heart.port.HeartPort;
 import com.revup.heart.service.HeartService;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -13,39 +14,36 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HeartUseCase {
 
-    private final HeartService heartService;
+    private final HeartPort heartPort;
 
     public void process(Long answerId, HeartRequest request, Long userId) {
         // 현재 좋아요가 눌렸는지 싫어요가 눌렸는지 아무것도 아닌지
-        HeartType currentState = heartService.getState(answerId, userId);
+        HeartType currentType = heartPort.getHeartType(answerId, userId);
 
-        HeartType newState = HeartType.from(request.isGood());
+        HeartType newType = HeartType.from(request.isGood());
 
-        // 현재 상태와 새로운 요청이 동일한 타입이면 삭제
-        if (newState.equals(currentState)) {
-            heartService.removeHeart(answerId, userId, request.isGood());
-            return;
+        if (request.click()) {
+            // 만약 요청과 다른 타입이 저장되어있으면 삭제
+            if (!newType.equals(currentType)&&currentType!=null) {
+                heartPort.removeHeart(answerId, userId,!request.isGood());
+            }
+            heartPort.addHeart(answerId, userId, request.isGood());
         }
 
-        // 추가전에 만약 반대 상태가 존재하면 삭제
-        if (currentState != null) {
-            boolean isOpposite = !request.isGood();
-            heartService.removeHeart(answerId, userId, isOpposite);
+        else {
+            heartPort.removeHeart(answerId, userId, request.isGood());
         }
-
-        // 새로운 상태 추가
-        heartService.addHeart(answerId, userId, request.isGood());
 
     }
 
     public HeartStateResponse getState(Long answerId, User currentUser) {
-        HeartType state = heartService.getState(answerId, currentUser.getId());
+        HeartType state = heartPort.getHeartType(answerId, currentUser.getId());
         return new HeartStateResponse(state.getValue());
     }
 
     public HeartCountResponse getCount(Long answerId) {
-        int goodCount = heartService.getGoodCount(answerId);
-        int badCount = heartService.getBadCount(answerId);
+        int goodCount = heartPort.getGoods(answerId).size();
+        int badCount = heartPort.getBads(answerId).size();
 
         return new HeartCountResponse(goodCount, badCount);
     }

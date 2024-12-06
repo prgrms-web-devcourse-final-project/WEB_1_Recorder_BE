@@ -18,17 +18,6 @@ public class HeartService {
     private final HeartPort heartPort;
     private final AnswerRepository answerRepository;
 
-    public void addHeart(Long answerId, Long userId, boolean isGood) {
-        heartPort.addHeart(answerId, userId, isGood);
-    }
-
-    public void removeHeart(Long answerId,Long userId, boolean isGood){
-        heartPort.removeHeart(answerId, userId, isGood);
-    }
-
-    public HeartType getState(Long answerId, Long id) {
-        return heartPort.getHeartType(answerId, id);
-    }
 
     @Transactional
     public void syncHeartToAnswer() {
@@ -48,11 +37,4 @@ public class HeartService {
         }
     }
 
-    public int getGoodCount(Long answerId) {
-        return heartPort.getGoods(answerId).size();
-    }
-
-    public int getBadCount(Long answerId) {
-        return heartPort.getBads(answerId).size();
-    }
 }

@@ -43,7 +43,6 @@ public class HeartAdaptor implements HeartPort {
             return HeartType.BAD;
         }
 
-        // 아무것도 없으면 null
         return null;
     }
 
