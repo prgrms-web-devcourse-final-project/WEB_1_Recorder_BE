@@ -31,7 +31,8 @@ public enum SecurityUrlEndpoint {
     // All
     OAUTH_LOGIN(HttpMethod.GET, "/oauth2/authorization/**"),
     REFRESH_TOKEN(HttpMethod.POST, "/api/v1/auth/refresh"),
-    SKILLSTACKS(HttpMethod.GET, "/api/v1/tech"),
+    SKILL_STACKS(HttpMethod.GET, "/api/v1/tech"),
+    SKILL_STACKS_POPULAR(HttpMethod.GET, "/api/v1/tech/popular"),
 
 
 

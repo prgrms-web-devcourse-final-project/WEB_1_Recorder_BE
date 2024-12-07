@@ -1,8 +1,8 @@
-package com.revup.common.skillstack.model.mapper;
+package com.revup.skillstack.model.mapper;
 
 import com.revup.annotation.Mapper;
 import com.revup.common.SkillStack;
-import com.revup.common.skillstack.model.response.SkillStackResponse;
+import com.revup.skillstack.model.response.SkillStackResponse;
 import com.revup.user.entity.UserSkillStack;
 import com.revup.user.model.response.MySkillStacksResponse;
 
@@ -26,6 +26,13 @@ public class SkillStackMapper {
                 .map(SkillStack::getContent)
                 .toList();
         return new SkillStackResponse(skillStacks);
+    }
+
+    public SkillStackResponse fromSkillStack(List<SkillStack> stacks){
+        List<String> stackList = stacks.stream()
+                .map(SkillStack::getContent)
+                .toList();
+        return new SkillStackResponse(stackList);
     }
 
     public MySkillStacksResponse toMySkillStacksResponse(List<UserSkillStack> userSkillStacks) {
