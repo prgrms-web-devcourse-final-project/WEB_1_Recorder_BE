@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,17 +50,6 @@ public class AchievementProgressCalculator {
     }
 
     public BigDecimal calculateAdoptionRate(User user) {
-        long adopted = user.getAdoptedAnswerCount();
-        long total = user.getTotalAnswerCount();
-
-        if(total == 0) return BigDecimal.ZERO;
-
-        //비율 계산
-        BigDecimal numerator = new BigDecimal(adopted);
-        BigDecimal denominator = new BigDecimal(total);
-
-        //%로 변환
-        return numerator.divide(denominator, 4, RoundingMode.HALF_UP) // 소수점 4자리까지, 반올림
-                .multiply(BigDecimal.valueOf(100));
+        return user.getAdoptedRate();
     }
 }

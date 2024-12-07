@@ -44,7 +44,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-        String targetUrl = determineTargetUrl(request, tokens);
+        String targetUrl = determineTargetUrl(request, tokens, user);
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
@@ -52,7 +52,8 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     protected String determineTargetUrl(
             HttpServletRequest request,
-            Tokens tokens
+            Tokens tokens,
+            User user
     ) {
         String targetUrl = CookieUtils.getCookie(
                 request,
@@ -62,6 +63,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("access_token", tokens.accessToken().value())
                 .queryParam("refresh_token", tokens.refreshToken().value())
+                .queryParam("is_first", user.isFirst())
                 .build().toUriString();
     }
 

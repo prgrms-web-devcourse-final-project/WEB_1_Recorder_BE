@@ -21,7 +21,7 @@ public record AnswerDetailsResponse(
                 answer.getUser().getNickname(),
                 answer.getUser().getProfileImage(),
                 answer.getUser().getTotalAnswerCount(),
-                answer.getUser().getAdoptedRate(),
+                answer.getUser().getAdoptedRate().intValue(),
                 answer.getCreatedAt().toString(),
                 answer.getIsAccept().toBoolean()
         );

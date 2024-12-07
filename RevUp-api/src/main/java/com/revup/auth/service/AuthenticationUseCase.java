@@ -31,7 +31,7 @@ public class AuthenticationUseCase {
 
     public FirstLoginResponse executeLogin(User user) {
         log.info("user = {}", user);
-        return authMapper.toFirstLoginResponse(user.getProfile());
+        return authMapper.toFirstLoginResponse(user);
     }
 
     /**

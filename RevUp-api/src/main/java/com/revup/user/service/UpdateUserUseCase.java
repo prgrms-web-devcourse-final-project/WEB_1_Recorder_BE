@@ -31,7 +31,7 @@ public class UpdateUserUseCase {
     public UpdateProfileResponse executeUpdateProfile(User user, UpdateProfileRequest request) {
         Profile updatedProfile = userService.updateProfile(user, request.toProfile());
         UpdateProfileResponse updateProfileResponse = userMapper.toUpdateProfileResponse(updatedProfile);
-        return request.includeResponse() ? updateProfileResponse : null;
+        return request.includeData() ? updateProfileResponse : null;
     }
 
     public UpdateAffiliationResponse executeUpdateEmail(User user, UpdateEmailRequest request) {

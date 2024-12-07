@@ -1,10 +1,12 @@
 package com.revup.user.entity;
 
 import com.revup.common.SoftDeleteEntity;
-import com.revup.user.dto.Email;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Getter
@@ -72,10 +74,17 @@ public class User extends SoftDeleteEntity {
         return this.profile.getTotalAnswerCount();
     }
 
-    public int getAdoptedRate() {
-        if (getTotalAnswerCount() == 0)
-            return 0;
-        return (int) (getAdoptedAnswerCount() / (double) getTotalAnswerCount()) * 100;
+    public BigDecimal getAdoptedRate() {
+        int totalAnswerCount = getTotalAnswerCount();
+        int adoptedAnswerCount = getAdoptedAnswerCount();
+        if (totalAnswerCount == 0)
+            return BigDecimal.ZERO;
+
+        BigDecimal numerator = new BigDecimal(adoptedAnswerCount);
+        BigDecimal denominator = new BigDecimal(totalAnswerCount);
+
+        return numerator.divide(denominator, 4, RoundingMode.HALF_UP) // 소수점 4자리까지, 반올림
+                .multiply(BigDecimal.valueOf(100));
     }
 
     public int getAdoptedAnswerCount() {
@@ -100,5 +109,9 @@ public class User extends SoftDeleteEntity {
 
     public void decreaseTotalAnswerCount() {
         this.profile.decreaseTotalAnswerCount();
+    }
+
+    public boolean isFirst() {
+        return this.profile.getNickname() == null;
     }
 }
