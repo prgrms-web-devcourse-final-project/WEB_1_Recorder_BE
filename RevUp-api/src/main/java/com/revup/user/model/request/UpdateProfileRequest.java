@@ -12,7 +12,7 @@ public record UpdateProfileRequest(
 
         String introduction,
 
-        boolean includeResponse
+        boolean includeData
 ) {
 
         public Profile toProfile() {
