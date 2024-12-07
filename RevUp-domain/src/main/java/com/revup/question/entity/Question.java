@@ -55,8 +55,6 @@ public class Question extends SoftDeleteEntity {
     @Enumerated(EnumType.STRING)
     private Set<SkillStack> stacks;
 
-    @Version
-    private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
