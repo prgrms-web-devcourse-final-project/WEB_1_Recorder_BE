@@ -5,10 +5,8 @@ import com.revup.annotation.Mapper;
 import com.revup.auth.dto.token.Tokens;
 import com.revup.auth.model.dto.response.FirstLoginResponse;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
-import com.revup.user.entity.Profile;
+import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Objects;
 
 @Mapper
 @RequiredArgsConstructor
@@ -22,7 +20,7 @@ public class AuthMapper {
         );
     }
 
-    public FirstLoginResponse toFirstLoginResponse(Profile profile) {
-        return new FirstLoginResponse(Objects.isNull(profile.getNickname()));
+    public FirstLoginResponse toFirstLoginResponse(User user) {
+        return new FirstLoginResponse(user.isFirst());
     }
 }
