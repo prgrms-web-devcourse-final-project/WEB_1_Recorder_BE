@@ -1,21 +1,22 @@
 package com.revup.question.service;
 
-import com.revup.answer.enums.AdoptedReview;
 import com.revup.answer.entity.Answer;
+import com.revup.answer.enums.AdoptedReview;
 import com.revup.answer.exception.AnswerAlreadyAdoptedException;
 import com.revup.answer.exception.AnswerNotFoundException;
 import com.revup.answer.exception.AnswerNotLinkedException;
 import com.revup.answer.repository.AnswerRepository;
+import com.revup.common.SkillStack;
+import com.revup.question.dto.QuestionSearchCriteria;
 import com.revup.question.dto.QuestionUpdateInfo;
+import com.revup.question.entity.Question;
+import com.revup.question.entity.QuestionCode;
 import com.revup.question.entity.QuestionImage;
 import com.revup.question.enums.QuestionState;
 import com.revup.question.exception.QuestionAlreadyAcceptException;
-import com.revup.question.repository.QuestionImageRepository;
-import com.revup.question.dto.QuestionSearchCriteria;
-import com.revup.question.entity.Question;
-import com.revup.question.entity.QuestionCode;
 import com.revup.question.exception.QuestionNotFoundException;
 import com.revup.question.repository.QuestionCodeRepository;
+import com.revup.question.repository.QuestionImageRepository;
 import com.revup.question.repository.QuestionRepository;
 import com.revup.user.entity.User;
 import com.revup.user.exception.UserPermissionException;
@@ -219,4 +220,7 @@ public class QuestionService {
         }
     }
 
+    public List<SkillStack> getPopularStacks(int size) {
+        return questionRepository.findPopularStacks(size);
+    }
 }

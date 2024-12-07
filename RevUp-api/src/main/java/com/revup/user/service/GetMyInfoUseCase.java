@@ -1,7 +1,7 @@
 package com.revup.user.service;
 
 import com.revup.annotation.UseCase;
-import com.revup.common.skillstack.model.mapper.SkillStackMapper;
+import com.revup.skillstack.model.mapper.SkillStackMapper;
 import com.revup.user.entity.User;
 import com.revup.user.entity.UserSkillStack;
 import com.revup.user.model.mapper.UserMapper;
