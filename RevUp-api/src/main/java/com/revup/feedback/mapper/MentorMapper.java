@@ -15,7 +15,8 @@ public class MentorMapper {
     public Mentor toEntity(User user, MentorCreateRequest mentorCreateRequest) {
         return Mentor.builder()
                 .user(user)
-                .description(mentorCreateRequest.getDescription())
+                .title(mentorCreateRequest.getTitle())
+                .content(mentorCreateRequest.getContent())
                 .stacks(toMentorStacks(mentorCreateRequest.getSkillStacks()))
                 .build();
     }

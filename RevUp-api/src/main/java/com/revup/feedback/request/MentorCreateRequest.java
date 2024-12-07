@@ -7,7 +7,9 @@ import java.util.Set;
 @Data
 public class MentorCreateRequest {
 
-    private String description;
+    private String title;
+
+    private String content;
 
     private Set<String> skillStacks;
 

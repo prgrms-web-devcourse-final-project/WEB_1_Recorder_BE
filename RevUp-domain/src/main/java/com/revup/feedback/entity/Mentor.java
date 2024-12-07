@@ -28,16 +28,20 @@ public class Mentor extends BaseTimeEntity {
     private User user;
 
     @Column(length = 100)
-    private String description;
+    private String title;
+
+    @Column(length = 500)
+    private String content;
 
     @ElementCollection(targetClass = SkillStack.class, fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private Set<SkillStack> stacks;
 
     @Builder
-    private Mentor(User user, String description, Set<SkillStack> stacks) {
+    private Mentor(User user, String title, String content, Set<SkillStack> stacks) {
         this.user = user;
-        this.description = description;
+        this.title = title;
+        this.content = content;
         this.stacks = stacks;
     }
 

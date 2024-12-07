@@ -14,18 +14,30 @@ public class MentorResponse {
 
     private Long userId;
 
-    private String description;
+    private String nickName;
 
-    private String nickname;
+    private String profileImage;
+
+    private String title;
+
+    private String content;
 
     Set<SkillStack> skillStacks;
 
-    public static MentorResponse from(Mentor mentor) {
+    private double answerAcceptanceRate;
+
+    private Integer liveFeedbackCount;
+
+    public static MentorResponse from(Mentor mentor, Integer feedbackCount) {
         return MentorResponse.builder()
                 .userId(mentor.getUser().getId())
-                .description(mentor.getDescription())
-                .nickname(mentor.getUser().getSocialId())
+                .nickName(mentor.getUser().getNickname())
+                .profileImage(mentor.getUser().getProfileImage())
+                .title(mentor.getTitle())
+                .content(mentor.getContent())
                 .skillStacks(mentor.getStacks())
+                .answerAcceptanceRate(mentor.getUser().getAdoptedRate())
+                .liveFeedbackCount(feedbackCount)
                 .build();
     }
 
