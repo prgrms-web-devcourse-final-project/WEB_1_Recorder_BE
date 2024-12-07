@@ -3,6 +3,7 @@ package com.revup.feedback.request;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class FeedbackCreateRequest {
@@ -16,6 +17,6 @@ public class FeedbackCreateRequest {
 
     private List<FeedbackCodeCreateRequest> feedbackCodes;
 
-    private List<String> skillStacks;
+    private Set<String> skillStacks;
 
 }

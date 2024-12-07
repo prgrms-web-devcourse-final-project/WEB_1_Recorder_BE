@@ -3,12 +3,10 @@ package com.revup.feedback.usecase;
 import com.revup.feedback.entity.Feedback;
 import com.revup.feedback.mapper.FeedbackCodeMapper;
 import com.revup.feedback.mapper.FeedbackMapper;
-import com.revup.feedback.mapper.FeedbackSkillStackMapper;
 import com.revup.feedback.request.FeedbackCodeCreateRequest;
 import com.revup.feedback.request.FeedbackCreateRequest;
 import com.revup.feedback.service.FeedbackCodeService;
 import com.revup.feedback.service.FeedbackService;
-import com.revup.feedback.service.FeedbackSkillStackService;
 import com.revup.user.adaptor.UserAdaptor;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +18,9 @@ public class CreateFeedbackUseCase {
 
     private final FeedbackService feedbackService;
     private final FeedbackCodeService feedbackCodeService;
-    private final FeedbackSkillStackService feedbackSkillStackService;
 
     private final FeedbackMapper feedbackMapper;
     private final FeedbackCodeMapper feedbackCodeMapper;
-    private final FeedbackSkillStackMapper feedbackSkillStackMapper;
 
     private final UserAdaptor userAdaptor;
 
@@ -39,10 +35,6 @@ public class CreateFeedbackUseCase {
             feedbackCodeService.feedbackCodeCreate(
                     feedbackCodeMapper.toEntity(feedback, dto)
             );
-        }
-
-        for (String s : feedbackCreateRequest.getSkillStacks()) {
-            feedbackSkillStackService.feedbackSkillStackCreate(feedbackSkillStackMapper.toEntity(feedback, s));
         }
 
         return feedback.getId();

@@ -2,6 +2,7 @@ package com.revup.feedback.entity;
 
 import com.revup.common.BaseTimeEntity;
 import com.revup.common.BooleanStatus;
+import com.revup.common.SkillStack;
 import com.revup.feedback.entity.enums.FeedbackState;
 import com.revup.feedback.entity.enums.FeedbackType;
 import com.revup.user.entity.User;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -54,12 +56,13 @@ public class Feedback extends BaseTimeEntity {
     @OneToMany(mappedBy = "feedback")
     private List<FeedbackCode> feedbackCodes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "feedback")
-    private List<FeedbackSkillStack> feedbackSkillStacks = new ArrayList<>();
+    @ElementCollection(targetClass = SkillStack.class, fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    private Set<SkillStack> stacks;
 
 
     @Builder
-    private Feedback(User student, User teacher, FeedbackType type, String title, String githubLink, BooleanStatus githubLinkReveal, String description) {
+    private Feedback(User student, User teacher, FeedbackType type, String title, String githubLink, BooleanStatus githubLinkReveal, String description, Set<SkillStack> stacks) {
         this.student = student;
         this.teacher = teacher;
         this.type = type;
@@ -67,6 +70,7 @@ public class Feedback extends BaseTimeEntity {
         this.githubLink = githubLink;
         this.githubLinkReveal = githubLinkReveal;
         this.description = description;
+        this.stacks = stacks;
     }
 
     public void updateState(FeedbackState state) {

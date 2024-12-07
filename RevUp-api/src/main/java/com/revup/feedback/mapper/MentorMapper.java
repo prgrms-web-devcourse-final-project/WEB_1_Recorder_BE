@@ -1,9 +1,13 @@
 package com.revup.feedback.mapper;
 
+import com.revup.common.SkillStack;
 import com.revup.feedback.entity.Mentor;
 import com.revup.feedback.request.MentorCreateRequest;
 import com.revup.user.entity.User;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class MentorMapper {
@@ -12,7 +16,14 @@ public class MentorMapper {
         return Mentor.builder()
                 .user(user)
                 .description(mentorCreateRequest.getDescription())
+                .stacks(toMentorStacks(mentorCreateRequest.getSkillStacks()))
                 .build();
+    }
+
+    private Set<SkillStack> toMentorStacks(Set<String> stackStrings) {
+        return stackStrings.stream()
+                .map(s -> SkillStack.valueOf(s.toUpperCase()))
+                .collect(Collectors.toSet());
     }
 
 }
