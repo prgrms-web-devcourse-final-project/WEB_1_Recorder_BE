@@ -56,4 +56,9 @@ public class FeedbackService {
                 .map(FeedbackResponse::from).toList();
     }
 
+    @Transactional(readOnly = true)
+    public Integer feedbackCount(User user) {
+        return feedbackRepository.countByTeacherAndState(user, FeedbackState.ACCEPTED);
+    }
+
 }

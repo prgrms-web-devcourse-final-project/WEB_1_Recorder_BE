@@ -2,6 +2,7 @@ package com.revup.feedback.usecase;
 
 import com.revup.feedback.entity.Mentor;
 import com.revup.feedback.request.MentorPageRequest;
+import com.revup.feedback.service.FeedbackService;
 import com.revup.feedback.service.MentorService;
 import com.revup.feedback.service.response.MentorResponse;
 import com.revup.page.Page;
@@ -18,6 +19,7 @@ import static com.revup.page.PageUtil.SIZE;
 public class GetMentorListUseCase {
 
     private final MentorService mentorService;
+    private final FeedbackService feedbackService;
 
     public Page<MentorResponse> execute(int page) {
         long totalMentorCount = mentorService.getTotalMentorCount();
@@ -29,7 +31,7 @@ public class GetMentorListUseCase {
         );
 
         List<MentorResponse> content = mentors.stream()
-                .map(MentorResponse::from)
+                .map(m -> MentorResponse.from(m, feedbackService.feedbackCount(m.getUser())))
                 .toList();
 
         return PageUtil.createPage(content, page, totalMentorCount);

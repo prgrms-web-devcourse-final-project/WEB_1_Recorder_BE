@@ -40,8 +40,10 @@ public class ChatController {
      * @return 둘 사이의 채팅방이 이미 있으면 그거 id 반환, 없으면 만들어서 반환
      */
     @PostMapping("/api/v1/chat/room")
-    public Long GetChatRoom(@RequestBody ChatRoomGetRequest chatRoomGetRequest, @SecurityUser User currentUser) {
-        return getChatRoomUseCase.execute(chatRoomGetRequest, currentUser);
+    public ResponseEntity<ApiResponse<Long>> GetChatRoom(@RequestBody ChatRoomGetRequest chatRoomGetRequest, @SecurityUser User currentUser) {
+        return ResponseEntity.ok(
+                ApiResponse.success(getChatRoomUseCase.execute(chatRoomGetRequest, currentUser))
+        );
     }
 
     /**
@@ -64,7 +66,7 @@ public class ChatController {
      * @param currentUser 인증 헤더를 통해 자동으로 현재 로그인 사용자 주입됨
      * @return 각자의 마지막 채팅 목록
      */
-    @GetMapping("/api/v1/chat/room")
+    @GetMapping("/api/v1/chat/room/my")
     public ResponseEntity<ApiResponse<List<ChatRoomListResponse>>> myChatRoomList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(getMyChatRoomListUseCase.execute(currentUser))

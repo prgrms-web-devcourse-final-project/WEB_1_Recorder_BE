@@ -13,4 +13,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long>, Custo
 
     List<Feedback> findByTeacher(User user);
 
+    Integer countByTeacherAndState(User teacher, FeedbackState feedbackState);
+
 }

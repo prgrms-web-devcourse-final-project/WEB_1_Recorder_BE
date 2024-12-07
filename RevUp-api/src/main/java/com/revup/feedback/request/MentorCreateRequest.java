@@ -2,13 +2,15 @@ package com.revup.feedback.request;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class MentorCreateRequest {
 
-    private String description;
+    private String title;
 
-    private List<String> skillStacks;
+    private String content;
+
+    private Set<String> skillStacks;
 
 }

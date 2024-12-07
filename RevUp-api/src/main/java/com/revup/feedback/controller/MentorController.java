@@ -31,7 +31,7 @@ public class MentorController {
                                                           @SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
-                        createMentorUseCase.execute(mentorCreateRequest,currentUser)
+                        createMentorUseCase.execute(mentorCreateRequest, currentUser)
                 )
         );
     }

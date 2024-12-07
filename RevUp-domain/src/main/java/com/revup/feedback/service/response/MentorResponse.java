@@ -2,12 +2,11 @@ package com.revup.feedback.service.response;
 
 import com.revup.common.SkillStack;
 import com.revup.feedback.entity.Mentor;
-import com.revup.feedback.entity.MentorSkillStack;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)
@@ -15,18 +14,30 @@ public class MentorResponse {
 
     private Long userId;
 
-    private String description;
+    private String nickName;
 
-    private String nickname;
+    private String profileImage;
 
-    List<SkillStack> skillStacks;
+    private String title;
 
-    public static MentorResponse from(Mentor mentor) {
+    private String content;
+
+    Set<SkillStack> skillStacks;
+
+    private double answerAcceptanceRate;
+
+    private Integer liveFeedbackCount;
+
+    public static MentorResponse from(Mentor mentor, Integer feedbackCount) {
         return MentorResponse.builder()
                 .userId(mentor.getUser().getId())
-                .description(mentor.getDescription())
-                .nickname(mentor.getUser().getSocialId())
-                .skillStacks(mentor.getMentorSkillStacks().stream().map(MentorSkillStack::getSkillStack).toList())
+                .nickName(mentor.getUser().getNickname())
+                .profileImage(mentor.getUser().getProfileImage())
+                .title(mentor.getTitle())
+                .content(mentor.getContent())
+                .skillStacks(mentor.getStacks())
+                .answerAcceptanceRate(mentor.getUser().getAdoptedRate())
+                .liveFeedbackCount(feedbackCount)
                 .build();
     }
 

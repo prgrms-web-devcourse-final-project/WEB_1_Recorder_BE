@@ -3,7 +3,6 @@ package com.revup.feedback.service.response;
 import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
 import com.revup.feedback.entity.Feedback;
-import com.revup.feedback.entity.FeedbackSkillStack;
 import com.revup.feedback.entity.enums.FeedbackState;
 import com.revup.feedback.entity.enums.FeedbackType;
 import lombok.AccessLevel;
@@ -11,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)
@@ -36,7 +36,7 @@ public class FeedbackResponse {
 
     private List<FeedbackCodeResponse> feedbackCodes;
 
-    private List<SkillStack> skillStacks;
+    private Set<SkillStack> skillStacks;
 
     public static FeedbackResponse from(Feedback feedback) {
         return FeedbackResponse.builder()
@@ -50,7 +50,7 @@ public class FeedbackResponse {
                 .description(feedback.getDescription())
                 .state(feedback.getState())
                 .feedbackCodes(feedback.getFeedbackCodes().stream().map(FeedbackCodeResponse::from).toList())
-                .skillStacks(feedback.getFeedbackSkillStacks().stream().map(FeedbackSkillStack::getSkillStack).toList())
+                .skillStacks(feedback.getStacks())
                 .build();
     }
 
