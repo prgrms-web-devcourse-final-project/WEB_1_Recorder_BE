@@ -1,4 +1,4 @@
-package com.revup.email.listener;
+package com.revup.email;
 
 import com.revup.user.dto.EmailCertificationEventInfo;
 import com.revup.user.service.port.out.EmailService;

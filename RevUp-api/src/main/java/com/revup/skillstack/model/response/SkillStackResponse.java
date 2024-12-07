@@ -1,4 +1,4 @@
-package com.revup.common.skillstack.model.response;
+package com.revup.skillstack.model.response;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.revup.user.service;
 
 import com.revup.annotation.UseCase;
 import com.revup.common.SkillStack;
-import com.revup.common.skillstack.model.mapper.SkillStackMapper;
+import com.revup.skillstack.model.mapper.SkillStackMapper;
 import com.revup.user.dto.Certification;
 import com.revup.user.entity.Affiliation;
 import com.revup.user.entity.Profile;

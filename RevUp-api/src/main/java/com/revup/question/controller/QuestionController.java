@@ -8,8 +8,10 @@ import com.revup.question.dto.response.QuestionBriefResponse;
 import com.revup.question.dto.response.QuestionDetailsResponse;
 import com.revup.question.dto.response.QuestionIdResponse;
 import com.revup.question.usecase.*;
+import com.revup.skillstack.model.response.SkillStackResponse;
 import com.revup.user.entity.User;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,18 +52,18 @@ public class QuestionController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getPopularQuestions(@RequestParam int size,
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getPopularQuestions(@RequestParam @Max(10) int size,
                                                                                         @RequestParam int days) {
         return success(getSpecificQuestionsUseCase.getPopulars(size, days));
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getRecentQuestions(@RequestParam int size){
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getRecentQuestions(@RequestParam @Max(10) int size){
         return success(getSpecificQuestionsUseCase.getRecent(size));
     }
 
     @GetMapping("/stack")
-    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getStackQuestions(@RequestParam int size,
+    public ResponseEntity<ApiResponse<List<QuestionBriefResponse>>> getStackQuestions(@RequestParam @Max(10) int size,
                                                                                       @RequestParam String stack){
         return success(getSpecificQuestionsUseCase.getByStack(size, stack));
     }

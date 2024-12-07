@@ -32,10 +32,9 @@ public class QuestionMapper {
     }
 
 
-
     private Set<SkillStack> toQuestionStacks(List<String> stacks) {
         return stacks.stream()
-                .map(stack -> SkillStack.valueOf(stack.toUpperCase()))
+                .map(SkillStack::from)
                 .collect(Collectors.toSet());
     }
 
