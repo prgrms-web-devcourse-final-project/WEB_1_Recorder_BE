@@ -1,6 +1,7 @@
 package com.revup.question.dto.response;
 
 import com.revup.answer.dto.response.AnswerDetailsResponse;
+import com.revup.common.SkillStack;
 import com.revup.question.entity.Question;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public record QuestionDetailsResponse(
                 question.getGithubLinkReveal().toBoolean() ? question.getGithubLink() : "링크 비공개",
                 question.getStacks()
                         .stream()
-                        .map(Enum::toString)
+                        .map(SkillStack::getContent)
                         .toList(),
                 question.getCodes()
                         .stream()

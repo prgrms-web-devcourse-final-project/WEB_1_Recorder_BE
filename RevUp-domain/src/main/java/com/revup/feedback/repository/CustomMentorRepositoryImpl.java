@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.revup.feedback.entity.QMentor.mentor;
-import static com.revup.feedback.entity.QMentorSkillStack.mentorSkillStack;
 import static com.revup.user.entity.QUser.user;
 
 @RequiredArgsConstructor
@@ -18,7 +17,6 @@ public class CustomMentorRepositoryImpl implements CustomMentorRepository {
     @Override
     public List<Mentor> findMentorsByPageAndSize(long offset, int size) {
         return queryFactory.selectFrom(mentor)
-                .join(mentor.mentorSkillStacks, mentorSkillStack).fetchJoin()
                 .join(mentor.user, user).fetchJoin()
                 .orderBy(mentor.createdAt.desc())
                 .offset(offset)

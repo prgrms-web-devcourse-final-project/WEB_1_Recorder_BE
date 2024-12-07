@@ -44,7 +44,8 @@ public class UserDomainImpl implements UserService {
     @Override
     public Profile updateProfile(User user, Profile profile) {
         user.updateProfile(profile);
-        return user.getProfile();
+        User updatedUser = userAdaptor.save(user);
+        return updatedUser.getProfile();
     }
 
     @Override
@@ -59,9 +60,10 @@ public class UserDomainImpl implements UserService {
 
         Affiliation affiliation = Affiliation.of(email, findDomain);
         user.updateAffiliation(affiliation);
+        User updatedUser = userAdaptor.save(user);
 
         certificationService.deleteNumber(key);
-        return user.getAffiliation();
+        return updatedUser.getAffiliation();
     }
 
     private String extractDomain(Email email) {

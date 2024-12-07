@@ -2,7 +2,7 @@ package com.revup.user.service;
 
 import com.revup.annotation.UseCase;
 import com.revup.common.SkillStack;
-import com.revup.common.skillstack.model.mapper.SkillStackMapper;
+import com.revup.skillstack.model.mapper.SkillStackMapper;
 import com.revup.user.dto.Certification;
 import com.revup.user.entity.Affiliation;
 import com.revup.user.entity.Profile;
@@ -31,7 +31,7 @@ public class UpdateUserUseCase {
     public UpdateProfileResponse executeUpdateProfile(User user, UpdateProfileRequest request) {
         Profile updatedProfile = userService.updateProfile(user, request.toProfile());
         UpdateProfileResponse updateProfileResponse = userMapper.toUpdateProfileResponse(updatedProfile);
-        return request.includeResponse() ? updateProfileResponse : null;
+        return request.includeData() ? updateProfileResponse : null;
     }
 
     public UpdateAffiliationResponse executeUpdateEmail(User user, UpdateEmailRequest request) {

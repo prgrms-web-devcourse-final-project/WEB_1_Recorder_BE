@@ -11,6 +11,9 @@ public enum SecurityUrlEndpoint {
     //Answer
     ANSWER_DETAILS(HttpMethod.GET,"/api/v1/answer"),
 
+    HEART_COUNT(HttpMethod.GET, "/api/v1/answers/{answerId}/heart/count"),
+
+
     // Question
     QUESTION_LIST(HttpMethod.GET, "/api/v1/question/list"),
     QUESTION_STACK(HttpMethod.GET, "/api/v1/question/stack"),
@@ -28,7 +31,8 @@ public enum SecurityUrlEndpoint {
     // All
     OAUTH_LOGIN(HttpMethod.GET, "/oauth2/authorization/**"),
     REFRESH_TOKEN(HttpMethod.POST, "/api/v1/auth/refresh"),
-    SKILLSTACKS(HttpMethod.GET, "/api/v1/tech"),
+    SKILL_STACKS(HttpMethod.GET, "/api/v1/tech"),
+    SKILL_STACKS_POPULAR(HttpMethod.GET, "/api/v1/tech/popular"),
 
 
 

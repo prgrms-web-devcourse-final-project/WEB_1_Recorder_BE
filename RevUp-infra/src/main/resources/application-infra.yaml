@@ -4,6 +4,11 @@ spring:
       on-profile: local
     import: infra-variable.yaml
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   data:
     redis:
       host: ${redis.localhost}
@@ -45,6 +50,11 @@ spring:
     activate:
       on-profile: dev
     import: infra-variable.yaml
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   data:
     redis:
