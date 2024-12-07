@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Data
@@ -24,7 +25,7 @@ public class MentorResponse {
 
     Set<SkillStack> skillStacks;
 
-    private double answerAcceptanceRate;
+    private BigDecimal answerAcceptanceRate;
 
     private Integer liveFeedbackCount;
 
