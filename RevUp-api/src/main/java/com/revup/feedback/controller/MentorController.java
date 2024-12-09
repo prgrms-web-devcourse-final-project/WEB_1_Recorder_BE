@@ -5,6 +5,7 @@ import com.revup.feedback.request.MentorCreateRequest;
 import com.revup.feedback.request.MentorPageRequest;
 import com.revup.feedback.service.response.MentorResponse;
 import com.revup.feedback.usecase.CreateMentorUseCase;
+import com.revup.feedback.usecase.DeleteMentorUseCase;
 import com.revup.feedback.usecase.GetMentorListUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.page.Page;
@@ -20,6 +21,7 @@ public class MentorController {
 
     private final CreateMentorUseCase createMentorUseCase;
     private final GetMentorListUseCase getMentorListUseCase;
+    private final DeleteMentorUseCase deleteMentorUseCase;
 
     /**
      * 피드백 멘토 지원
@@ -48,6 +50,17 @@ public class MentorController {
                         getMentorListUseCase.execute(page)
                 )
         );
+    }
+
+    /**
+     * 멘토 지원 정보 삭제
+     * @param mentorId 삭제할 멘토 아이디(유저아이디 아님)
+     * @return no content
+     */
+    @DeleteMapping("/{mentorId}")
+    public ResponseEntity<Void> deleteMentor(@PathVariable Long mentorId, @SecurityUser User currentUser) {
+        deleteMentorUseCase.execute(mentorId, currentUser);
+        return ResponseEntity.noContent().build();
     }
 
 }

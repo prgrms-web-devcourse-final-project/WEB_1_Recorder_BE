@@ -57,6 +57,7 @@ public enum ErrorCode {
     FEEDBACK_NOT_FOUND(HttpStatus.NOT_FOUND, "피드백 id : %s 가 존재하지 않습니다"),
     FEEDBACK_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "피드백코드 id : %s 가 존재하지 않습니다"),
     INTERRUPTED(HttpStatus.SERVICE_UNAVAILABLE, "처리가 강제로 중단되었습니다. 잠시 후 다시 시도해주세요."),
+    MENTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "멘토 id : %s 가 존재하지 않습니다"),
 
     // 채팅
     CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "채팅방 id : %s 가 존재하지 않습니다"),
