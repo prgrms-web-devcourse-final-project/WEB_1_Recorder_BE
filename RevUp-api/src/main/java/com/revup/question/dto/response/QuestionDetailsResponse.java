@@ -1,6 +1,7 @@
 package com.revup.question.dto.response;
 
 import com.revup.answer.dto.response.AnswerDetailsResponse;
+import com.revup.common.BooleanStatus;
 import com.revup.common.SkillStack;
 import com.revup.question.entity.Question;
 
@@ -22,7 +23,7 @@ public record QuestionDetailsResponse(
     public static QuestionDetailsResponse of(Question question) {
         return new QuestionDetailsResponse(
                 question.getId(),
-                question.getUser().getNickname(),
+                question.getIsAnonymous().equals(BooleanStatus.FALSE) ? question.getUser().getNickname() : "익명",
                 question.getUser().getProfile().getProfileImage(),
                 question.getTitle(),
                 question.getContent(),
