@@ -56,25 +56,11 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         log.info("tokens = {}",  tokens);
         String targetUrl = determineTargetUrl(request, tokens, user);
 
-        setToken(response, tokens);
-        log.info("cookies = {}", response.getHeaders("Set-Cookie"));
+//        setToken(response, tokens);
+//        log.info("cookies = {}", response.getHeaders("Set-Cookie"));
 
-//        clearAuthenticationAttributes(request, response);
+        clearAuthenticationAttributes(request, response);
         response.sendRedirect(targetUrl);
-    }
-
-    private void setToken(HttpServletResponse response, Tokens tokens) {
-        CookieUtils.addCookie(
-                response,
-                SecurityConstants.AUTHORIZATION_HEADER,
-                tokens.accessToken().value(),
-                accessTime);
-
-        CookieUtils.addCookie(
-                response,
-                SecurityConstants.AUTHORIZATION_REFRESH_HEADER,
-                tokens.refreshToken().value(),
-                refreshTime);
     }
 
     protected String determineTargetUrl(
