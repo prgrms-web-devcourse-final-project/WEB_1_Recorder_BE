@@ -29,9 +29,11 @@ public class CookieUtils {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+        //https 환경에서 가능한지
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
