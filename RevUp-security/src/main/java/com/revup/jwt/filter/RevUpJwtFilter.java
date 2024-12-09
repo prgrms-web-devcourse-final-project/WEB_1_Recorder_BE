@@ -71,6 +71,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
 
     private void handleRefreshUrl(HttpServletRequest request, HttpMethod requestMethod) throws JsonProcessingException {
         String tokenValue = extractRefreshToken(request);
+        log.info("filter.refreshToken = {}", tokenValue);
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
 
@@ -85,6 +86,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
 
     private void handleOthersUrl(HttpServletRequest request) throws JsonProcessingException {
         String tokenValue = extractAccessToken(request);
+        log.info("filter.accessToken = {}", tokenValue);
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
         if(!tokenType.equals("ACCESS")) throw UnsupportedTokenException.EXCEPTION;
@@ -113,25 +115,23 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
         ) {
             return bearerToken.substring(SecurityConstants.BEARER.length());
         } else {
-            return Objects.requireNonNull(CookieUtils.getCookie(request, SecurityConstants.AUTHORIZATION_HEADER)
-                    .orElseThrow(() -> NotFoundTokenException.EXCEPTION)).getValue();
+            return CookieUtils.getCookie(request, SecurityConstants.AUTHORIZATION_HEADER)
+                    .orElseThrow(() -> NotFoundTokenException.EXCEPTION).getValue();
         }
     }
 
     private String extractRefreshToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_REFRESH_HEADER);
-
         if (StringUtils.hasText(bearerToken) &&
                 bearerToken.startsWith(SecurityConstants.BEARER) &&
                 bearerToken.length() > SecurityConstants.BEARER.length()
         ) {
             return bearerToken.substring(SecurityConstants.BEARER.length());
         } else {
-            return Objects.requireNonNull(
-                    CookieUtils.getCookie(
-                            request, SecurityConstants.AUTHORIZATION_REFRESH_HEADER
-                            )
-                    .orElseThrow(() -> NotFoundTokenException.EXCEPTION)).getValue();
+            return CookieUtils.getCookie(
+                    request, SecurityConstants.AUTHORIZATION_REFRESH_HEADER
+                    )
+                    .orElseThrow(() -> NotFoundTokenException.EXCEPTION).getValue();
         }
     }
 
