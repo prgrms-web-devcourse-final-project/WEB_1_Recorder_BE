@@ -56,9 +56,6 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         log.info("tokens = {}",  tokens);
         String targetUrl = determineTargetUrl(request, tokens, user);
 
-//        setToken(response, tokens);
-//        log.info("cookies = {}", response.getHeaders("Set-Cookie"));
-
         clearAuthenticationAttributes(request, response);
         response.sendRedirect(targetUrl);
     }

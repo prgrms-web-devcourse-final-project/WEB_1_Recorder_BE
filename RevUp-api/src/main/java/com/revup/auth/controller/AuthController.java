@@ -41,21 +41,17 @@ public class AuthController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<Void>> refreshToken(
-            @RequestHeader(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER, required = false) String refreshToken,
-            @CookieValue(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER, required = false) String refreshCookieValue,
-            HttpServletResponse response
+            @RequestHeader(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER, required = false) String refreshToken
     ) {
-        // 헤더 값이 없을 경우 쿠키 값 사용
-        refreshToken = refreshToken == null ? refreshCookieValue : refreshToken;
-
         TokenInfo info = userDomainUtil.getPrincipal();
         RefreshTokenResponse tokenResponse = authenticationUseCase.executeRefresh(info, refreshToken);
 
-        saveToken(response, tokenResponse.accessToken(), tokenResponse.refreshToken());
+//        saveToken(response, tokenResponse.accessToken(), tokenResponse.refreshToken());
 
         // ResponseEntity 생성
         return ResponseEntity.noContent()
                 .header(SecurityConstants.AUTHORIZATION_HEADER, tokenResponse.accessToken())
+                .header(SecurityConstants.AUTHORIZATION_REFRESH_HEADER, tokenResponse.refreshToken())
                 .build();
     }
 
@@ -84,7 +80,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
         FirstLoginResponse res = authenticationUseCase.executeLogin(user);
-        saveToken(response, request.accessToken(), request.refreshToken());
+//        saveToken(response, request.accessToken(), request.refreshToken());
         return ResponseEntity.ok().body(ApiResponse.success(res));
     }
 
