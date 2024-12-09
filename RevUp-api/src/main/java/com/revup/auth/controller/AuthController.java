@@ -3,6 +3,7 @@ package com.revup.auth.controller;
 
 import com.revup.annotation.SecurityUser;
 import com.revup.auth.dto.token.TokenInfo;
+import com.revup.auth.model.dto.request.TokenRequest;
 import com.revup.auth.model.dto.response.FirstLoginResponse;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
 import com.revup.auth.service.AuthenticationUseCase;
@@ -50,27 +51,13 @@ public class AuthController {
         TokenInfo info = userDomainUtil.getPrincipal();
         RefreshTokenResponse tokenResponse = authenticationUseCase.executeRefresh(info, refreshToken);
 
-        // 쿠키 생성 및 추가
-        CookieUtils.addCookie(
-                response,
-                SecurityConstants.AUTHORIZATION_REFRESH_HEADER,
-                tokenResponse.refreshToken(),
-                refreshTime
-        );
-
-        CookieUtils.addCookie(
-                response,
-                SecurityConstants.AUTHORIZATION_HEADER,
-                tokenResponse.accessToken(),
-                accessTime
-        );
+        saveToken(response, tokenResponse.accessToken(), tokenResponse.refreshToken());
 
         // ResponseEntity 생성
         return ResponseEntity.noContent()
                 .header(SecurityConstants.AUTHORIZATION_HEADER, tokenResponse.accessToken())
                 .build();
     }
-
 
     /**
      * 로그아웃
@@ -90,12 +77,35 @@ public class AuthController {
      * (토큰 필수)
      * @return
      */
-    @GetMapping("/first-login")
+    @PostMapping("/first-login")
     public ResponseEntity<ApiResponse<FirstLoginResponse>> checkFirstLogin(
-            @SecurityUser User currentUser
+            @RequestBody TokenRequest request,
+            @SecurityUser User user,
+            HttpServletResponse response
     ) {
-        log.info("currentUser = {}", currentUser);
-        FirstLoginResponse response = authenticationUseCase.executeLogin(currentUser);
-        return ResponseEntity.ok().body(ApiResponse.success(response));
+        FirstLoginResponse res = authenticationUseCase.executeLogin(user);
+        saveToken(response, request.accessToken(), request.refreshToken());
+        return ResponseEntity.ok().body(ApiResponse.success(res));
+    }
+
+    private void saveToken(
+            HttpServletResponse response,
+            String accessToken,
+            String refreshToken
+    ) {
+        // 쿠키 생성 및 추가
+        CookieUtils.addCookie(
+                response,
+                SecurityConstants.AUTHORIZATION_REFRESH_HEADER,
+                refreshToken,
+                refreshTime
+        );
+
+        CookieUtils.addCookie(
+                response,
+                SecurityConstants.AUTHORIZATION_HEADER,
+                accessToken,
+                accessTime
+        );
     }
 }

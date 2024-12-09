@@ -35,7 +35,6 @@ public enum SecurityUrlEndpoint {
     SKILL_STACKS_POPULAR(HttpMethod.GET, "/api/v1/tech/popular"),
 
 
-
     //USER
 
 
