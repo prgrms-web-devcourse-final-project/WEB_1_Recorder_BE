@@ -10,8 +10,12 @@ import com.revup.constants.SecurityConstants;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
 import com.revup.user.util.UserDomainUtil;
+import com.revup.utils.CookieUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,11 @@ public class AuthController {
 
     private final AuthenticationUseCase authenticationUseCase;
     private final UserDomainUtil userDomainUtil;
+    @Value("${jwt.access-expiration-time}")
+    private int accessTime;
+
+    @Value("${jwt.refresh-expiration-time}")
+    private int refreshTime;
 
     /**
      * refreshToken으로 토큰 갱신
@@ -31,15 +40,37 @@ public class AuthController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<Void>> refreshToken(
-            @RequestHeader(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER) String refreshToken
+            @RequestHeader(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER, required = false) String refreshToken,
+            @CookieValue(name = SecurityConstants.AUTHORIZATION_REFRESH_HEADER, required = false) String refreshCookieValue,
+            HttpServletResponse response
     ) {
+        // 헤더 값이 없을 경우 쿠키 값 사용
+        refreshToken = refreshToken == null ? refreshCookieValue : refreshToken;
+
         TokenInfo info = userDomainUtil.getPrincipal();
         RefreshTokenResponse tokenResponse = authenticationUseCase.executeRefresh(info, refreshToken);
+
+        // 쿠키 생성 및 추가
+        CookieUtils.addCookie(
+                response,
+                SecurityConstants.AUTHORIZATION_REFRESH_HEADER,
+                tokenResponse.refreshToken(),
+                refreshTime
+        );
+
+        CookieUtils.addCookie(
+                response,
+                SecurityConstants.AUTHORIZATION_HEADER,
+                tokenResponse.accessToken(),
+                accessTime
+        );
+
+        // ResponseEntity 생성
         return ResponseEntity.noContent()
                 .header(SecurityConstants.AUTHORIZATION_HEADER, tokenResponse.accessToken())
-                .header(SecurityConstants.AUTHORIZATION_REFRESH_HEADER, tokenResponse.refreshToken())
                 .build();
     }
+
 
     /**
      * 로그아웃
