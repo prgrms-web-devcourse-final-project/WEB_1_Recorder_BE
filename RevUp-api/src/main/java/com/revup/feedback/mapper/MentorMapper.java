@@ -23,7 +23,7 @@ public class MentorMapper {
 
     private Set<SkillStack> toMentorStacks(Set<String> stackStrings) {
         return stackStrings.stream()
-                .map(s -> SkillStack.valueOf(s.toUpperCase()))
+                .map(SkillStack::from)
                 .collect(Collectors.toSet());
     }
 
