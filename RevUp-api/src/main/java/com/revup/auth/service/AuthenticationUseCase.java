@@ -1,12 +1,11 @@
 package com.revup.auth.service;
 
-import com.revup.achieve.AchieveType;
-import com.revup.annotation.Achievable;
 import com.revup.annotation.UseCase;
 import com.revup.auth.adapter.RefreshTokenAdapter;
 import com.revup.auth.dto.token.RefreshToken;
 import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
+import com.revup.auth.model.dto.request.TokenRequest;
 import com.revup.auth.model.dto.response.FirstLoginResponse;
 import com.revup.auth.model.dto.response.RefreshTokenResponse;
 import com.revup.auth.model.mapper.AuthMapper;
