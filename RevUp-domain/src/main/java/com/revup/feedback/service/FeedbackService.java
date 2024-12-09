@@ -5,15 +5,14 @@ import com.revup.error.ErrorCode;
 import com.revup.feedback.entity.Feedback;
 import com.revup.feedback.entity.enums.FeedbackState;
 import com.revup.feedback.repository.FeedbackRepository;
-import com.revup.feedback.service.response.FeedbackResponse;
+import com.revup.feedback.service.response.FeedbackDetailsResponse;
+import com.revup.feedback.service.response.FeedbackListResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,25 +34,30 @@ public class FeedbackService {
         return feedback.getId();
     }
 
+    public FeedbackDetailsResponse feedbackDetails(Long feedbackId) {
+        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new AppException(ErrorCode.FEEDBACK_NOT_FOUND, feedbackId));
+        return FeedbackDetailsResponse.from(feedback);
+    }
+
     @Transactional(readOnly = true)
-    public List<FeedbackResponse> feedbackWaitingList(User currentUser) {
+    public List<FeedbackListResponse> feedbackWaitingList(User currentUser) {
         return feedbackRepository.findByTeacherAndState(currentUser, FeedbackState.WAITING_ACCEPTANCE)
                 .stream()
-                .map(FeedbackResponse::from).toList();
+                .map(FeedbackListResponse::from).toList();
     }
 
     @Transactional(readOnly = true)
-    public List<FeedbackResponse> feedbackSubmittedList(User currentUser) {
+    public List<FeedbackListResponse> feedbackSubmittedList(User currentUser) {
         return feedbackRepository.findByTeacher(currentUser)
                 .stream()
-                .map(FeedbackResponse::from).toList();
+                .map(FeedbackListResponse::from).toList();
     }
 
     @Transactional(readOnly = true)
-    public List<FeedbackResponse> feedbackAcceptedList(User currentUser) {
+    public List<FeedbackListResponse> feedbackAcceptedList(User currentUser) {
         return feedbackRepository.findByTeacherAndState(currentUser, FeedbackState.ACCEPTED)
                 .stream()
-                .map(FeedbackResponse::from).toList();
+                .map(FeedbackListResponse::from).toList();
     }
 
     @Transactional(readOnly = true)

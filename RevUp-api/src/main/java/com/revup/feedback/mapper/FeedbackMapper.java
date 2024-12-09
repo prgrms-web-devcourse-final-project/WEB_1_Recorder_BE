@@ -32,7 +32,7 @@ public class FeedbackMapper {
 
     private Set<SkillStack> toFeedbackStacks(Set<String> stackStrings) {
         return stackStrings.stream()
-                .map(s -> SkillStack.valueOf(s.toUpperCase()))
+                .map(SkillStack::from)
                 .collect(Collectors.toSet());
     }
 

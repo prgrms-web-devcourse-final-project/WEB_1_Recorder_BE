@@ -2,21 +2,17 @@ package com.revup.feedback.usecase;
 
 import com.revup.feedback.service.FeedbackService;
 import com.revup.feedback.service.response.FeedbackDetailsResponse;
-import com.revup.feedback.service.response.FeedbackListResponse;
-import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
-public class GetAcceptedFeedbackListUseCase {
+public class GetFeedbackUseCase {
 
     private final FeedbackService feedbackService;
 
-    public List<FeedbackListResponse> execute(User currentUser) {
-        return feedbackService.feedbackAcceptedList(currentUser);
+    public FeedbackDetailsResponse execute(Long feedbackId) {
+        return feedbackService.feedbackDetails(feedbackId);
     }
 
 }

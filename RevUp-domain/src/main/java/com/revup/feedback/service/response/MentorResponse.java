@@ -13,6 +13,8 @@ import java.util.Set;
 @Builder(access = AccessLevel.PRIVATE)
 public class MentorResponse {
 
+    private Long mentorId;
+
     private Long userId;
 
     private String nickName;
@@ -31,6 +33,7 @@ public class MentorResponse {
 
     public static MentorResponse from(Mentor mentor, Integer feedbackCount) {
         return MentorResponse.builder()
+                .mentorId(mentor.getId())
                 .userId(mentor.getUser().getId())
                 .nickName(mentor.getUser().getNickname())
                 .profileImage(mentor.getUser().getProfileImage())
