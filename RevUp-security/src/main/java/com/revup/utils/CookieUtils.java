@@ -3,11 +3,14 @@ package com.revup.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.util.SerializationUtils;
 
 import java.util.Base64;
 import java.util.Optional;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CookieUtils {
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {

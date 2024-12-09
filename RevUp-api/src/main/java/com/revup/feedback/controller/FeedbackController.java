@@ -3,7 +3,8 @@ package com.revup.feedback.controller;
 import com.revup.annotation.SecurityUser;
 import com.revup.feedback.request.FeedbackAcceptRequest;
 import com.revup.feedback.request.FeedbackCreateRequest;
-import com.revup.feedback.service.response.FeedbackResponse;
+import com.revup.feedback.service.response.FeedbackDetailsResponse;
+import com.revup.feedback.service.response.FeedbackListResponse;
 import com.revup.feedback.usecase.*;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
@@ -19,6 +20,7 @@ import java.util.List;
 public class FeedbackController {
 
     private final CreateFeedbackUseCase createFeedbackUseCase;
+    private final GetFeedbackUseCase getFeedbackUseCase;
     private final GetWaitingFeedbackListUseCase getWaitingFeedbackListUseCase;
     private final GetSubmittedFeedbackListUseCase getSubmittedFeedbackListUseCase;
     private final AcceptFeedbackUseCase acceptFeedbackUseCase;
@@ -44,7 +46,7 @@ public class FeedbackController {
      * @return 해당 목록
      */
     @GetMapping("/submitted/waiting")
-    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedWaitingFeedbackList(@SecurityUser User currentUser) {
+    public ResponseEntity<ApiResponse<List<FeedbackListResponse>>> getSubmittedWaitingFeedbackList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
                         getWaitingFeedbackListUseCase.execute(currentUser)
@@ -57,7 +59,7 @@ public class FeedbackController {
      * @return 해당 목록
      */
     @GetMapping("/submitted")
-    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedFeedbackList(@SecurityUser User currentUser) {
+    public ResponseEntity<ApiResponse<List<FeedbackListResponse>>> getSubmittedFeedbackList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
                         getSubmittedFeedbackListUseCase.execute(currentUser)
@@ -85,10 +87,25 @@ public class FeedbackController {
      * @return 해당 목록
      */
     @GetMapping("/submitted/accepted")
-    public ResponseEntity<ApiResponse<List<FeedbackResponse>>> getSubmittedAcceptedFeedbackList(@SecurityUser User currentUser) {
+    public ResponseEntity<ApiResponse<List<FeedbackListResponse>>> getSubmittedAcceptedFeedbackList(@SecurityUser User currentUser) {
         return ResponseEntity.ok(
                 ApiResponse.success(
                         getAcceptedFeedbackListUseCase.execute(currentUser)
+                )
+        );
+    }
+
+
+    /**
+     * 피드백 상세 조회
+     * @param feedbackId 조회할 피드백 아이디
+     * @return 해당 피드백 상세정보
+     */
+    @GetMapping("/{feedbackId}")
+    public ResponseEntity<ApiResponse<FeedbackDetailsResponse>> getFeedbackDetails(@PathVariable Long feedbackId) {
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        getFeedbackUseCase.execute(feedbackId)
                 )
         );
     }

@@ -3,6 +3,7 @@ package com.revup.oauth.handler;
 import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
 import com.revup.auth.repository.RefreshTokenRepository;
+import com.revup.constants.SecurityConstants;
 import com.revup.jwt.RevUpJwtGenerator;
 import com.revup.oauth.repository.HttpCookieOauth2AuthorizationRequestRepository;
 import com.revup.oauth.service.UserCreator;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -32,6 +34,13 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final UserCreator userCreator;
     private final RevUpJwtGenerator jwtGenerator;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    @Value("${jwt.access-expiration-time}")
+    private int accessTime;
+
+    @Value("${jwt.refresh-expiration-time}")
+    private int refreshTime;
+
     //redisToken 넣는 작업 필요.
 
     @Override
@@ -44,10 +53,28 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
+        log.info("tokens = {}",  tokens);
         String targetUrl = determineTargetUrl(request, tokens, user);
 
+        setToken(response, tokens);
+        log.info("cookies = {}", response.getHeaders("Set-Cookie"));
+        
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
+
+    private void setToken(HttpServletResponse response, Tokens tokens) {
+        CookieUtils.addCookie(
+                response,
+                SecurityConstants.AUTHORIZATION_HEADER,
+                tokens.accessToken().value(),
+                accessTime);
+
+        CookieUtils.addCookie(
+                response,
+                SecurityConstants.AUTHORIZATION_REFRESH_HEADER,
+                tokens.refreshToken().value(),
+                refreshTime);
     }
 
     protected String determineTargetUrl(
@@ -61,9 +88,9 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         ).map(Cookie::getValue).orElse(getDefaultTargetUrl());
         log.info("targetUrl = {}", targetUrl);
         return UriComponentsBuilder.fromUriString(targetUrl)
+                .queryParam("is_first", user.isFirst())
                 .queryParam("access_token", tokens.accessToken().value())
                 .queryParam("refresh_token", tokens.refreshToken().value())
-                .queryParam("is_first", user.isFirst())
                 .build().toUriString();
     }
 

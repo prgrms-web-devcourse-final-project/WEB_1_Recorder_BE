@@ -1,29 +1,29 @@
 package com.revup.feedback.entity;
 
-import com.revup.common.BaseTimeEntity;
 import com.revup.common.SkillStack;
+import com.revup.common.SoftDeleteEntity;
 import com.revup.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter
 @Table(name = "mentor")
+@SQLRestriction("is_deleted = 'FALSE'")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Mentor extends BaseTimeEntity {
+public class Mentor extends SoftDeleteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
