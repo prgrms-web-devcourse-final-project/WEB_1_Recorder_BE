@@ -1,7 +1,8 @@
 package com.revup.feedback.usecase;
 
 import com.revup.feedback.service.FeedbackService;
-import com.revup.feedback.service.response.FeedbackResponse;
+import com.revup.feedback.service.response.FeedbackDetailsResponse;
+import com.revup.feedback.service.response.FeedbackListResponse;
 import com.revup.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class GetWaitingFeedbackListUseCase {
 
     private final FeedbackService feedbackService;
 
-    public List<FeedbackResponse> execute(User currentUser) {
+    public List<FeedbackListResponse> execute(User currentUser) {
         return feedbackService.feedbackWaitingList(currentUser);
     }
 
