@@ -18,7 +18,8 @@ public class RevUpJwtValidator implements TokenValidator {
 
     @Override
     public void validateSameToken(String clientToken, String redisToken) {
-        String originalToken = clientToken.substring(SecurityConstants.BEARER.length());
+
+        String originalToken = clientToken.startsWith(SecurityConstants.BEARER) ? clientToken.substring(SecurityConstants.BEARER.length()) : clientToken;
         validStringValue(originalToken, redisToken);
         validateTokenInfo(redisToken, originalToken);
     }

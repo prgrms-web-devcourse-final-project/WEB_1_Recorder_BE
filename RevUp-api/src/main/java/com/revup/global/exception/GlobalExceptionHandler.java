@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<ApiResponse<Void>> handleException(final Exception e) {
+        e.printStackTrace();
         return ResponseUtil.failure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 
     }

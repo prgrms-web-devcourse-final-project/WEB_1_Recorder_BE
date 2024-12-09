@@ -3,11 +3,11 @@ package com.revup.jwt.filter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revup.constants.SecurityConstants;
 import com.revup.error.AppException;
-import com.revup.error.SecurityException;
 import com.revup.exception.NotFoundTokenException;
 import com.revup.exception.UnsupportedTokenException;
 import com.revup.jwt.RevUpJwtProvider;
 import com.revup.auth.dto.token.TokenInfo;
+import com.revup.utils.CookieUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.revup.constants.SecurityConstants.EXCEPTION;
 import static com.revup.error.ErrorCode.*;
@@ -69,7 +70,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     }
 
     private void handleRefreshUrl(HttpServletRequest request, HttpMethod requestMethod) throws JsonProcessingException {
-        String tokenValue = extractToken(request, SecurityConstants.AUTHORIZATION_REFRESH_HEADER);
+        String tokenValue = extractRefreshToken(request);
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
 
@@ -83,7 +84,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     }
 
     private void handleOthersUrl(HttpServletRequest request) throws JsonProcessingException {
-        String tokenValue = extractToken(request, SecurityConstants.AUTHORIZATION_HEADER);
+        String tokenValue = extractAccessToken(request);
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
         if(!tokenType.equals("ACCESS")) throw UnsupportedTokenException.EXCEPTION;
@@ -102,18 +103,36 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
         setSecurityContextHolder(tokenInfo);
     }
 
-    // 헤더에서 토큰 추출
-    private String extractToken(HttpServletRequest httpServletRequest, String headerKey) {
-        String bearerToken = httpServletRequest.getHeader(headerKey);
+    // accessToken토큰 추출
+    private String extractAccessToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 
         if (StringUtils.hasText(bearerToken) &&
                 bearerToken.startsWith(SecurityConstants.BEARER) &&
                 bearerToken.length() > SecurityConstants.BEARER.length()
         ) {
             return bearerToken.substring(SecurityConstants.BEARER.length());
+        } else {
+            return Objects.requireNonNull(CookieUtils.getCookie(request, SecurityConstants.AUTHORIZATION_HEADER)
+                    .orElseThrow(() -> NotFoundTokenException.EXCEPTION)).getValue();
         }
+    }
 
-        throw NotFoundTokenException.EXCEPTION;
+    private String extractRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_REFRESH_HEADER);
+
+        if (StringUtils.hasText(bearerToken) &&
+                bearerToken.startsWith(SecurityConstants.BEARER) &&
+                bearerToken.length() > SecurityConstants.BEARER.length()
+        ) {
+            return bearerToken.substring(SecurityConstants.BEARER.length());
+        } else {
+            return Objects.requireNonNull(
+                    CookieUtils.getCookie(
+                            request, SecurityConstants.AUTHORIZATION_REFRESH_HEADER
+                            )
+                    .orElseThrow(() -> NotFoundTokenException.EXCEPTION)).getValue();
+        }
     }
 
     private void setSecurityContextHolder(

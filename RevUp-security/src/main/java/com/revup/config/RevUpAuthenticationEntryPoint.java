@@ -32,6 +32,7 @@ public class RevUpAuthenticationEntryPoint implements AuthenticationEntryPoint {
             AuthenticationException authException) {
         log.error("authException.getCause = {}", authException.getCause());
         log.info("JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint");
+        authException.fillInStackTrace();
         if (isExceptionInSecurityFilter(request, response)) {
             resolver.resolveException(
                     request, response, null, (Exception) request.getAttribute("exception"));
