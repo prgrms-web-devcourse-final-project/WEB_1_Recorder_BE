@@ -38,16 +38,15 @@ public class WebConfig implements WebMvcConfigurer {
                 githubPageUrl,
                 "http://localhost:3000"
         ));
-        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
-        configuration.setExposedHeaders(Arrays.asList(
-                "Access-Control-Allow-Headers",
+        // 필요한 헤더만 노출
+        configuration.setExposedHeaders(List.of(
                 "Authorization-refresh",
-                "Authorization",
-                "x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
-                        "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+                "Authorization"
+        ));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
