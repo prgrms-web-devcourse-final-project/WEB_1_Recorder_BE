@@ -5,11 +5,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.SerializationUtils;
 
 import java.util.Base64;
 import java.util.Optional;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CookieUtils {
 
@@ -18,6 +20,7 @@ public class CookieUtils {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(name)) {
+                    log.info("Cookie name: {}, Cookie value: {}", cookie.getName(), cookie.getValue());
                     return Optional.of(cookie);
                 }
             }
