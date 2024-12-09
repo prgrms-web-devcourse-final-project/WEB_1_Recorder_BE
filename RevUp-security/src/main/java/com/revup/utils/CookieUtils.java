@@ -32,11 +32,11 @@ public class CookieUtils {
 
     public static void addCookie(HttpServletResponse response, String name, String value, int age) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
-                .path("/")
-                .maxAge(age)
                 .httpOnly(true)
                 .secure(true)
-                .sameSite("None")
+                .path("/")
+                .maxAge(age)
+                .sameSite("None") // SameSite 속성 설정
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
