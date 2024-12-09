@@ -21,8 +21,8 @@ public class CookieUtils {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
+                log.info("Cookie name: {}, Cookie value: {}", cookie.getName(), cookie.getValue());
                 if (cookie.getName().equals(name)) {
-                    log.info("Cookie name: {}, Cookie value: {}", cookie.getName(), cookie.getValue());
                     return Optional.of(cookie);
                 }
             }
