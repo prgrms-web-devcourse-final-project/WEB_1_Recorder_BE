@@ -60,8 +60,8 @@ public class ChatService {
 
         for (ChatRoom chatRoom : chatRooms) {
             ChatMessage latestMessage = chatRoomBelongRepository.findLatestMessageByChatRoom(chatRoom);
-            User anotherUser = chatRoomBelongRepository.findOtherMemberInChatRoom(chatRoom, currentUser);
             if (latestMessage != null) {
+                User anotherUser = chatRoomBelongRepository.findOtherMemberInChatRoom(chatRoom, currentUser);
                 responseList.add(ChatRoomListResponse.from(latestMessage, anotherUser));
             }
         }
