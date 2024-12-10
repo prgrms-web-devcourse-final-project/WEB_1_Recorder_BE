@@ -14,6 +14,10 @@ public class ChatRoomListResponse {
 
     private Long opponentId;
 
+    private String opponentNickName;
+
+    private String opponentProfileImage;
+
     private String latestMessage;
 
     private LocalDateTime createdAt;
@@ -21,8 +25,11 @@ public class ChatRoomListResponse {
     public static ChatRoomListResponse from(ChatMessage chatMessage, User user) {
         return ChatRoomListResponse.builder()
                 .opponentId(user.getId())
+                .opponentNickName(user.getNickname())
+                .opponentProfileImage(user.getProfileImage())
                 .latestMessage(chatMessage.getContent())
                 .createdAt(chatMessage.getCreatedAt())
                 .build();
     }
+
 }

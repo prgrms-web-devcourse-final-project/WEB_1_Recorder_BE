@@ -11,6 +11,7 @@ import com.revup.chat.usecase.GetChatRoomUseCase;
 import com.revup.chat.usecase.GetMyChatRoomListUseCase;
 import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public class ChatController {
      */
     @MessageMapping("/chat.sendMessage/{chatRoomId}")
     public void sendMessage(@DestinationVariable Long chatRoomId,
-                            @Payload ChatMessageDto chatMessageDto
+                            @Payload @Valid ChatMessageDto chatMessageDto
     ) {
         messagingTemplate.convertAndSend("/topic/chat/" + chatRoomId, chatMessageDto);
         createChatUseCase.execute(chatMessageDto, chatRoomId);
