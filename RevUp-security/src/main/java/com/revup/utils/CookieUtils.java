@@ -1,5 +1,6 @@
 package com.revup.utils;
 
+import com.revup.constants.SecurityConstants;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +17,15 @@ import java.util.Optional;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CookieUtils {
+
+    private static int accessTime;
+
+    private static int refreshTime;
+
+    public static void setJwtExpirationTimes(int accessExpirationTime, int refreshExpirationTime) {
+        accessTime = accessExpirationTime;
+        refreshTime = refreshExpirationTime;
+    }
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
@@ -65,5 +75,14 @@ public class CookieUtils {
         return cls.cast(SerializationUtils.deserialize(
                 Base64.getUrlDecoder().decode(cookie.getValue())));
 
+    }
+
+    public static void setTokenCookie(
+            HttpServletResponse response,
+            String accessToken,
+            String refreshToken
+    ) {
+        addCookie(response, SecurityConstants.AUTHORIZATION_HEADER, accessToken, accessTime);
+        addCookie(response, SecurityConstants.AUTHORIZATION_REFRESH_HEADER, refreshToken, refreshTime);
     }
 }
