@@ -3,7 +3,6 @@ package com.revup.oauth.handler;
 import com.revup.auth.dto.token.TokenInfo;
 import com.revup.auth.dto.token.Tokens;
 import com.revup.auth.repository.RefreshTokenRepository;
-import com.revup.constants.SecurityConstants;
 import com.revup.jwt.RevUpJwtGenerator;
 import com.revup.oauth.repository.HttpCookieOauth2AuthorizationRequestRepository;
 import com.revup.oauth.service.UserCreator;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -35,16 +33,12 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final RevUpJwtGenerator jwtGenerator;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Value("${jwt.access-expiration-time}")
-    private int accessTime;
-
-    @Value("${jwt.refresh-expiration-time}")
-    private int refreshTime;
-
-    //redisToken 넣는 작업 필요.
-
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication
+    ) throws IOException {
         User user = getUser(authentication);
         Tokens tokens = createTokens(user);
         refreshTokenRepository.save(tokens.refreshToken(), user.getId());
@@ -55,6 +49,8 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         log.info("tokens = {}",  tokens);
         String targetUrl = determineTargetUrl(request, tokens, user);
+
+        CookieUtils.setTokenCookie(response, tokens.accessToken().value(), tokens.refreshToken().value());
 
         clearAuthenticationAttributes(request, response);
         response.sendRedirect(targetUrl);
