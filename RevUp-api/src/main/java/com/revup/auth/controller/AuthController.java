@@ -12,7 +12,6 @@ import com.revup.global.dto.ApiResponse;
 import com.revup.user.entity.User;
 import com.revup.user.util.UserDomainUtil;
 import com.revup.utils.CookieUtils;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
