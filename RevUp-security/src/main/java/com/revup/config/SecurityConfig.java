@@ -104,10 +104,9 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         // 요청 URL이 "/api/v1"로 시작하지 않으면 true, 그 외는 무시
         return web ->
-                web.ignoring()
-                        .requestMatchers(request ->
-                                !request.getRequestURL().toString().startsWith("/api/v1")
-                        );
+                web.ignoring().requestMatchers(
+                        "/geoserver/web/"
+                );
     }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
