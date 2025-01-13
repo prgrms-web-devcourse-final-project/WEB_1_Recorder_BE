@@ -8,6 +8,7 @@ import com.revup.constants.SecurityUrlEndpoint;
 import com.revup.jwt.filter.RevUpJwtFilter;
 import com.revup.jwt.RevUpJwtProvider;
 import com.revup.oauth.service.RevUpOAuth2UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @EnableWebSecurity
 @Configuration
@@ -97,18 +99,16 @@ public class SecurityConfig {
     }
 
     // 특정 URI 필터 제외
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web ->
-//                web.ignoring()
-//                        .requestMatchers("/favicon.ico")
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/question/list")
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/question")
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/question/popular")
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/tech")
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/question/recent");
-//    }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // 요청 URL이 "/api/v1"로 시작하지 않으면 true, 그 외는 무시
+        return web ->
+                web.ignoring()
+                        .requestMatchers(request ->
+                                !request.getRequestURL().toString().startsWith("/api/v1")
+                        );
+    }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
