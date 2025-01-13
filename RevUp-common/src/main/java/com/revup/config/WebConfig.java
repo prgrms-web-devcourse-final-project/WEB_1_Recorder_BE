@@ -45,9 +45,11 @@ public class WebConfig implements WebMvcConfigurer {
 
         // 필요한 헤더만 노출
         configuration.setExposedHeaders(List.of(
-                "Authorization-refresh",
-                "Authorization",
-                "Set-Cookie"
+//                "Authorization-refresh",
+//                "Authorization",
+//                "Set-Cookie",
+//                "Cookie"
+                "*"
         ));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
