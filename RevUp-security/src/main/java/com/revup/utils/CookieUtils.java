@@ -42,7 +42,6 @@ public class CookieUtils {
 
     public static void addCookie(HttpServletResponse response, String name, String value, int age) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
-                .domain("revup-eight.vercel.app")
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
