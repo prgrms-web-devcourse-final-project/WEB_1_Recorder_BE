@@ -43,7 +43,9 @@ public class WebConfig implements WebMvcConfigurer {
                 "Authorization",  // 인증 토큰
                 "Content-Type",   // 요청 본문의 콘텐츠 타입
                 "Accept",         // 클라이언트가 기대하는 응답 타입
-                "Cookie"          // 쿠키 정보 (필요한 경우)
+                "X-Requested-With",
+                "Cookie",          // 쿠키 정보 (필요한 경우)
+                "Access-Control-Allow-Credentials"
         ));
         configuration.setAllowCredentials(true);
 
