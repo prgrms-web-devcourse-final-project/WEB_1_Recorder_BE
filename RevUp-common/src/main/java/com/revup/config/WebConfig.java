@@ -34,7 +34,6 @@ public class WebConfig implements WebMvcConfigurer {
 
         configuration.setAllowedOrigins(List.of(
                 "https://revup-eight.vercel.app",
-                "https://revuprevup.o-r.kr",
                 githubPageUrl,
                 "http://localhost:3000"
         ));
@@ -46,7 +45,8 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.setExposedHeaders(List.of(
                 "Authorization-refresh",
                 "Authorization",
-                "Set-Cookie"
+                "Set-Cookie",
+                "Cookie"
         ));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
