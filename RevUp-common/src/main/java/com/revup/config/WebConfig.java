@@ -43,11 +43,8 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.setAllowedHeaders(List.of(
                 "Authorization",       // 인증 관련 헤더
                 "Content-Type",        // 요청 데이터 타입
-                "Accept",              // 응답 데이터 타입
-                "X-Requested-With",    // AJAX 요청 확인
                 "Origin",              // 요청 도메인
-                "Referer",             // 참조 페이지
-                "User-Agent"           // 클라이언트 정보
+                "Cookie"
         ));
         configuration.setAllowCredentials(true);
 
@@ -55,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.setExposedHeaders(List.of(
 //                "Authorization-refresh",
 //                "Authorization",
-//                "Set-Cookie",
+                "Set-Cookie",
                 "Cookie"
         ));
 
