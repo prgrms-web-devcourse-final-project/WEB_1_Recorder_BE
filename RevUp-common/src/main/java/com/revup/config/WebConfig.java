@@ -39,8 +39,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "http://localhost:3000"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        // 허용할 요청 헤더 설정
-        configuration.setAllowedHeaders(List.of("*"));
+//        // 허용할 요청 헤더 설정
+//        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         // 필요한 헤더만 노출
@@ -48,8 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
 //                "Authorization-refresh",
 //                "Authorization",
 //                "Set-Cookie",
-//                "Cookie"
-                "*"
+                "Cookie"
         ));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
