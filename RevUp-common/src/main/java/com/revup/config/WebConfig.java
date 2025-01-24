@@ -33,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(List.of(
-                "https://revup-eight.vercel.app/",
+                "https://revup-eight.vercel.app",
                 "https://revuprevup.o-r.kr",
                 githubPageUrl,
                 "http://localhost:3000"
