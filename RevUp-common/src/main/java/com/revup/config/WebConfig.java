@@ -36,7 +36,8 @@ public class WebConfig implements WebMvcConfigurer {
                 "https://revup-eight.vercel.app",
                 "https://revuprevup.o-r.kr",
                 githubPageUrl,
-                "http://localhost:3000"
+                "http://localhost:3000",
+                "nginx"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         // 허용할 요청 헤더 설정
