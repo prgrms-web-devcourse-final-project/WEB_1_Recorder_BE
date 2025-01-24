@@ -45,8 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "Content-Type",
                 "Origin",
                 "Cookie",
-                "Set-Cookie",
-                "credentials"
+                "Set-Cookie"
         ));
 
         // 필요한 헤더만 노출
