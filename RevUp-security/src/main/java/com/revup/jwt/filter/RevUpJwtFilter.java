@@ -70,7 +70,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     }
 
     private void handleRefreshUrl(HttpServletRequest request, HttpMethod requestMethod) throws JsonProcessingException {
-        String tokenValue = extractRefreshToken(request);
+        String tokenValue = extractRefreshTokenFromCookie(request);
         log.info("filter.refreshToken = {}", tokenValue);
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
@@ -85,7 +85,8 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     }
 
     private void handleOthersUrl(HttpServletRequest request) throws JsonProcessingException {
-        String tokenValue = extractAccessToken(request);
+//        String tokenValue = extractAccessTokenFromHeader(request);
+        String tokenValue = extractAccessTokenFromCookie(request);
         log.info("filter.accessToken = {}", tokenValue);
 
         String tokenType = jwtProvider.getTokenType(tokenValue);
@@ -106,7 +107,7 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
     }
 
     // accessToken토큰 추출
-    private String extractAccessToken(HttpServletRequest request) {
+    private String extractAccessTokenFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 
         if (StringUtils.hasText(bearerToken) &&
@@ -120,7 +121,12 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
         }
     }
 
-    private String extractRefreshToken(HttpServletRequest request) {
+    private String extractAccessTokenFromCookie(HttpServletRequest request) {
+        return CookieUtils.getCookie(request, SecurityConstants.AUTHORIZATION_HEADER)
+                .orElseThrow(() -> NotFoundTokenException.EXCEPTION).getValue();
+    }
+
+    private String extractRefreshTokenFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader(SecurityConstants.AUTHORIZATION_REFRESH_HEADER);
         if (StringUtils.hasText(bearerToken) &&
                 bearerToken.startsWith(SecurityConstants.BEARER) &&
@@ -133,6 +139,11 @@ public class RevUpJwtFilter extends OncePerRequestFilter {
                     )
                     .orElseThrow(() -> NotFoundTokenException.EXCEPTION).getValue();
         }
+    }
+
+    private String extractRefreshTokenFromCookie(HttpServletRequest request) {
+        return CookieUtils.getCookie(request, SecurityConstants.AUTHORIZATION_REFRESH_HEADER)
+                .orElseThrow(() -> NotFoundTokenException.EXCEPTION).getValue();
     }
 
     private void setSecurityContextHolder(
