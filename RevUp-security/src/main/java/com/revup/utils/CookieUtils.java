@@ -44,6 +44,7 @@ public class CookieUtils {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)
                 .secure(true)
+                .path("/")
                 .maxAge(age)
                 .sameSite("None") // SameSite 속성 설정
                 .build();
