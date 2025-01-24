@@ -77,7 +77,7 @@ public class SecurityConfig {
                                                 securityUrlEndPoint.getUrl())
                                         .permitAll();
                             }
-                            authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
+                            authorizationManagerRequestMatcherRegistry.anyRequest().permitAll();
                         })
                 .oauth2Login(configure -> configure
                         .authorizationEndpoint(config -> config
