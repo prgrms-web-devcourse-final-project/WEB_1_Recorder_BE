@@ -45,6 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "Content-Type",
                 "Origin",
                 "Cookie",
+                "Set-Cookie",
                 "credentials"
         ));
 
