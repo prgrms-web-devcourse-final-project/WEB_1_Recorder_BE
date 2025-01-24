@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
+        configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(List.of(
                 "https://revup-eight.vercel.app/",
                 "https://revuprevup.o-r.kr",
@@ -41,9 +41,12 @@ public class WebConfig implements WebMvcConfigurer {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         // 허용할 요청 헤더 설정
         configuration.setAllowedHeaders(List.of(
-                "content-type"        // 요청 데이터 타입
+                "Authorization",
+                "Content-Type",
+                "Origin",
+                "Cookie",
+                "credentials"
         ));
-        configuration.setAllowCredentials(true);
 
         // 필요한 헤더만 노출
         configuration.setExposedHeaders(List.of(
