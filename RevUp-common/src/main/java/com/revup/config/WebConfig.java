@@ -36,8 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "https://revup-eight.vercel.app",
                 "https://revuprevup.o-r.kr",
                 githubPageUrl,
-                "http://localhost:3000",
-                "nginx"
+                "http://localhost:3000"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         // 허용할 요청 헤더 설정
@@ -52,9 +51,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         // 필요한 헤더만 노출
         configuration.setExposedHeaders(List.of(
-//                "Authorization-refresh",
-                "Authorization",
-                "Set-Cookie"
+                "Cookie"
         ));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
