@@ -11,7 +11,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -32,19 +31,15 @@ public class WebConfig implements WebMvcConfigurer {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-
-        //특정 패턴 허용 (allowedOrigins 대신 allowedOriginPatterns 사용)
-        configuration.setAllowedOriginPatterns(List.of(
+        configuration.setAllowedOrigins(List.of(
                 "https://revup-eight.vercel.app",
                 "https://revuprevup.o-r.kr",
                 githubPageUrl,
                 "http://localhost:3000"
         ));
-
-        //허용할 HTTP 메서드
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
-        //허용할 요청 헤더 설정
+        // 허용할 요청 헤더 설정
         configuration.setAllowedHeaders(List.of(
                 "Authorization",
                 "Content-Type",
@@ -52,13 +47,14 @@ public class WebConfig implements WebMvcConfigurer {
                 "Cookie"
         ));
 
-        //Set-Cookie 헤더 노출
-        configuration.setExposedHeaders(List.of("Set-Cookie"));
+        // 필요한 헤더만 노출
+        configuration.setExposedHeaders(List.of(
+                "Set-Cookie"
+        ));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }
-
 }
