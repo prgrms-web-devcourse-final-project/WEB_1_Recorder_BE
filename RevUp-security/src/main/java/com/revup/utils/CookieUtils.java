@@ -49,7 +49,7 @@ public class CookieUtils {
                 .sameSite("None") // SameSite 속성 설정
                 .build();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
     }
 
