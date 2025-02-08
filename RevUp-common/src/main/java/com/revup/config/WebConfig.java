@@ -11,6 +11,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -38,13 +39,14 @@ public class WebConfig implements WebMvcConfigurer {
                 "http://localhost:3000"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-
         // 허용할 요청 헤더 설정
         configuration.setAllowedHeaders(List.of(
                 "Authorization",
                 "Content-Type",
                 "Origin",
-                "Cookie"
+                "Cookie",
+                "Set-Cookie",
+                "credentials"
         ));
 
         // 필요한 헤더만 노출
