@@ -84,9 +84,7 @@ public class SecurityConfig {
                                 .authorizationRequestRepository(httpCookieOauth2AuthorizationRequestRepository))
                         .userInfoEndpoint(config -> config.userService(oAuth2UserService))
                         .successHandler(oauth2AuthenticationSuccessHandler)
-                        .failureHandler(oauth2AuthenticationFailureHandler)
-                        .tokenEndpoint(tokenEndpoint -> tokenEndpoint.accessTokenResponseClient(tokenResponseClient))
-                );
+                        .failureHandler(oauth2AuthenticationFailureHandler));
 
         httpSecurity.exceptionHandling(
                 httpSecurityExceptionHandlingConfigurer ->
