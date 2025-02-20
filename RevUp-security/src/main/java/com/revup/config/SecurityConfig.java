@@ -97,7 +97,6 @@ public class SecurityConfig {
     }
 
     // 특정 URI 필터 제외
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         // 요청 URL이 "/api/v1"로 시작하지 않으면 true, 그 외는 무시
@@ -106,6 +105,7 @@ public class SecurityConfig {
                         "/geoserver/web/"
                 );
     }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
