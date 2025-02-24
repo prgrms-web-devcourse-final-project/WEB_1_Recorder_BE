@@ -34,7 +34,8 @@ public class Oauth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
         String targetUrl = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse(("/"));
-        log.error("exception.getLocalizedMessage() = {}", exception.getLocalizedMessage());
+        log.error("exception.getLocalizedMessage() = {}\n\n", exception.getLocalizedMessage());
+        exception.printStackTrace();
         targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("error", exception.getLocalizedMessage())
                 .build().toUriString();
